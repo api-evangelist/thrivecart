@@ -1,0 +1,120 @@
+overlay: 1.0.0
+info:
+  title: API Evangelist enhancements to the ThriveCart API
+  version: 1.0.0
+extends: ../openapi/thrivecart-api-openapi.yml
+x-provenance:
+  generated: '2026-08-12'
+  method: generated
+  source: >-
+    conventions/thrivecart-conventions.yml, rate-limits/thrivecart-rate-limits.yml,
+    errors/thrivecart-problem-types.yml, sandbox/thrivecart-sandbox.yml,
+    data-model/thrivecart-data-model.yml
+  note: >-
+    Captures the runtime semantics ThriveCart documents in prose but never puts in a machine-
+    readable contract - the 60/minute account rate limit, the absence of idempotency on
+    money-moving writes, the test/live mode discriminator, and the fact that four write
+    operations require keys no read operation returns. Applies over the derived OpenAPI; the
+    original is never mutated.
+actions:
+- target: $.info
+  update:
+    x-rate-limit:
+      scope: per-account
+      limit: 60
+      window: 60s
+      headers: none published
+      exhaustion_status: undocumented
+      source: https://developers.thrivecart.com/documentation/
+    x-idempotency:
+      request_header: null
+      api_side: false
+      webhook_side:
+        field: webhook_id
+        format: uuid
+        stable_across_retries: true
+      note: The REST API accepts no idempotency key; retries of a write can double-apply.
+    x-modes:
+      field: mode_int
+      values:
+        '1': test
+        '2': live
+      isolation: none - one credential covers both modes
+    x-auth-endpoints:
+      authorization: https://thrivecart.com/authorization/new
+      token: https://thrivecart.com/authorization/token
+      discovered_from: src/Oauth.php in thrivecart/php-api - not published in the documentation
+- target: $.paths['/transactions'].get.parameters[?(@.name=='perPage')]
+  update:
+    schema:
+      type: string
+      maximum: 100
+    x-max: 100
+- target: $.paths['/affiliates'].get.parameters[?(@.name=='perPage')]
+  update:
+    schema:
+      type: string
+      maximum: 25
+    x-max: 25
+- target: $.paths['/refund'].post
+  update:
+    x-consequence: irreversible
+    x-moves-money: true
+    x-idempotent: false
+    x-agent-guidance: >-
+      Refunds cannot be reversed and carry no idempotency key. Confirm the order_id and reference
+      against searchTransactions before calling, and never retry blindly on a timeout - re-read
+      transactions first.
+    x-reference-format: '<type>-<id>, e.g. product-299'
+- target: $.paths['/cancelSubscription'].post
+  update:
+    x-consequence: irreversible
+    x-idempotent: false
+    x-agent-guidance: >-
+      Ends recurring revenue. subscription_id is not readable from any operation; it must come
+      from a webhook payload or a transaction record.
+- target: $.paths['/pauseSubscription'].post
+  update:
+    x-consequence: reversible
+    x-idempotent: false
+    x-agent-guidance: auto_resume must be a Unix timestamp at least 24 hours in the future.
+- target: $.paths['/resumeSubscription'].post
+  update:
+    x-consequence: reversible
+    x-idempotent: false
+- target: $.paths['/affiliates/{affiliate_id}/delete'].post
+  update:
+    x-consequence: destructive
+    x-idempotent: false
+- target: $.paths['/affiliates/{affiliate_id}/custom_commissions'].post
+  update:
+    x-consequence: changes payout economics
+    x-agent-guidance: Pass null as commission_object to remove custom commissions for the product.
+- target: $.paths['/subscribe'].post
+  update:
+    x-agent-guidance: >-
+      For OAuth applications the target_url must begin with a URL registered in the app settings,
+      exactly like an OAuth redirect URI. This restriction does not apply to account-wide API
+      keys. Use "*" as the event to receive every event.
+    x-events: 21
+    x-events-artifact: ../asyncapi/thrivecart-events-asyncapi.yml
+- target: $.paths['/customer'].post
+  update:
+    x-read-only: true
+    x-agent-guidance: A POST that performs a read. Safe to retry.
+- target: $.paths['/affiliate'].post
+  update:
+    x-read-only: true
+    x-agent-guidance: A POST that performs a read. Accepts an affiliate user id, an affiliate id
+      or an email in the same field. Safe to retry.
+- target: $.paths['/students'].post
+  update:
+    x-write-only-entity: true
+    x-agent-guidance: >-
+      Learn students have no read, update or delete operation. Creating an enrolment is a one-way
+      action that cannot subsequently be reconciled through the API.
+- target: $.components.schemas.Error
+  update:
+    x-rfc9457: false
+    x-known-codes: [auth.missing, invalid_token]
+    x-catalog: ../errors/thrivecart-problem-types.yml

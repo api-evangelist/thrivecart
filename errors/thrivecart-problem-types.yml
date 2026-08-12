@@ -1,0 +1,87 @@
+generated: '2026-08-12'
+method: derived
+source: >-
+  openapi/thrivecart-api-openapi.yml (derived from https://apidocs.thrivecart.com/), plus a live
+  unauthenticated probe of https://thrivecart.com/api/external/ping
+format: custom-json
+rfc9457: false
+content_type: application/json
+envelope:
+  shape: '{"error": "<machine key>", "error_description": "<human text, when present>"}'
+  fields:
+  - name: error
+    required: true
+    type: string
+    description: Machine-readable error key. Two naming styles appear in the wild - dotted
+      (auth.missing) and snake (invalid_token) - so a consumer cannot pattern-match on one form.
+  - name: error_description
+    required: false
+    type: string
+    description: Human-readable text. Absent on some responses, including the live 401 probe.
+  note: >-
+    ThriveCart does not use application/problem+json. There is no type URI, no title, no instance
+    and no per-error documentation page, so an agent has no stable identifier to key remediation
+    off beyond the error string itself.
+status_codes:
+- status: 200
+  meaning: OK
+  used_by: all read operations and most writes
+- status: 201
+  meaning: Created
+  used_by: [createNewAffiliate, createNewStudent]
+- status: 400
+  meaning: Bad Request - validation failure on the submitted fields
+  used_by: affiliate and student creation, subscription state changes, refunds
+- status: 401
+  meaning: Unauthorized - missing, invalid or expired API key / access token
+  used_by: every operation
+- status: 404
+  meaning: Not Found - the referenced product, bump, upsell, downsell, affiliate or order does not
+    exist in this account
+  used_by: single-resource reads and affiliate sub-resources
+- status: 429
+  meaning: Not documented. ThriveCart states a 60 requests/minute limit but does not publish the
+    status code or headers returned on exhaustion; this row is a gap, not an observation.
+  documented: false
+problems:
+- code: auth.missing
+  status: 401
+  title: No credential presented
+  detail: The request carried no Authorization header.
+  remediation: 'Send `Authorization: Bearer <api key or OAuth access token>`. Create a key under
+    Settings > API & webhooks > API tokens.'
+  evidence: 'probed 2026-08-12: GET https://thrivecart.com/api/external/ping -> 401
+    {"error":"auth.missing"}'
+  method: probed
+- code: invalid_token
+  status: 401
+  title: Invalid or expired credential
+  detail: The access token provided is invalid.
+  remediation: Re-run the OAuth authorization-code flow, or regenerate the account API key. Call
+    GET /ping to verify a token before using it.
+  evidence: 'Invalid/expired credentials example response on Ping, https://apidocs.thrivecart.com/'
+  method: derived
+- code: <validation>
+  status: 400
+  title: Request rejected
+  detail: One or more submitted fields failed validation. ThriveCart publishes no enumerated
+    validation error keys, so the specific key is only visible at runtime.
+  remediation: Check required fields for the operation - e.g. product_ids on affiliate register /
+    approve / reject, order_id + subscription_id on subscription state changes, order_id +
+    reference on refund.
+  method: derived
+- code: <not found>
+  status: 404
+  title: Resource not in this account
+  detail: The id in the path or body does not resolve within the account the token grants access
+    to.
+  remediation: Confirm the id came from a list call on the same account. GET /ping returns the
+    account_id the token resolved to.
+  method: derived
+gaps:
+- No RFC 9457 problem+json, so no type URI an agent can dereference.
+- No published error-code registry. The two known keys were recovered from a documentation example
+  and a live probe; there is no reference page enumerating the rest.
+- Error key naming is inconsistent (dotted vs snake_case).
+- The 429 / rate-limit-exceeded response is entirely undocumented despite a documented limit.
+- No error catalogue for the webhook side either - a failed delivery surfaces only as a retry.

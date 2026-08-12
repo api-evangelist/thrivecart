@@ -1,0 +1,460 @@
+# Derived by API Evangelist from ThriveCart's own Event Subscription API documentation.
+# Source: https://developers.thrivecart.com/documentation/event_subscription/intro/ and the
+# 21 per-event pages linked from it, read 2026-08-12.
+# ThriveCart publishes no AsyncAPI of its own. Every channel, event key and trigger field below
+# is carried over from those pages; nothing is invented. Payload schemas are NOT documented by
+# ThriveCart, so message payloads are left open (type: object) rather than guessed.
+asyncapi: 3.0.0
+info:
+  title: ThriveCart Event Subscriptions
+  version: '1'
+  description: >
+    ThriveCart delivers account events to subscriber endpoints over HTTP POST. Two surfaces
+    exist and they do not share event names.
+
+
+    **Event Subscription API (this document).** Created programmatically with
+    `POST https://thrivecart.com/api/external/subscribe`, taking at least `event` (an event key,
+    or `*` for all) and `target_url`. Optional `trigger_fields` narrow delivery to specific
+    products, bumps, upsells, downsells, affiliates or modes. Deliveries are **always JSON** in
+    the request body. Removal is `POST /unsubscribe` with the endpoint `url`.
+
+
+    **Account-wide webhooks (see x-legacy-webhooks).** Configured in the UI under
+    Settings > API & Webhooks > Webhooks & Notifications, up to 5 destinations by default,
+    delivered as `x-www-form-urlencoded` with a different, dotted event vocabulary.
+
+
+    **Delivery identity.** Every event-subscription delivery carries `webhook_id`, a UUID that
+    identifies that specific HTTP POST. It is stable across retries of the same delivery and is
+    the documented idempotency key. `event_id` is retained for backward compatibility but is tied
+    to the transaction/event record and may be absent on some event types.
+
+
+    **Authenticity.** Payloads carry `thrivecart_secret` (the account's secret word) and
+    `thrivecart_account`. There is no HMAC signature header and no timestamp, so replay
+    protection is the consumer's responsibility.
+
+
+    **Target URL restriction.** For OAuth applications, `target_url` must begin with a URL
+    registered in the app's settings, the same way redirect URLs are registered. This does not
+    apply to account-wide API keys.
+  contact:
+    name: ThriveCart Developer Support
+    url: https://developers.thrivecart.com/documentation/event_subscription/intro/
+    email: support@thrivecart.com
+  externalDocs:
+    description: Event Subscription API
+    url: https://developers.thrivecart.com/documentation/event_subscription/intro/
+defaultContentType: application/json
+servers:
+  subscriber:
+    host: '{target_url_host}'
+    protocol: https
+    description: >-
+      The consumer's own HTTPS endpoint, registered as target_url on POST /api/external/subscribe.
+      ThriveCart is the publisher; there is no ThriveCart-hosted broker.
+    variables:
+      target_url_host:
+        description: Host of the subscriber endpoint. For OAuth apps it must match a URL
+          registered in the application settings.
+        default: example.com
+components:
+  messageTraits:
+    thrivecartEvent:
+      headers:
+        type: object
+        properties:
+          Content-Type:
+            type: string
+            const: application/json
+      payload:
+        type: object
+        description: >-
+          ThriveCart does not publish payload schemas for event subscriptions. The fields below
+          are the delivery-envelope fields it documents explicitly; the remainder of the body
+          varies by event and is only observable at runtime.
+        properties:
+          webhook_id:
+            type: string
+            format: uuid
+            description: UUID identifying this delivery. Stable across retries. Use as the
+              idempotency key.
+          event_id:
+            type: string
+            description: Legacy identifier tied to the transaction/event record. May be absent on
+              some event types.
+          event:
+            type: string
+            description: The event key that matched.
+          mode_int:
+            type: integer
+            enum: [1, 2]
+            description: 1 = test mode, 2 = live mode.
+          thrivecart_account:
+            type: string
+            description: Account identifier.
+          thrivecart_secret:
+            type: string
+            description: The account's secret word, for authenticity verification by the receiver.
+        additionalProperties: true
+channels:
+  order_created:
+    address: order_created
+    messages:
+      orderCreated:
+        name: order_created
+        title: Order created
+        summary: An order is made. Triggers once per order; order_payment_product and siblings are
+          usually the better choice.
+        traits: [$ref: '#/components/messageTraits/thrivecartEvent']
+    x-trigger-fields:
+    - name: mode_int
+      required: false
+      type: numeric
+      description: 1 for test-mode purchases only, 2 for live-mode purchases only.
+  order_payment_product:
+    address: order_payment_product
+    messages:
+      orderPaymentProduct:
+        name: order_payment_product
+        title: Product purchased
+        traits: [$ref: '#/components/messageTraits/thrivecartEvent']
+    x-trigger-fields:
+    - name: mode_int
+      required: false
+      type: numeric
+    - name: base_product
+      required: false
+      type: numeric or array
+      description: 'Numeric product ID, or array of product IDs. Example: 5 or [5, 19, 30].'
+  order_payment_bump:
+    address: order_payment_bump
+    messages:
+      orderPaymentBump:
+        name: order_payment_bump
+        title: Bump purchased
+        summary: A bump's ID is the same as the product it is attached to.
+        traits: [$ref: '#/components/messageTraits/thrivecartEvent']
+    x-trigger-fields:
+    - name: mode_int
+      required: false
+      type: numeric
+    - name: purchase.bump_id
+      required: false
+      type: numeric or array
+    x-example-subscription: '{"event": "order_payment_bump", "target_url":
+      "https://mysite.com/webhooks/123/", "trigger_fields": {"mode_int": 2, "purchase":
+      {"bump_id": 5}}}'
+  order_payment_upsell:
+    address: order_payment_upsell
+    messages:
+      orderPaymentUpsell:
+        name: order_payment_upsell
+        title: Upsell purchased
+        traits: [$ref: '#/components/messageTraits/thrivecartEvent']
+    x-trigger-fields:
+    - name: mode_int
+      required: false
+      type: numeric
+    - name: purchase.upsell_id
+      required: false
+      type: numeric or array
+  order_payment_downsell:
+    address: order_payment_downsell
+    messages:
+      orderPaymentDownsell:
+        name: order_payment_downsell
+        title: Downsell purchased
+        traits: [$ref: '#/components/messageTraits/thrivecartEvent']
+    x-trigger-fields:
+    - name: mode_int
+      required: false
+      type: numeric
+    - name: purchase.downsell_id
+      required: false
+      type: numeric or array
+  order_rebill:
+    address: order_rebill
+    messages:
+      orderRebill:
+        name: order_rebill
+        title: Recurring payment made
+        summary: Fires for a subscription or a split pay. Bumps do not support subscriptions.
+        traits: [$ref: '#/components/messageTraits/thrivecartEvent']
+    x-trigger-fields:
+    - name: mode_int
+      required: false
+      type: numeric
+    - name: subscription.type
+      required: false
+      type: enum
+      enum: [product, upsell, downsell]
+    - name: subscription.product_id
+      required: false
+      type: numeric
+    - name: subscription.upsell_id
+      required: false
+      type: numeric
+    - name: subscription.downsell_id
+      required: false
+      type: numeric
+  order_rebill_failed:
+    address: order_rebill_failed
+    messages:
+      orderRebillFailed:
+        name: order_rebill_failed
+        title: Recurring payment failed
+        traits: [$ref: '#/components/messageTraits/thrivecartEvent']
+    x-trigger-fields:
+    - name: mode_int
+      required: false
+      type: numeric
+    - name: subscription.type
+      required: false
+      type: enum
+      enum: [product, upsell, downsell]
+    - name: subscription.product_id
+      required: false
+      type: numeric
+    - name: subscription.upsell_id
+      required: false
+      type: numeric
+    - name: subscription.downsell_id
+      required: false
+      type: numeric
+  order_rebill_completed:
+    address: order_rebill_completed
+    messages:
+      orderRebillCompleted:
+        name: order_rebill_completed
+        title: Subscription completed all payments
+        summary: Split pay finished, or a subscription with a limited number of rebills. Fires at
+          the same time as the final order_rebill.
+        traits: [$ref: '#/components/messageTraits/thrivecartEvent']
+    x-trigger-fields:
+    - name: mode_int
+      required: false
+      type: numeric
+    - name: subscription.type
+      required: false
+      type: enum
+      enum: [product, upsell, downsell]
+  order_rebill_cancelled:
+    address: order_rebill_cancelled
+    messages:
+      orderRebillCancelled:
+        name: order_rebill_cancelled
+        title: Subscription cancelled
+        summary: No further payments are due.
+        traits: [$ref: '#/components/messageTraits/thrivecartEvent']
+    x-trigger-fields:
+    - name: mode_int
+      required: false
+      type: numeric
+    - name: subscription.type
+      required: false
+      type: enum
+      enum: [product, upsell, downsell]
+  order_refund_product:
+    address: order_refund_product
+    messages:
+      orderRefundProduct:
+        name: order_refund_product
+        title: Product refunded
+        summary: Full or partial.
+        traits: [$ref: '#/components/messageTraits/thrivecartEvent']
+    x-trigger-fields:
+    - name: mode_int
+      required: false
+      type: numeric
+    - name: base_product
+      required: false
+      type: numeric or array
+  order_refund_bump:
+    address: order_refund_bump
+    messages:
+      orderRefundBump:
+        name: order_refund_bump
+        title: Bump refunded
+        traits: [$ref: '#/components/messageTraits/thrivecartEvent']
+    x-trigger-fields:
+    - name: mode_int
+      required: false
+      type: numeric
+    - name: purchase.bump_id
+      required: false
+      type: numeric or array
+  order_refund_upsell:
+    address: order_refund_upsell
+    messages:
+      orderRefundUpsell:
+        name: order_refund_upsell
+        title: Upsell refunded
+        traits: [$ref: '#/components/messageTraits/thrivecartEvent']
+    x-trigger-fields:
+    - name: mode_int
+      required: false
+      type: numeric
+    - name: purchase.upsell_id
+      required: false
+      type: numeric or array
+  order_refund_downsell:
+    address: order_refund_downsell
+    messages:
+      orderRefundDownsell:
+        name: order_refund_downsell
+        title: Downsell refunded
+        traits: [$ref: '#/components/messageTraits/thrivecartEvent']
+    x-trigger-fields:
+    - name: mode_int
+      required: false
+      type: numeric
+    - name: purchase.downsell_id
+      required: false
+      type: numeric or array
+  subscription_paused:
+    address: subscription_paused
+    messages:
+      subscriptionPaused:
+        name: subscription_paused
+        title: Subscription paused
+        traits: [$ref: '#/components/messageTraits/thrivecartEvent']
+    x-trigger-fields:
+    - name: mode_int
+      required: false
+      type: numeric
+    - name: subscription.type
+      required: false
+      type: enum
+      enum: [product, upsell, downsell]
+  subscription_resumed:
+    address: subscription_resumed
+    messages:
+      subscriptionResumed:
+        name: subscription_resumed
+        title: Subscription resumed
+        traits: [$ref: '#/components/messageTraits/thrivecartEvent']
+    x-trigger-fields:
+    - name: mode_int
+      required: false
+      type: numeric
+    - name: subscription.type
+      required: false
+      type: enum
+      enum: [product, upsell, downsell]
+  cart_abandoned:
+    address: cart_abandoned
+    messages:
+      cartAbandoned:
+        name: cart_abandoned
+        title: Cart abandoned
+        summary: A customer entered their email address on the cart page but left without
+          purchasing.
+        traits: [$ref: '#/components/messageTraits/thrivecartEvent']
+    x-trigger-fields:
+    - name: base_product
+      required: false
+      type: numeric or array
+  affiliate_approved:
+    address: affiliate_approved
+    messages:
+      affiliateApproved:
+        name: affiliate_approved
+        title: Affiliate approved for a product
+        traits: [$ref: '#/components/messageTraits/thrivecartEvent']
+    x-trigger-fields:
+    - name: product_id
+      required: false
+      type: numeric or array
+  affiliate_rejected:
+    address: affiliate_rejected
+    messages:
+      affiliateRejected:
+        name: affiliate_rejected
+        title: Affiliate rejected or access revoked
+        traits: [$ref: '#/components/messageTraits/thrivecartEvent']
+    x-trigger-fields:
+    - name: product_id
+      required: false
+      type: numeric or array
+  affiliate_commission_earned:
+    address: affiliate_commission_earned
+    messages:
+      affiliateCommissionEarned:
+        name: affiliate_commission_earned
+        title: Affiliate earned commission
+        summary: Affiliate payouts only happen in live mode, so this never fires in test mode.
+        traits: [$ref: '#/components/messageTraits/thrivecartEvent']
+    x-trigger-fields:
+    - name: affiliate_user_id
+      required: false
+      type: numeric or array
+  affiliate_commission_payout:
+    address: affiliate_commission_payout
+    messages:
+      affiliateCommissionPayout:
+        name: affiliate_commission_payout
+        title: Affiliate commission paid
+        summary: Also fires for manual payouts. Live mode only.
+        traits: [$ref: '#/components/messageTraits/thrivecartEvent']
+    x-trigger-fields:
+    - name: affiliate_user_id
+      required: false
+      type: numeric or array
+  affiliate_commission_refund:
+    address: affiliate_commission_refund
+    messages:
+      affiliateCommissionRefund:
+        name: affiliate_commission_refund
+        title: Affiliate commission refunded
+        summary: Live mode only.
+        traits: [$ref: '#/components/messageTraits/thrivecartEvent']
+    x-trigger-fields:
+    - name: affiliate_user_id
+      required: false
+      type: numeric or array
+operations:
+  receiveThriveCartEvent:
+    action: receive
+    channel:
+      $ref: '#/channels/order_created'
+    title: Receive a ThriveCart event subscription delivery
+    summary: >-
+      Subscribe with POST https://thrivecart.com/api/external/subscribe, body
+      {"event": "<key>", "target_url": "<https url>", "trigger_fields": {...}}. Use "*" as the
+      event key to receive every event, which is equivalent to creating a webhook in the account.
+      Unsubscribe with POST /api/external/unsubscribe and the endpoint url.
+x-legacy-webhooks:
+  description: >-
+    The UI-configured, account-wide webhook surface. Separate vocabulary, separate encoding.
+    Documented at https://support.thrivecart.com/help/using-webhook-notifications/.
+  configured_at: Settings > API & Webhooks > Webhooks & Notifications
+  max_destinations: 5
+  method: POST
+  content_type: application/x-www-form-urlencoded
+  activation_requirement: the endpoint must answer HTTP 2xx to both POST and HEAD during setup
+  validation_field: thrivecart_secret
+  events:
+  - order.success
+  - order.refund
+  - cart.abandoned
+  - order.subscription_payment
+  - order.subscription_cancelled
+  - order.subscription_paused
+  - order.subscription_resumed
+  - order.rebill_failed
+  - affiliate.commission_earned
+  - affiliate.commission_payout
+  - affiliate.commission_refund
+  - customer_updated
+x-gaps:
+- ThriveCart publishes no AsyncAPI, no JSON Schema and no field-level payload reference for any
+  event. Only the delivery envelope fields are documented, so a consumer must observe a live
+  delivery to learn the shape.
+- Deliveries are not signed. Authenticity depends on a static secret echoed in the body, with no
+  HMAC, no timestamp and no replay window.
+- Retry behaviour is acknowledged ("if we retry the same delivery") but no schedule, backoff or
+  maximum attempt count is published, and there is no delivery log or replay endpoint.
+- The two event surfaces use different names for the same underlying facts (order_created vs
+  order.success), which is a standing source of integration error.

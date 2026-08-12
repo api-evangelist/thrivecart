@@ -1,0 +1,99 @@
+generated: '2026-08-12'
+method: searched
+source: https://thrivecart.com/blog/category/product-updates/
+feed: https://thrivecart.com/blog/category/product-updates/feed/
+scheme: dated-blog-category
+api_scoped: false
+current_version: '1'
+cadence: roughly monthly
+note: >-
+  ThriveCart has no developer-scoped API changelog. Product changes - including changes to the API
+  and to webhook payloads - are announced in the "Product Updates" category of the marketing blog,
+  interleaved with feature launches and course-platform news. There is a dated RSS feed, which is
+  machine-readable, but nothing distinguishes an API-affecting entry from a UI-only one without
+  reading the post. Entries below are the recent window from that feed, read on 2026-08-12;
+  api_relevant is API Evangelist's classification, not ThriveCart's.
+entries:
+- date: '2026-08-04'
+  title: 'Platform Updates: Late July 2026'
+  url: https://thrivecart.com/blog/platform-updates-late-july-2026/
+  breaking: false
+  api_relevant: unknown
+- date: '2026-06-09'
+  title: 'Stop Wasting Time, Stop Losing Traffic: Meet ThriveCart''s Smart Links'
+  url: https://thrivecart.com/blog/how-smart-links-keep-your-checkout-urls-clean-revenue-intact/
+  breaking: false
+  api_relevant: false
+  highlights:
+  - Smart Links for clean checkout URLs
+- date: '2026-06-05'
+  title: 'What''s New in ThriveCart: Early June 2026 - Dashboard Redesign, Easier Course
+    Organization, and More'
+  url: https://thrivecart.com/blog/early-june-2026-dashboard-redesign-easier-course-organization/
+  breaking: false
+  api_relevant: false
+- date: '2026-05-29'
+  title: 'What''s New in ThriveAcademy, End of May 2026'
+  url: https://thrivecart.com/blog/thriveacademy-updates-end-of-may-2026/
+  breaking: false
+  api_relevant: false
+- date: '2026-05-21'
+  title: 'Introducing ThriveCart Academy: Transform Your Courses Into Thriving Social Learning
+    Networks'
+  url: https://thrivecart.com/blog/introducing-thrivecart-academy-communities/
+  breaking: false
+  api_relevant: false
+- date: '2026-04-16'
+  title: Richer API Data, U.S. Self-Cancellation Rights & Webhook Security
+  url: https://thrivecart.com/blog/richer-api-data-us-self-cancellation-rights-webhook-security/
+  breaking: false
+  api_relevant: true
+  additions:
+  - 'GET /transactions now returns customer.id - the internal unique identifier for each customer
+    record.'
+  - 'GET /transactions now returns subscription_current_status, one of: active, paused, cancelled,
+    completed.'
+  - 'The customer_updated webhook now carries thrivecart_account and thrivecart_secret, aligning
+    it with the verification approach used across other ThriveCart webhook events.'
+  note: >-
+    The single most API-relevant entry in the recent window, and the clearest evidence of drift
+    against the official PHP SDK, which has not shipped since 2022-01-19.
+- date: '2026-03-19'
+  title: 'Introducing Product Tags: Organize Your Product Catalog the Way You Think About Your
+    Business'
+  url: https://thrivecart.com/blog/introducing-product-tags-catalog-products/
+  breaking: false
+  api_relevant: unknown
+  note: Product tags were added to the catalog; the API reference does not document a tags field
+    on the product object, so exposure through the API is unconfirmed.
+- date: '2026-03-18'
+  title: 'Get Help When You Need It Most: Introducing Live Chat Support'
+  url: https://thrivecart.com/blog/live-chat-support-real-time-help-for-creators/
+  breaking: false
+  api_relevant: false
+- date: '2026-03-05'
+  title: Dynamic Shipping Rates, Terms & Conditions Transparency, and Dashboard Improvements
+  url: https://thrivecart.com/blog/dynamic-shipping-rates-terms-conditions-transparency/
+  breaking: false
+  api_relevant: unknown
+- date: '2026-02-18'
+  title: 'ThrivePay Installments: The Future of Buy Now, Pay Later'
+  url: https://thrivecart.com/blog/thrivepay-installments-flexible-payments-for-high-value-digital-commerce/
+  breaking: false
+  api_relevant: unknown
+- date: '2026-01-29'
+  title: Clearer Stripe Alerts & Expanded Affiliate Offers
+  url: https://thrivecart.com/blog/clearer-stripe-alerts-expanded-affiliate-offers/
+  breaking: false
+  api_relevant: unknown
+- date: '2026-01-21'
+  title: Smarter Notifications & Clearer Tax Reporting
+  url: https://thrivecart.com/blog/smarter-notifications-clearer-tax-reporting/
+  breaking: false
+  api_relevant: unknown
+entry_count: 12
+window: 2026-01-21 to 2026-08-04
+gaps:
+- No API-only changelog or release-notes page on developers.thrivecart.com.
+- No version numbers, so a change cannot be referenced or pinned.
+- No breaking-change policy and no advance-notice commitment.

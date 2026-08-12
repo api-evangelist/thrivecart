@@ -1,0 +1,46 @@
+generated: '2026-08-12'
+method: searched
+source: https://thrivecart.com/
+trust_center_published: false
+trust_center_url: null
+note: >-
+  ThriveCart does not operate a trust centre. There is no trust.thrivecart.com, no security
+  portal, and no downloadable attestation report. https://trust.thrivecart.com/ resolves to the
+  ThriveCart sign-in catch-all (HTTP 200, SPA shell), not a trust portal. What ThriveCart does
+  publish is a pair of self-asserted compliance badges on its marketing homepage and a data
+  protection section in its legal terms. No third-party audit report (SOC 2, ISO 27001) is named
+  or offered anywhere on the public site.
+certifications:
+- name: PCI DSS
+  status: self-asserted
+  evidence: 'Homepage badge: "PCI DSS Compliant"; feature copy: "Always stay compliant with taxes
+    and global compliance built in (inc. PCI-DSS & GDPR)."'
+  source: https://thrivecart.com/
+  attestation_published: false
+- name: GDPR
+  status: self-asserted
+  evidence: 'Homepage badge: "GDPR Compliant". Legal terms describe ThriveCart as a "data
+    processor" acting on behalf of its customers as defined under the GDPR.'
+  source: https://thrivecart.com/legal/thrivecart/
+  attestation_published: false
+- name: CCPA
+  status: self-asserted
+  evidence: 'Legal terms describe ThriveCart as a "service provider" for the purposes of the
+    California Consumer Privacy Act.'
+  source: https://thrivecart.com/legal/thrivecart/
+  attestation_published: false
+not_found:
+- SOC 2
+- ISO 27001
+- HIPAA
+- FedRAMP
+evidence:
+- url: https://thrivecart.com/
+  http_status: 200
+  finding: PCI DSS Compliant + GDPR Compliant badges in the hero trust row
+- url: https://thrivecart.com/legal/thrivecart/
+  http_status: 200
+  finding: GDPR data-processor and CCPA service-provider language in the terms
+- url: https://trust.thrivecart.com/
+  http_status: 200
+  finding: redirects to https://thrivecart.com/signin/ (SPA catch-all) - not a trust centre

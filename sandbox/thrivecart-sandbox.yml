@@ -1,0 +1,81 @@
+generated: '2026-08-12'
+method: searched
+source: >-
+  https://support.thrivecart.com/help/testing-your-checkout/,
+  https://developers.thrivecart.com/documentation/event_subscription/intro/,
+  https://apidocs.thrivecart.com/
+summary: >-
+  ThriveCart has no sandbox host, no test-mode credential and no key prefix. Test and live are a
+  per-product toggle inside the same account, read with the same API key, distinguished only by
+  the integer field mode_int. That is the important shape here: unlike Stripe, there is no way to
+  hand an integration partner a credential that can only touch test data, and no way for an agent
+  to know from its token whether a write it is about to make is real.
+model: per-product mode flag
+sandbox_host: null
+test_credentials: null
+key_prefixes: null
+mode_field:
+  name: mode_int
+  values:
+  - value: 1
+    meaning: test
+  - value: 2
+    meaning: live
+  where:
+  - the mode_int trigger field on every order and refund event subscription
+  - product configuration (Options tab)
+  - the Transactions list, once live/test switching is enabled in Settings
+enable_test_mode:
+  where: product settings, first Options tab
+  effect: >-
+    "Setting your cart to 'test mode' will mean that your cart will not be taking live payments,
+    allowing you to test your checkout and see the flow from a customer's perspective without
+    processing any live payments."
+  fidelity: >-
+    "The cart will operate like a 'live' cart in that it simulates a customer funnel and then
+    product access, automation rules, webhooks, etc. will all trigger, but no real payment will be
+    taken." Automation rules, membership fulfilment, Zaps and webhook notifications all fire, so
+    an integration can be exercised end to end.
+viewing_test_data:
+  where: Settings > Account-wide > Finances, toggle live/test switching; then switch modes at the
+    bottom of the Transactions list
+test_payment_instruments:
+- processor: Stripe
+  card: '4242 4242 4242 4242'
+  expiry: any future date
+  cvc: any 3 digits
+  note: >-
+    The test card belongs to Stripe, not to ThriveCart. ThriveCart publishes no test instruments
+    of its own; test-mode fidelity is inherited from whichever processor the account has
+    connected.
+behaviour_differences:
+- No sales-notification email is sent for test purchases, though receipt emails still go to the
+  test "customer".
+- Affiliate payouts only happen in live mode, so affiliate_commission_earned,
+  affiliate_commission_payout and affiliate_commission_refund never fire in test mode. An
+  affiliate integration cannot be tested end to end.
+- Test-mode transactions are hidden from the Transactions list until live/test switching is
+  explicitly enabled in account settings.
+time_simulation:
+  supported: false
+  note: >-
+    No test clocks or time travel. Rebill, rebill_failed, rebill_completed and pause/resume
+    scheduling cannot be fast-forwarded, so subscription lifecycle events can only be observed on
+    real elapsed time.
+fixtures_and_triggers:
+  supported: false
+  note: No fixture library, no event-trigger CLI or dashboard control to fire a webhook on demand.
+    An event is only observable by producing the underlying purchase.
+api_isolation:
+  supported: false
+  note: >-
+    One API key covers both modes. There is no test-mode token, so any credential shared with a
+    developer or an agent can refund real money and cancel real subscriptions. Combined with the
+    absence of an idempotency key on writes, this is the sharpest operational risk on the surface.
+gaps:
+- No separate sandbox environment or test credential.
+- No time simulation for subscription lifecycles.
+- No on-demand event triggers or webhook replay.
+- Affiliate flows untestable in test mode.
+- No published sandbox documentation on developers.thrivecart.com; test-mode guidance lives only
+  in the end-user help desk.

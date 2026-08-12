@@ -1,0 +1,122 @@
+generated: '2026-08-12'
+method: probed
+source: live probes of every ThriveCart host on 2026-08-12
+summary: >-
+  Exactly one real well-known document is served across the ThriveCart estate: an RFC 9116
+  security.txt at https://thrivecart.com/.well-known/security.txt, carrying a security contact
+  and a policy URL. Every other well-known path on thrivecart.com and developers.thrivecart.com
+  answers HTTP 200 with the ThriveCart single-page-app HTML shell - a soft 200, not a document.
+  Those are recorded below as misses. apidocs.thrivecart.com (Postman-hosted) returns honest 404s.
+probes:
+- host: thrivecart.com
+  path: /.well-known/security.txt
+  status: 200
+  content_type: text/plain; charset=utf-8
+  bytes: 103
+  document: true
+  file: well-known/thrivecart-security.txt
+- host: thrivecart.com
+  path: /.well-known/openid-configuration
+  status: 200
+  content_type: text/html; charset=UTF-8
+  document: false
+  note: SPA shell (soft 200) - no OpenID Provider metadata is served
+- host: thrivecart.com
+  path: /.well-known/oauth-authorization-server
+  status: 200
+  content_type: text/html; charset=UTF-8
+  document: false
+  note: SPA shell (soft 200) - RFC 8414 metadata is not published, despite a live OAuth 2.0 flow
+- host: thrivecart.com
+  path: /.well-known/oauth-protected-resource
+  status: 200
+  content_type: text/html; charset=UTF-8
+  document: false
+  note: SPA shell (soft 200) - no RFC 9728 protected-resource metadata
+- host: thrivecart.com
+  path: /.well-known/api-catalog
+  status: 200
+  content_type: text/html; charset=UTF-8
+  document: false
+  note: SPA shell (soft 200) - no RFC 9727 API catalog
+- host: thrivecart.com
+  path: /.well-known/ai-plugin.json
+  status: 200
+  content_type: text/html; charset=UTF-8
+  document: false
+  note: SPA shell (soft 200)
+- host: thrivecart.com
+  path: /.well-known/agent-card.json
+  status: 200
+  content_type: text/html; charset=UTF-8
+  document: false
+  note: SPA shell (soft 200) - NOT an A2A agent card; no a2a/ artifact was written
+- host: thrivecart.com
+  path: /.well-known/agent.json
+  status: 200
+  content_type: text/html; charset=UTF-8
+  document: false
+  note: SPA shell (soft 200) - legacy pre-0.3 agent card path also misses
+- host: developers.thrivecart.com
+  path: /.well-known/security.txt
+  status: 200
+  content_type: text/html;charset=UTF-8
+  document: false
+  note: SPA shell (soft 200)
+- host: developers.thrivecart.com
+  path: /.well-known/openid-configuration
+  status: 200
+  content_type: text/html;charset=UTF-8
+  document: false
+  note: SPA shell (soft 200)
+- host: developers.thrivecart.com
+  path: /.well-known/oauth-authorization-server
+  status: 200
+  content_type: text/html;charset=UTF-8
+  document: false
+  note: SPA shell (soft 200)
+- host: developers.thrivecart.com
+  path: /.well-known/oauth-protected-resource
+  status: 200
+  content_type: text/html;charset=UTF-8
+  document: false
+  note: SPA shell (soft 200)
+- host: developers.thrivecart.com
+  path: /.well-known/api-catalog
+  status: 200
+  content_type: text/html;charset=UTF-8
+  document: false
+  note: SPA shell (soft 200)
+- host: developers.thrivecart.com
+  path: /.well-known/agent-card.json
+  status: 200
+  content_type: text/html;charset=UTF-8
+  document: false
+  note: SPA shell (soft 200)
+- host: developers.thrivecart.com
+  path: /.well-known/agent.json
+  status: 200
+  content_type: text/html;charset=UTF-8
+  document: false
+  note: SPA shell (soft 200)
+- host: apidocs.thrivecart.com
+  path: /.well-known/security.txt
+  status: 404
+  document: false
+  note: Postman-hosted documentation host; honest 404
+- host: apidocs.thrivecart.com
+  path: /.well-known/agent-card.json
+  status: 404
+  document: false
+  note: Postman-hosted documentation host; honest 404
+documents_found: 1
+gaps:
+- 'No RFC 8414 /.well-known/oauth-authorization-server, even though ThriveCart runs a live OAuth
+  2.0 authorization-code flow at https://thrivecart.com/authorization/new and
+  https://thrivecart.com/authorization/token. Publishing the metadata document would let a client
+  discover those endpoints without reading the PHP SDK source.'
+- 'No /.well-known/api-catalog (RFC 9727) pointing at the APIs.json or the API reference.'
+- 'No A2A agent card at either the canonical or the legacy path.'
+- 'The SPA catch-all answering 200 for every unmatched /.well-known/* path makes automated
+  discovery unreliable against thrivecart.com - a crawler cannot distinguish absent from present
+  by status code alone.'

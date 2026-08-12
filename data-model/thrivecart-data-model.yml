@@ -1,0 +1,192 @@
+generated: '2026-08-12'
+method: derived
+source: >-
+  openapi/thrivecart-api-openapi.yml (id-reference fields and example response bodies carried from
+  https://apidocs.thrivecart.com/), plus the event trigger fields documented at
+  https://developers.thrivecart.com/documentation/event_subscription/
+summary: >-
+  ThriveCart's object graph is small and entirely numeric-id based. There are no typed id
+  prefixes, no URIs and no expandable references - every relationship is an integer in a field
+  named <entity>_id, and ids are only unique within an account. Two consequences matter for an
+  agent: an id alone carries no type information (product 5, bump 5 and upsell 5 can all exist and
+  mean different things), and the API returns id values as JSON STRINGS while accepting and
+  filtering on them as numbers.
+id_conventions:
+  format: integer, serialised as a JSON string in responses
+  prefixes: none
+  scope: unique within an account only
+  note: >-
+    A bump's ID is documented as the same as the product it is attached to, so bump_id and
+    product_id collide by design. `reference` on POST /refund uses a composite string form
+    ("product-299") which is the only place a type-qualified identifier appears anywhere in the
+    API.
+entities:
+- name: Account
+  read_by: GET /ping
+  fields: [account_id, account_name, account_version, account_url, user_id, user_username,
+    user_name, custom_domain_enabled, custom_domain]
+  note: account_version distinguishes plan tier (e.g. "pro").
+- name: Product
+  read_by: ['GET /products', 'GET /products/{product_id}']
+  key: product_id
+  fields: [product_id, name, label, url, embed_type, status, statusString, type, typeString]
+  enums:
+    statusString: [test, live]
+    typeString: [digital, physical]
+  note: status/type are numeric codes with a parallel *String field; status "1" = test, "2" = live,
+    matching mode_int.
+- name: PricingOption
+  read_by: ['GET /products/{product_id}/pricing_options', 'GET /bumps/{bump_id}/pricing_options',
+    'GET /upsells/{upsell_id}/pricing_options', 'GET /downsells/{downsell_id}/pricing_options']
+  note: >-
+    Not independently addressable - always fetched under its parent offer. Accepts an optional
+    affiliate_id on the product variant to return commissions tailored to that affiliate.
+- name: Bump
+  read_by: ['GET /bumps', 'GET /bumps/{bump_id}']
+  key: bump_id
+  fields: [bump_id, bump_name, product_id, product_name, product_label, name, id, url, embed_type,
+    status, statusString, type, typeString, payment_currency, payment_amount]
+  note: payment_amount is in minor units (1200 = 12.00 in payment_currency).
+- name: Upsell
+  read_by: ['GET /upsells', 'GET /upsells/{upsell_id}']
+  key: upsell_id
+- name: Downsell
+  read_by: ['GET /downsells', 'GET /downsells/{downsell_id}']
+  key: downsell_id
+- name: Transaction
+  read_by: GET /transactions
+  filters: [page, perPage, query, transactionType, currency]
+  transaction_types: [any, charge, rebill, refund, cancel]
+  fields_added_2026_04: [customer.id, subscription_current_status]
+  subscription_current_status_enum: [active, paused, cancelled, completed]
+- name: Order
+  key: order_id
+  note: >-
+    Never returned by a dedicated endpoint - orders are only reachable through transactions and
+    through webhook payloads, but order_id is the required key for /refund,
+    /cancelSubscription, /pauseSubscription and /resumeSubscription. This is the largest gap in
+    the object model: the primary write key has no read endpoint.
+- name: Customer
+  read_by: POST /customer
+  key: email
+  secondary_key: customer.id
+  writes: POST /customerEmailUpdate
+  note: >-
+    Addressed by email, not by id, on read. customer.id was only added to the transactions
+    response in April 2026, so email remains the practical join key.
+- name: Subscription
+  key: subscription_id
+  writes: ['POST /cancelSubscription', 'POST /pauseSubscription', 'POST /resumeSubscription']
+  note: >-
+    No read endpoint. subscription_id must come from a webhook payload or a transaction record.
+    pauseSubscription accepts an optional auto_resume Unix timestamp that must be at least 24
+    hours in the future.
+- name: Affiliate
+  read_by: ['GET /affiliates', 'POST /affiliate']
+  key: affiliate_id
+  alt_keys: [affiliate_user_id, email]
+  writes: ['POST /affiliates', 'POST /affiliates/{affiliate_id}/favorite', '.../unfavorite',
+    '.../register', '.../approve', '.../reject', '.../custom_commissions', '.../delete']
+  note: >-
+    Three different identifiers appear for the same actor - affiliate_id (the vanity/link id,
+    which the API warns "may be updated by the system"), affiliate_user_id (used as the event
+    trigger field), and email. POST /affiliate accepts any of the three.
+- name: Student
+  writes: POST /students
+  key: email
+  fields: [email, name, course_id, 'tags[]', 'order_info[order_id]', 'order_info[purchase_type]',
+    'order_info[purchase_id]', trigger_emails]
+  note: >-
+    Write-only. There is no list, read, update or delete for Learn students, so an integration can
+    create enrolments it cannot subsequently reconcile.
+- name: Course
+  key: course_id
+  note: Referenced by POST /students but never listed or read by the API.
+- name: EventSubscription
+  writes: ['POST /subscribe', 'POST /unsubscribe']
+  key: target_url
+  note: >-
+    Write-only and keyed by URL rather than by an id. There is no list endpoint, so an application
+    cannot enumerate the subscriptions it has created; unsubscribing requires remembering the
+    exact URL.
+relationships:
+- from: Bump
+  to: Product
+  type: belongs_to
+  via: product_id
+  note: bump_id equals the product_id it is attached to
+- from: Product
+  to: PricingOption
+  type: has_many
+  via: /products/{product_id}/pricing_options
+- from: Bump
+  to: PricingOption
+  type: has_many
+  via: /bumps/{bump_id}/pricing_options
+- from: Upsell
+  to: PricingOption
+  type: has_many
+  via: /upsells/{upsell_id}/pricing_options
+- from: Downsell
+  to: PricingOption
+  type: has_many
+  via: /downsells/{downsell_id}/pricing_options
+- from: Order
+  to: Transaction
+  type: has_many
+  via: order_id
+- from: Order
+  to: Subscription
+  type: has_many
+  via: subscription_id
+- from: Transaction
+  to: Customer
+  type: belongs_to
+  via: customer.id
+- from: Subscription
+  to: Product
+  type: belongs_to
+  via: subscription.product_id
+  note: 'polymorphic - subscription.type selects among product_id / upsell_id / downsell_id'
+- from: Subscription
+  to: Upsell
+  type: belongs_to
+  via: subscription.upsell_id
+- from: Subscription
+  to: Downsell
+  type: belongs_to
+  via: subscription.downsell_id
+- from: Affiliate
+  to: Product
+  type: has_many
+  via: product_ids (register / approve / reject / custom_commissions)
+- from: Affiliate
+  to: Affiliate
+  type: belongs_to
+  via: parent_affiliate
+  note: second-tier / referred-affiliate relationship
+- from: Student
+  to: Course
+  type: belongs_to
+  via: course_id
+- from: Student
+  to: Order
+  type: belongs_to
+  via: 'order_info[order_id]'
+  note: 'order_info[purchase_type] is one of product, bump, upsell, downsell and selects what
+    order_info[purchase_id] points at - a second polymorphic reference'
+polymorphism:
+- discriminator: subscription.type
+  values: [product, upsell, downsell]
+  selects: [subscription.product_id, subscription.upsell_id, subscription.downsell_id]
+- discriminator: 'order_info[purchase_type]'
+  values: [product, bump, upsell, downsell]
+  selects: 'order_info[purchase_id]'
+- discriminator: 'reference (POST /refund)'
+  format: '<type>-<id>, e.g. product-299'
+gaps:
+- No read endpoint for Order, Subscription, Course or EventSubscription, yet all four are required
+  write keys.
+- No delete or update for Student.
+- No typed identifiers, so an id cannot be resolved without knowing its entity from context.
+- Numeric ids returned as strings, filtered as numbers.

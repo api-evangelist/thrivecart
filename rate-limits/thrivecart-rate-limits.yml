@@ -1,0 +1,56 @@
+generated: '2026-08-12'
+method: searched
+source: https://developers.thrivecart.com/documentation/
+limit_count: 1
+limits:
+- name: account-wide API rate limit
+  scope: per-account
+  applies_to: every ThriveCart API endpoint under https://thrivecart.com/api/external
+  window: 60s
+  limit: 60
+  unit: requests
+  burst: null
+  quoted: >-
+    "your use of the API will be rate limited to 60 requests per minute, per account that you are
+    connected to. This should be more than enough for normal usage, but if you are frequently
+    going over this limit, please contact us and we can review. Note that we do not increase rate
+    limits preemptively."
+  source: https://developers.thrivecart.com/documentation/
+  increase_process: contact ThriveCart support; ThriveCart states it does not raise limits pre-emptively
+response_headers:
+  documented: false
+  observed: []
+  note: >-
+    ThriveCart documents no rate-limit response headers. An unauthenticated probe of
+    GET https://thrivecart.com/api/external/ping on 2026-08-12 returned HTTP 401 with only
+    date, content-type and server headers - no X-RateLimit-*, no RateLimit-*, no Retry-After.
+    The exhaustion status code is not documented either. An agent therefore has no runtime
+    signal for remaining quota and must budget against the documented 60/minute figure or back
+    off blindly. Confirming the exhausted-state headers requires an authenticated token, which
+    this pass does not hold.
+exhaustion:
+  status_code: undocumented
+  retry_after: undocumented
+webhook_limits:
+- name: account-wide webhook destinations
+  scope: per-account
+  limit: 5
+  unit: destinations
+  note: '"up to 5 webhook destinations by default" for UI-configured webhooks; the Event
+    Subscription API is the programmatic alternative.'
+  source: https://support.thrivecart.com/help/using-webhook-notifications/
+pagination_caps:
+- endpoint: GET /transactions
+  param: perPage
+  max: 100
+  source: https://apidocs.thrivecart.com/
+- endpoint: GET /affiliates
+  param: perPage
+  max: 25
+  source: https://apidocs.thrivecart.com/
+evidence:
+- url: https://developers.thrivecart.com/documentation/
+  http_status: 200
+- url: https://thrivecart.com/api/external/ping
+  http_status: 401
+  finding: 'response body {"error":"auth.missing"}; no rate-limit headers present'

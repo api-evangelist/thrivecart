@@ -1,0 +1,178 @@
+generated: '2026-08-12'
+method: searched
+source: >-
+  https://developers.thrivecart.com/documentation/,
+  https://developers.thrivecart.com/documentation/event_subscription/intro/,
+  https://support.thrivecart.com/help/using-webhook-notifications/,
+  https://apidocs.thrivecart.com/, openapi/thrivecart-api-openapi.yml
+summary: >-
+  ThriveCart's REST surface is an RPC-flavoured JSON API over form-encoded requests. Reads are GET
+  and resource-shaped; writes are POST to verb paths (/refund, /cancelSubscription,
+  /pauseSubscription) with x-www-form-urlencoded bodies. Idempotency exists, but only on the
+  inbound webhook side - the API itself has no idempotency key.
+
+auth:
+  style: bearer
+  header: 'Authorization: Bearer <token>'
+  token_kinds:
+  - kind: account API key
+    issued_at: Settings > API & webhooks > API tokens
+    scope: whole account
+  - kind: OAuth 2.0 access token
+    grant: authorization_code
+    authorization_url: https://thrivecart.com/authorization/new
+    token_url: https://thrivecart.com/authorization/token
+    scope: whole account - no scope model is published
+  artifact: authentication/thrivecart-authentication.yml
+  note: >-
+    The OAuth endpoint paths are not in the documentation. They are only discoverable from
+    src/Oauth.php in the official PHP SDK, and were confirmed live (400 and 200 respectively,
+    not the site's SPA catch-all).
+
+idempotency:
+  supported: true
+  surface: webhooks only
+  request_header: null
+  key_field: webhook_id
+  key_format: UUID
+  stability: stable across retries of the same delivery; a new outbound delivery gets a new webhook_id
+  retention: not published
+  quoted: >-
+    "Use webhook_id as your idempotency key when processing webhooks. event_id remains unchanged
+    for backward compatibility, but it is tied to the transaction/event record and may be missing
+    on some event types. If we retry the same delivery (for example after a timeout or error), the
+    retry keeps the same webhook_id."
+  source: https://developers.thrivecart.com/documentation/event_subscription/intro/
+  api_side:
+    supported: false
+    note: >-
+      There is no Idempotency-Key request header on the REST API. State-changing verb endpoints
+      (POST /refund, /cancelSubscription, /pauseSubscription, /resumeSubscription,
+      /affiliates/{id}/delete) carry no replay protection, so a retried write after a network
+      timeout can double-apply. Callers must dedupe against order_id + reference themselves.
+
+pagination:
+  style: page-number
+  params:
+  - name: page
+    meaning: page number, 1 through N
+    default: 1
+  - name: perPage
+    meaning: results per page
+    max_by_endpoint:
+      GET /transactions: 100
+      GET /affiliates: 25
+  response_fields: not documented - no total, next or cursor field is described in the reference
+  endpoints:
+  - GET /transactions
+  - GET /affiliates
+  note: >-
+    The collection endpoints that are NOT paginated - GET /products, /bumps, /upsells,
+    /downsells - return a bare JSON array with no envelope, so there is no place to add paging
+    later without a breaking change.
+
+filtering:
+  supported: true
+  params:
+  - endpoint: GET /transactions
+    filters: [query, transactionType, currency]
+    transaction_types: [any, charge, rebill, refund, cancel]
+  - endpoint: GET /affiliates
+    filters: [product_id, query]
+
+expansion:
+  supported: false
+  note: no field expansion, sparse fieldsets or ?fields= parameter
+
+metadata:
+  supported: partial
+  note: >-
+    No generic metadata bag on API objects. Learn students accept a tags[] array and an
+    order_info[] association; affiliates accept a commission_object for custom commissions.
+
+request_ids:
+  supported: false
+  note: >-
+    No X-Request-Id or trace header is documented or returned. Responses do carry
+    X-ThriveCart-Account-Name and X-ThriveCart-Account-URL, which identify the account a token
+    resolved to - useful for multi-tenant OAuth apps, not for tracing a single call.
+
+response_headers:
+- name: X-ThriveCart-Account-Name
+  meaning: account slug the token resolved to
+- name: X-ThriveCart-Account-URL
+  meaning: the account's ThriveCart URL
+
+content_types:
+  request:
+  - application/x-www-form-urlencoded
+  - multipart/form-data
+  - application/json
+  response:
+  - application/json
+  note: >-
+    Inconsistent by endpoint. Most writes are urlencoded; POST /students is multipart form data;
+    POST /subscribe and POST /customerEmailUpdate take raw JSON. There is no single request
+    content type for the API.
+
+versioning:
+  scheme: none-in-path
+  current: '1'
+  note: >-
+    The base path /api/external carries no version segment. The official PHP SDK declares
+    API_VERSION 1.0.0 and the docs title the library "PHP library for v1 of the ThriveCart API".
+    There is no version header, no version query parameter and no way for a client to pin.
+  artifact: lifecycle/thrivecart-lifecycle.yml
+
+errors:
+  envelope: '{"error": "<key>", "error_description": "<human text>"}'
+  format: custom-json
+  rfc9457: false
+  content_type: application/json
+  status_codes_used: [200, 201, 400, 401, 404]
+  observed:
+  - status: 401
+    body: '{"error":"auth.missing"}'
+    probed: 'GET https://thrivecart.com/api/external/ping on 2026-08-12, unauthenticated'
+  - status: 401
+    body: '{"error":"invalid_token","error_description":"The access token provided is invalid"}'
+    source: https://apidocs.thrivecart.com/
+  artifact: errors/thrivecart-problem-types.yml
+
+rate_limiting:
+  limit: 60 requests per minute per account
+  headers: none documented or observed
+  artifact: rate-limits/thrivecart-rate-limits.yml
+
+modes:
+  field: mode_int
+  values:
+    1: test
+    2: live
+  note: >-
+    Test and live are a per-product setting inside one account, not separate credentials or a
+    separate host. The same API key reads both. mode_int is the only discriminator, and it is
+    also the primary event-subscription trigger field.
+  artifact: sandbox/thrivecart-sandbox.yml
+
+webhook_authenticity:
+  mechanism: shared secret in the payload body
+  fields:
+  - thrivecart_secret
+  - thrivecart_account
+  signature_header: null
+  note: >-
+    ThriveCart does not sign webhook deliveries. Authenticity rests on a static "secret word"
+    echoed inside the payload, which the receiver hard-codes and compares. There is no HMAC, no
+    timestamp and no replay window, so a leaked secret is a permanent forgery capability until
+    rotated. The April 2026 release extended the same field pair to customer_updated for
+    consistency rather than replacing the scheme.
+  source: https://support.thrivecart.com/help/using-webhook-notifications/
+
+cross_links:
+  errors: errors/thrivecart-problem-types.yml
+  lifecycle: lifecycle/thrivecart-lifecycle.yml
+  authentication: authentication/thrivecart-authentication.yml
+  rate_limits: rate-limits/thrivecart-rate-limits.yml
+  events: asyncapi/thrivecart-events-asyncapi.yml
+  sandbox: sandbox/thrivecart-sandbox.yml

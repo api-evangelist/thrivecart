@@ -1,0 +1,29 @@
+generated: '2026-08-12'
+method: derived
+source: openapi/thrivecart-api-openapi.yml
+summary:
+  types:
+  - http
+  - oauth2
+  oauth2_flows:
+  - authorizationCode
+schemes:
+- name: bearerAuth
+  type: http
+  scheme: bearer
+  description: 'Account-scoped API key created under Settings > API & webhooks > API tokens,
+    or an OAuth access token, sent as `Authorization: Bearer <token>`.'
+  sources:
+  - openapi/thrivecart-api-openapi.yml
+- name: oauth2
+  type: oauth2
+  flows:
+  - flow: authorizationCode
+    authorizationUrl: https://thrivecart.com/authorization/new
+    tokenUrl: https://thrivecart.com/authorization/token
+    scopes: 0
+  description: OAuth 2.0 authorization code grant for applications acting on behalf of another
+    ThriveCart account. ThriveCart does not publish a scope reference; access is granted account-wide
+    on consent.
+  sources:
+  - openapi/thrivecart-api-openapi.yml

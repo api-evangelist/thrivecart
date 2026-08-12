@@ -1,0 +1,95 @@
+generated: '2026-08-12'
+method: searched
+source: >-
+  https://packagist.org/packages/thrivecart/php-api, https://repo.packagist.org/p2/thrivecart/php-api.json,
+  https://registry.npmjs.org/thrivecart, https://api.github.com/orgs/thrivecart/repos,
+  https://developers.thrivecart.com/documentation/
+summary: >-
+  ThriveCart ships exactly one first-party client library: a PHP SDK on Packagist. Its most recent
+  release is 1.0.11, published 2022-01-19 - over four years stale as of this pass, while the API
+  itself has continued to gain fields (the April 2026 release added customer.id and
+  subscription_current_status to Search Transactions). The docs still recommend it as the primary
+  integration path and explicitly invite community SDKs for other languages: "We welcome any
+  community submissions for other SDKs!". No official JavaScript, Python, Go, Ruby, Rust, Java or
+  .NET client exists.
+packages:
+- language: php
+  name: thrivecart/php-api
+  registry: packagist
+  official: true
+  url: https://packagist.org/packages/thrivecart/php-api
+  source: https://github.com/thrivecart/php-api
+  install: composer require thrivecart/php-api
+  version: 1.0.11
+  published: '2022-01-19'
+  downloads_total: 30091
+  note: >-
+    The official PHP SDK, recommended by the getting-started guide. src/Api.php declares
+    SDK_VERSION 1.0.11 and API_VERSION 1.0.0. src/Oauth.php is where the real OAuth endpoints
+    (/authorization/new, /authorization/token) are discoverable - they are not in the docs.
+    Last release 2022-01-19; the GitHub repo's last push was 2022-01-19 as well.
+- language: php
+  name: marcfowler/thrivecart-php-api
+  registry: packagist
+  official: false
+  url: https://packagist.org/packages/marcfowler/thrivecart-php-api
+  source: https://github.com/thrivecart/php-api
+  version: null
+  published: null
+  abandoned: true
+  replaced_by: thrivecart/php-api
+  note: >-
+    Packagist marks this abandoned and redirects to thrivecart/php-api. Published under the
+    personal namespace of ThriveCart founder Marc Fowler before the org namespace existed; 60
+    total downloads. Registry reports it as abandoned, so no current version is meaningful.
+- language: javascript
+  name: thrivecart
+  registry: npm
+  official: false
+  url: https://www.npmjs.com/package/thrivecart
+  source: https://github.com/magloft/thrivecart
+  version: 1.0.2
+  published: '2023-11-09'
+  note: >-
+    Third-party TypeScript client published by MagLoft (Tobias Strebitzer), not by ThriveCart.
+    Recorded here so the catalog does not mistake it for an official SDK.
+examples:
+- name: thrivecart/api-demo
+  official: true
+  url: https://github.com/thrivecart/api-demo
+  language: php
+  note: >-
+    "Documentation and usage for the ThriveCart API" - the suite of examples the getting-started
+    guide links to. Last pushed 2023-03-29.
+official_count: 1
+languages_covered:
+- php
+languages_missing:
+- javascript
+- python
+- go
+- ruby
+- java
+- dotnet
+- rust
+registries_checked:
+- registry: packagist
+  result: 1 official package
+- registry: npm
+  result: no first-party package (one third-party)
+- registry: pypi
+  result: none
+- registry: rubygems
+  result: none
+- registry: crates.io
+  result: none
+- registry: nuget
+  result: none
+- registry: maven central
+  result: none
+- registry: pkg.go.dev
+  result: none
+decay_signal: >-
+  The only official SDK has not shipped a release since 2022-01-19. Measured against the API's own
+  documented April 2026 additions, the first-party client is four years and at least one schema
+  change behind the service it wraps.

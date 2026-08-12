@@ -42,5 +42,28 @@
 > Full detail: **[Where this data comes from](https://apievangelist.com/about/where-our-data-comes-from)**
 <!-- API-EVANGELIST-PROVENANCE:END -->
 
-ThriveCart is a company surfaced via the API Evangelist harvest backlog (source: marketing-integration-graph) and added to the network as a stub for full-pipeline profiling.
-- https://thrivecart.com/
+ThriveCart is a hosted shopping cart, checkout and course platform for creators, coaches and
+digital-product sellers, operated by ThriveCart LLC. Its public REST API at
+`https://thrivecart.com/api/external` covers products, order bumps, upsells, downsells, pricing
+options, transactions, customers, subscriptions, affiliates, Learn students and event
+subscriptions.
+
+- Website: https://thrivecart.com/
+- Developer portal: https://developers.thrivecart.com/
+- API reference: https://apidocs.thrivecart.com/ (Postman)
+- Status: https://thrivecart.statuspage.io/
+
+## What this profile holds
+
+| Surface | Finding |
+|---|---|
+| Machine-readable contract | ThriveCart publishes **no OpenAPI**. Its reference is a first-party Postman collection, captured verbatim in `postman/`. `openapi/thrivecart-api-openapi.yml` is **derived** from it — 33 operations, 11 tags. |
+| Events | 21 event keys on the Event Subscription API, plus a separate UI-configured webhook surface with a *different* event vocabulary. Both captured in `asyncapi/`; ThriveCart publishes no AsyncAPI. |
+| Auth | Bearer token — account API key or OAuth 2.0 authorization code. No scope model; consent is account-wide. The real OAuth endpoints (`/authorization/new`, `/authorization/token`) are **not in the docs** — they were recovered from `src/Oauth.php` in the official PHP SDK and confirmed live. |
+| Idempotency | Present on the **webhook** side only (`webhook_id`, stable across retries). The REST API has **no** idempotency key, including on `POST /refund` and `POST /cancelSubscription`. |
+| SDKs | One official client: `thrivecart/php-api`, last released **1.0.11 on 2022-01-19** — four years stale against an API that gained fields in April 2026. |
+| Sandbox | No sandbox host and no test credential. Test vs live is a per-product toggle read through `mode_int`; one API key touches both. |
+| Agent surfaces | No first-party MCP server and no A2A agent card. Every `/.well-known/*` path except `security.txt` answers 200 with the SPA HTML shell. |
+
+Artifacts are indexed from `apis.yml`. Everything carries provenance frontmatter recording whether
+it was searched, probed, derived or generated, and from which URL.

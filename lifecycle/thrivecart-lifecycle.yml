@@ -1,0 +1,85 @@
+generated: '2026-08-12'
+method: searched
+source: >-
+  https://developers.thrivecart.com/documentation/, https://thrivecart.statuspage.io/,
+  https://thrivecart.com/blog/category/product-updates/, https://thrivecart.com/resources/roadmap/,
+  https://github.com/thrivecart/php-api, openapi/thrivecart-api-openapi.yml
+versioning:
+  scheme: unversioned path
+  current_version: '1'
+  path: /api/external
+  header: null
+  query_param: null
+  pinning_possible: false
+  evidence: >-
+    The base path carries no version segment. The official PHP SDK declares
+    const API_VERSION = '1.0.0' and Packagist describes it as "PHP library for v1 of the
+    ThriveCart API". No mechanism exists for a client to request a specific version, so any
+    change ThriveCart makes reaches every caller at once.
+deprecation:
+  policy_published: false
+  policy_url: null
+  sunset_header: false
+  deprecation_header: false
+  rfc8594: false
+  deprecated_operations: []
+  note: >-
+    ThriveCart publishes no deprecation or sunset policy, sends no Deprecation or Sunset headers,
+    and marks no operation deprecated in its reference. The documentation does carry two
+    forward-looking "Coming soon!" entries (Create & manage coupons, Embed the customer hub),
+    which is the only lifecycle signalling on the developer portal - additions announced, removals
+    not.
+sla:
+  published: false
+  uptime_target: null
+  note: No SLA or uptime commitment is published for Standard or Pro+. The Enterprise tier is
+    "contact us" and any commitment there is contractual, not public.
+status_page:
+  published: true
+  url: https://thrivecart.statuspage.io/
+  provider: Atlassian Statuspage
+  api: https://thrivecart.statuspage.io/api/v2/summary.json
+  history: https://thrivecart.statuspage.io/history
+  status_at_probe: All Systems Operational
+  probed: '2026-08-12'
+  components_include:
+  - Webhooks, Integrations & API
+  - Checkouts & Payment Processing
+  - Orders, Subscriptions & Fulfilment
+  - Affiliate Tracking
+  - Account Login & Dashboard
+  - Learn / ThriveAcademy
+  - Stripe API
+  - Paypal
+  - Authorize.net
+  - Postmark (Email Delivery)
+  - AWS infrastructure components (us-east-1)
+  note: >-
+    The status page has a first-class "Webhooks, Integrations & API" component, so API health is
+    separately observable from checkout health. It also surfaces upstream dependencies (Stripe,
+    PayPal, Authorize.net, Postmark, AWS us-east-1), which is unusually transparent for this
+    segment. A machine-readable summary.json is available unauthenticated.
+  secondary: https://thrivecart.betteruptime.com/
+incident_communication:
+  postmortems_published: true
+  example: https://thrivecart.com/blog/august-5-incident-postmortem/
+  note: ThriveCart published a public postmortem for the 5 August 2026 incident on its blog.
+change_log:
+  published: true
+  url: https://thrivecart.com/blog/category/product-updates/
+  feed: https://thrivecart.com/blog/category/product-updates/feed/
+  cadence: roughly monthly
+  artifact: changelog/thrivecart-changelog.yml
+roadmap:
+  published: true
+  url: https://thrivecart.com/resources/roadmap/
+support:
+  url: https://support.thrivecart.com/
+  live_chat: true
+  live_chat_since: '2026-03-18'
+gaps:
+- No deprecation policy and no Sunset/Deprecation headers (RFC 8594).
+- No version pinning of any kind, so a breaking change has no opt-out.
+- No published SLA.
+- The changelog is a blog category rather than a developer-scoped API changelog; API changes are
+  mixed in with marketing posts and must be filtered by reading each entry.

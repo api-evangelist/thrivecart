@@ -1,28 +1,177 @@
 aid: thrivecart
 name: ThriveCart
-description: 'ThriveCart is a company surfaced via the API Evangelist harvest backlog (source: marketing-integration-graph)
-  and added to the network as a stub for full-pipeline profiling.'
+description: 'ThriveCart is a hosted shopping cart, checkout and course platform for creators,
+  coaches and digital-product sellers, operated by ThriveCart LLC. It sells one-time and
+  recurring digital and physical products through customisable checkout pages with order
+  bumps, one-click upsells and downsells, A/B testing, abandoned-cart recovery, sales-tax
+  automation and a built-in affiliate centre, and bundles a learning-management product
+  (ThriveCart Learn / ThriveCart Academy). Payments are processed through Stripe, PayPal,
+  Authorize.net and ThrivePay Installments rather than by ThriveCart itself. The public
+  ThriveCart API is a bearer-token REST surface at https://thrivecart.com/api/external
+  covering products, bump offers, upsells, downsells, pricing options, transactions,
+  customers, subscriptions, affiliates, Learn students and event subscriptions, with an
+  account-wide webhook surface and a targeted Event Subscription API alongside it.'
+image: https://thrivecart.com/wp-content/uploads/2025/07/TC-logo-on-White.png
 url: https://raw.githubusercontent.com/api-evangelist/thrivecart/refs/heads/main/apis.yml
 x-type: company
 x-source: harvest:marketing-integration-graph
-x-tier: stub
-x-tier-reason: harvest
 specificationVersion: '0.20'
 created: '2026-08-12'
 modified: '2026-08-12'
 tags:
 - Company
-apis: []
+- Checkout
+- Shopping Cart
+- Payments
+- eCommerce
+- Subscriptions
+- Affiliate Marketing
+- Learning Management
+- Creator Economy
+- Webhooks
+apis:
+- aid: thrivecart-api
+  name: ThriveCart API
+  description: 'REST API for a ThriveCart account. Reads products, bump offers, upsells,
+    downsells and their pricing options; searches transactions and affiliates; reads customer
+    records; refunds transactions; cancels, pauses and resumes subscriptions; creates and
+    manages affiliates and their commissions; creates Learn students; and creates or removes
+    targeted event subscriptions. Authenticated with an account API key or an OAuth 2.0
+    access token sent as a bearer token. Rate limited to 60 requests per minute per connected
+    account.'
+  humanURL: https://developers.thrivecart.com/documentation/
+  baseURL: https://thrivecart.com/api/external
+  tags:
+  - Checkout
+  - Payments
+  - Subscriptions
+  - Affiliate Marketing
+  - Transactions
+  properties:
+  - type: OpenAPI
+    url: openapi/thrivecart-api-openapi.yml
+  - type: Postman
+    url: postman/thrivecart-api.postman_collection.json
+  - type: Overlay
+    url: overlays/thrivecart-api-overlay.yaml
+  - type: Documentation
+    url: https://developers.thrivecart.com/documentation/
+  - type: APIReference
+    url: https://apidocs.thrivecart.com/
+  - type: GettingStarted
+    url: https://developers.thrivecart.com/documentation/
+  - type: Authentication
+    url: authentication/thrivecart-authentication.yml
+  - type: ErrorCatalog
+    url: errors/thrivecart-problem-types.yml
+  - type: RateLimits
+    url: rate-limits/thrivecart-rate-limits.yml
+  - type: Conventions
+    url: conventions/thrivecart-conventions.yml
+  - type: Idempotency
+    url: conventions/thrivecart-conventions.yml
+  - type: DataModel
+    url: data-model/thrivecart-data-model.yml
+  - type: Webhooks
+    url: asyncapi/thrivecart-events-asyncapi.yml
+  - type: AsyncAPI
+    url: asyncapi/thrivecart-events-asyncapi.yml
+  - type: MCPServer
+    url: mcp/thrivecart-mcp.yml
+  - type: ToolCrosswalk
+    url: mcp/thrivecart-tool-crosswalk.yml
+  - type: AgentSkill
+    url: skills/_index.yml
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com
 - FN: APIs.json
   email: info@apis.io
 common:
+# NOTE: no `TrustCenter` pointer is emitted. security/thrivecart-trust-center.yml records that
+# ThriveCart operates NO trust centre (trust.thrivecart.com redirects to the sign-in catch-all);
+# what it does publish is two self-asserted compliance badges, which are carried by the
+# `Compliance` pointer below. A TrustCenter pointer here would assert a surface that does not exist.
+- type: OAuthScopes
+  url: scopes/thrivecart-scopes.yml
 - type: Website
   url: https://thrivecart.com/
+- type: DeveloperPortal
+  url: https://developers.thrivecart.com/
+- type: Documentation
+  url: https://developers.thrivecart.com/documentation/
+- type: APIReference
+  url: https://apidocs.thrivecart.com/
+- type: GettingStarted
+  url: https://developers.thrivecart.com/documentation/
+- type: Postman
+  url: https://apidocs.thrivecart.com/
+- type: Support
+  url: https://support.thrivecart.com/
+- type: Blog
+  url: https://thrivecart.com/blog/
+- type: BlogRSS
+  url: https://thrivecart.com/blog/feed/
+- type: GitHubOrganization
+  url: https://github.com/thrivecart
+- type: Roadmap
+  url: https://thrivecart.com/resources/roadmap/
+- type: Pricing
+  url: https://thrivecart.com/products/proplus/
+- type: SignUp
+  url: https://checkout.thrivecart.com/thrivecart-standard-monthly-plan/
+- type: Login
+  url: https://thrivecart.com/signin/
+- type: TermsOfService
+  url: https://thrivecart.com/legal/thrivecart/
+- type: PrivacyPolicy
+  url: https://thrivecart.com/legal/thrivecart/?tab=privacy
+- type: StatusPage
+  url: https://thrivecart.statuspage.io/
+- type: ChangeLog
+  url: https://thrivecart.com/blog/category/product-updates/
+- type: Integrations
+  url: https://thrivecart.com/integrations/
+- type: Packages
+  url: packages/thrivecart-packages.yml
+- type: SDKs
+  url: packages/thrivecart-packages.yml
+- type: WellKnown
+  url: well-known/thrivecart-well-known.yml
+- type: SecurityTxt
+  url: well-known/thrivecart-security.txt
+- type: Security
+  url: security/thrivecart-vulnerability-disclosure.yml
+- type: VulnerabilityDisclosure
+  url: security/thrivecart-vulnerability-disclosure.yml
+- type: DomainSecurity
+  url: security/thrivecart-domain-security.yml
+- type: Lifecycle
+  url: lifecycle/thrivecart-lifecycle.yml
+- type: Conformance
+  url: conformance/thrivecart-conformance.yml
+- type: Compliance
+  url: conformance/thrivecart-conformance.yml
+- type: Components
+  url: components/thrivecart-components.yml
+- type: Sandbox
+  url: sandbox/thrivecart-sandbox.yml
+- type: ChangeLog
+  url: changelog/thrivecart-changelog.yml
+- type: Plans
+  url: plans/thrivecart-plans-pricing.yml
+- type: RateLimits
+  url: rate-limits/thrivecart-rate-limits.yml
+- type: LLMsTxt
+  url: llms/thrivecart-llms.txt
 x-vouched-by:
 - FirstPromoter
 - MailerLite
 - Podia
 x-vouch-count: 3
+x-enrichment:
+  date: '2026-08-12'
+  status: enriched
+  artifacts_added: 31
+  pass: local-v1
+

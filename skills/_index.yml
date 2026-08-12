@@ -1,0 +1,47 @@
+generated: '2026-08-12'
+method: generated
+source: >-
+  openapi/thrivecart-api-openapi.yml, conventions/thrivecart-conventions.yml,
+  errors/thrivecart-problem-types.yml, asyncapi/thrivecart-events-asyncapi.yml,
+  data-model/thrivecart-data-model.yml
+api: thrivecart-api
+note: >-
+  ThriveCart publishes no Agent Skills and no AGENTS.md. These four are packaged by API Evangelist
+  from the marquee flows of the ThriveCart API, grounded in real operationIds verified against the
+  derived OpenAPI, plus the conventions, error and event artifacts in this repo. Each one carries
+  the two constraints that shape every ThriveCart integration: there is no idempotency key on
+  writes, and there is no test-only credential.
+skills:
+- name: thrivecart-refund-a-purchase
+  file: skills/thrivecart-refund-a-purchase.md
+  summary: Locate a transaction and refund the right item on it, on an API with no idempotency key.
+  operations: [ping, searchTransactions, readCustomerInformation, refundATransaction]
+  consequence: irreversible
+- name: thrivecart-manage-a-subscription
+  file: skills/thrivecart-manage-a-subscription.md
+  summary: Pause, resume or cancel a subscription, recovering subscription_id from transactions or
+    webhooks because no read endpoint exists.
+  operations: [ping, searchTransactions, pauseASubscription, resumeASubscription,
+    cancelASubscription]
+  consequence: cancel is irreversible; pause is reversible
+- name: thrivecart-subscribe-to-events
+  file: skills/thrivecart-subscribe-to-events.md
+  summary: Create targeted event subscriptions, verify and deduplicate deliveries, and manage
+    subscriptions with no list endpoint.
+  operations: [ping, createEventSubscription, unsubscribeFromAnEvent]
+  consequence: reversible
+- name: thrivecart-onboard-an-affiliate
+  file: skills/thrivecart-onboard-an-affiliate.md
+  summary: Create, register, approve and price an affiliate while keeping affiliate_id,
+    affiliate_user_id and email straight.
+  operations: [ping, searchAffiliates, readAffiliateInfo, createNewAffiliate,
+    registerAffiliateForAProduct, approveAnAffiliateForAProduct, specifyCustomCommissions,
+    markAffiliateAsFavorite]
+  consequence: custom_commissions and delete are consequential
+skill_count: 4
+shared_preconditions:
+- 'Authenticate every call with `Authorization: Bearer <api key or OAuth access token>`.'
+- Call GET /ping first to confirm which account the token resolves to.
+- 60 requests per minute per account, with no rate-limit response headers.
+- One credential covers test and live; check mode_int (1 = test, 2 = live) before any write.
+- No Idempotency-Key header exists; re-read before retrying any write.

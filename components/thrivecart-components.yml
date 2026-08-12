@@ -1,0 +1,89 @@
+generated: '2026-08-12'
+method: searched
+source: >-
+  https://support.thrivecart.com/help/using-custom-html-to-trigger-your-popup-checkout/,
+  https://support.thrivecart.com/help/my-embeddable-checkout-is-not-loading-showing/,
+  https://support.thrivecart.com/help/adding-scripts-to-your-checkout-pages/
+summary: >-
+  ThriveCart's client-side surface is a hosted checkout you place on your own site, not a
+  component library. There is no npm-distributed element package, no web-component registry, no
+  React/Vue bindings and no versioned bundle - one unpinned loader script served from
+  tinder.thrivecart.com, plus a generated embed block copied out of the product editor. A
+  consumer cannot tell which build they are getting, because the loader path floats to whatever
+  is current.
+families:
+- name: Pop-up / modal checkout
+  kind: script-triggered overlay
+  loader:
+    src: //tinder.thrivecart.com/embed/v1/thrivecart.js
+    attributes: [async]
+    versioning: >-
+      The path segment /v1/ is a major-version marker only. The file itself is unpinned and floats
+      to the current build; there is no hash, no query version and no SRI attribute published, so
+      the exact code executing on a merchant's page is not knowable from the snippet.
+  trigger:
+    selector: .thrivecart-button
+    elements: [a, span]
+    data_attributes:
+    - name: data-thrivecart-account
+      meaning: the account subdomain, as it appears in the dashboard URL
+      required: true
+    - name: data-thrivecart-product
+      meaning: the numeric product ID from the product overview page
+      required: true
+  examples:
+  - '<script async src="//tinder.thrivecart.com/embed/v1/thrivecart.js"></script>'
+  - '<a href="javascript:;" class="thrivecart-button" data-thrivecart-account="your subdomain"
+    data-thrivecart-product="1">This is your link text</a>'
+  - '<span class="thrivecart-button" data-thrivecart-account="your subdomain"
+    data-thrivecart-product="1">[YOUR SHORT CODE TEXT]</span>'
+  note: >-
+    The snippet is protocol-relative (//), which on an HTTPS page resolves to HTTPS but leaves the
+    published example ambiguous.
+- name: Embeddable inline checkout
+  kind: generated embed block
+  how: >-
+    Set the product's cart type to "Embeddable" under the Checkout tab, choose an embeddable
+    template from the gallery, then Save & get URL to obtain the embed code. ThriveCart advises
+    re-copying the block after any change rather than hand-editing it.
+  parameterised: false
+  note: >-
+    The embed block is generated per product rather than composed from documented props, so it is
+    not addressable as a component API. There is no documented event surface (no onReady,
+    onComplete, postMessage contract) for a host page to observe checkout state.
+- name: Hosted checkout page
+  kind: full-page hosted surface
+  url_pattern: https://<account>.thrivecart.com/<product-slug>/
+  note: >-
+    The default distribution. Also reachable through checkout.thrivecart.com for ThriveCart's own
+    plans. Supports custom domains on Pro+.
+- name: Customer hub
+  kind: embedded surface
+  status: announced
+  note: >-
+    "Embed the customer hub" is listed on developers.thrivecart.com as "Coming soon!" with no
+    documentation behind it as of 2026-08-12. Recorded as announced, not available.
+customisation:
+  custom_scripts: true
+  custom_css: true
+  note: ThriveCart allows arbitrary JavaScript and CSS to be injected into checkout pages for
+    analytics, tracking pixels and styling.
+  source: https://support.thrivecart.com/help/adding-scripts-to-your-checkout-pages/
+  custom_variables: >-
+    Custom variables can be passed through the checkout via URL parameters and are echoed back in
+    webhook payloads.
+distribution:
+  registry: cdn
+  package: null
+  version: null
+  published: null
+  note: >-
+    CDN-distributed and unpinned. There is no npm/jsDelivr package for the loader, so there is no
+    registry metadata endpoint to query and no way for a consumer to lock a version. Recorded as
+    null deliberately - checked, nothing to record.
+gaps:
+- No versioned or integrity-pinned bundle, and no Subresource Integrity attribute in the published
+  snippet.
+- No documented JavaScript API, no lifecycle events, no postMessage contract for the host page.
+- No framework bindings (React, Vue, Svelte) and no TypeScript types.
+- No published Content-Security-Policy guidance for merchants embedding the loader.

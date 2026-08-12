@@ -1,0 +1,228 @@
+generated: '2026-08-12'
+method: derived
+source: mcp/thrivecart-mcp.yml + openapi/thrivecart-api-openapi.yml
+summary: >-
+  ThriveCart has one surface, not three. There is no GraphQL endpoint and no first-party MCP
+  server, so this crosswalk binds the DERIVED candidate MCP tool set one-to-one onto the REST
+  operations it would wrap. Every binding is confidence: high because both sides were generated
+  from the same first-party contract - the crosswalk records intent, not divergence. The row that
+  matters is rest_only: the REST operations a naive tool generator would drop, and the tools an
+  agent will want that no REST operation can serve.
+surfaces:
+  openapi:
+    file: openapi/thrivecart-api-openapi.yml
+    base: https://thrivecart.com/api/external
+    operations: 33
+    gated: false
+    note: Derived from ThriveCart's Postman collection; the live API requires a bearer token.
+  graphql:
+    endpoint: null
+    note: ThriveCart publishes no GraphQL surface.
+  mcp:
+    url: null
+    gated: false
+    note: No first-party MCP server. Candidate tools only.
+crosswalk:
+- tool: get_account
+  category: read
+  rest: [ping]
+  binding: direct
+  confidence: high
+- tool: list_products
+  category: read
+  rest: [listProducts]
+  binding: direct
+  confidence: high
+- tool: get_product
+  category: read
+  rest: [getProduct]
+  binding: direct
+  confidence: high
+- tool: get_product_pricing
+  category: read
+  rest: [getProductPriceDetails]
+  binding: direct
+  confidence: high
+- tool: list_bumps
+  category: read
+  rest: [listBumpOffers]
+  binding: direct
+  confidence: high
+- tool: get_bump
+  category: read
+  rest: [getBump]
+  binding: direct
+  confidence: high
+- tool: get_bump_pricing
+  category: read
+  rest: [getBumpPriceDetails]
+  binding: direct
+  confidence: high
+- tool: list_upsells
+  category: read
+  rest: [listUpsells]
+  binding: direct
+  confidence: high
+- tool: get_upsell
+  category: read
+  rest: [getUpsell]
+  binding: direct
+  confidence: high
+- tool: get_upsell_pricing
+  category: read
+  rest: [getUpsellPriceDetails]
+  binding: direct
+  confidence: high
+- tool: list_downsells
+  category: read
+  rest: [listDownsells]
+  binding: direct
+  confidence: high
+- tool: get_downsell
+  category: read
+  rest: [getDownsell]
+  binding: direct
+  confidence: high
+- tool: get_downsell_pricing
+  category: read
+  rest: [getDownsellPriceDetails]
+  binding: direct
+  confidence: high
+- tool: search_transactions
+  category: read
+  rest: [searchTransactions]
+  binding: direct
+  confidence: high
+  note: Inherits page, perPage (max 100), query, transactionType and currency as its inputSchema.
+- tool: get_customer
+  category: read
+  rest: [readCustomerInformation]
+  binding: direct
+  confidence: high
+  note: A POST that reads. A tool generator keying on HTTP method would misclassify this as a write.
+- tool: update_customer_email
+  category: write
+  rest: [updateCustomerEmailAddress]
+  binding: direct
+  confidence: high
+- tool: refund_transaction
+  category: write
+  rest: [refundATransaction]
+  binding: direct
+  confidence: high
+- tool: cancel_subscription
+  category: write
+  rest: [cancelASubscription]
+  binding: direct
+  confidence: high
+- tool: pause_subscription
+  category: write
+  rest: [pauseASubscription]
+  binding: direct
+  confidence: high
+- tool: resume_subscription
+  category: write
+  rest: [resumeASubscription]
+  binding: direct
+  confidence: high
+- tool: search_affiliates
+  category: read
+  rest: [searchAffiliates]
+  binding: direct
+  confidence: high
+- tool: get_affiliate
+  category: read
+  rest: [readAffiliateInfo]
+  binding: direct
+  confidence: high
+  note: Another read served by POST.
+- tool: create_affiliate
+  category: write
+  rest: [createNewAffiliate]
+  binding: direct
+  confidence: high
+- tool: register_affiliate_for_products
+  category: write
+  rest: [registerAffiliateForAProduct]
+  binding: direct
+  confidence: high
+- tool: approve_affiliate
+  category: write
+  rest: [approveAnAffiliateForAProduct]
+  binding: direct
+  confidence: high
+- tool: reject_affiliate
+  category: write
+  rest: [rejectAnAffiliateForAProduct]
+  binding: direct
+  confidence: high
+- tool: favorite_affiliate
+  category: write
+  rest: [markAffiliateAsFavorite]
+  binding: direct
+  confidence: high
+- tool: unfavorite_affiliate
+  category: write
+  rest: [unFavouriteAnAffiliate]
+  binding: direct
+  confidence: high
+- tool: set_affiliate_custom_commissions
+  category: write
+  rest: [specifyCustomCommissions]
+  binding: direct
+  confidence: high
+- tool: delete_affiliate
+  category: write
+  rest: [deleteAffiliateUser]
+  binding: direct
+  confidence: high
+- tool: create_student
+  category: write
+  rest: [createNewStudent]
+  binding: direct
+  confidence: high
+- tool: create_event_subscription
+  category: write
+  rest: [createEventSubscription]
+  binding: direct
+  confidence: high
+- tool: delete_event_subscription
+  category: write
+  rest: [unsubscribeFromAnEvent]
+  binding: direct
+  confidence: high
+mcp_only: []
+rest_only: []
+tools_an_agent_needs_that_no_operation_serves:
+- need: read an order by id
+  reason: >-
+    order_id is the required key for refundATransaction, cancelASubscription, pauseASubscription
+    and resumeASubscription, but no operation returns an order. An agent must reach it through
+    searchTransactions or a webhook payload.
+- need: list or read subscriptions
+  reason: >-
+    subscription_id is required by three write operations and returned by none. There is no way
+    to enumerate an account's subscriptions through the API.
+- need: list event subscriptions
+  reason: >-
+    POST /subscribe and POST /unsubscribe create and remove subscriptions keyed by target_url,
+    but nothing lists them. An agent cannot discover what it previously subscribed, and cannot
+    reconcile after losing state.
+- need: read, update or delete a Learn student
+  reason: createNewStudent is write-only; there is no read side to the Learn surface.
+- need: list courses
+  reason: course_id is required by createNewStudent but no operation enumerates courses.
+- need: create, update or delete a product / bump / upsell / downsell
+  reason: >-
+    The entire catalog is read-only through the API. An agent can price and report on offers but
+    cannot build or edit them.
+- need: coupons
+  reason: '"Create & manage coupons" is listed on developers.thrivecart.com as "Coming soon!".'
+coverage:
+  rest_operations: 33
+  tools: 33
+  bound: 33
+  mcp_only: 0
+  rest_only: 0
+  graphql_fields: 0
+  unmet_agent_needs: 7

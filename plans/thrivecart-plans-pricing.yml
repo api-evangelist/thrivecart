@@ -1,0 +1,93 @@
+generated: '2026-08-12'
+method: searched
+source: https://thrivecart.com/products/proplus/
+plan_count: 3
+currency: USD
+note: >-
+  ThriveCart does not publish a conventional /pricing page - https://thrivecart.com/pricing and
+  /pricing/ both redirect to https://thrivecart.com/signin/. The plan comparison lives on the
+  Pro+ product page, and the actual dollar figures are only rendered on ThriveCart's own hosted
+  checkouts (ThriveCart sells itself through ThriveCart). Prices below were read from those
+  checkouts on 2026-08-12. The API is not metered or priced separately: there is no API plan, no
+  per-call charge and no published API quota beyond the flat 60 requests/minute that every
+  account shares. Payment-processing fees are charged by the connected processor (Stripe, PayPal,
+  Authorize.net), not by ThriveCart, and are documented separately at
+  https://thrivecart.com/company/processorfees/.
+plans:
+- name: ThriveCart Standard
+  tagline: Great to get started
+  price: 47
+  currency: USD
+  period: month
+  billing: recurring
+  trial: 30-day free trial
+  signup_url: https://checkout.thrivecart.com/thrivecart-standard-monthly-plan/
+  price_source: https://checkout.thrivecart.com/thrivecart-standard-monthly-plan/
+  included:
+  - Customised checkout pages
+  - Unlimited products and funnels
+  - 1 bump offer
+  - 1-click upsells and downsells
+  - A/B testing
+  - Abandoned-cart recovery
+  - Sales-tax automation
+  - 100+ integrations
+  api_access: included
+  api_quota: 60 requests/minute per account
+  overage: none - the API is not metered
+- name: ThriveCart Pro+
+  tagline: Scale without limits
+  price: 87
+  currency: USD
+  period: month
+  billing: recurring
+  trial: 30-day free trial
+  signup_url: https://checkout.thrivecart.com/thrivecart-pro-monthly-plan/
+  price_source: https://checkout.thrivecart.com/thrivecart-pro-monthly-plan/
+  included:
+  - Everything in Standard
+  - Multiple order bumps
+  - Crypto payments
+  - Tax-inclusive pricing
+  - QR codes
+  - Affiliate centre with automated payouts
+  - Custom domains
+  - Multi-user permissions
+  - Business-intelligence reporting
+  api_access: included
+  api_quota: 60 requests/minute per account
+  overage: none - the API is not metered
+- name: ThriveCart Enterprise
+  tagline: For high-volume sellers
+  price: null
+  currency: USD
+  period: null
+  billing: custom
+  quoted: Custom pricing tailored to your business
+  signup_url: https://pages.thrivecart.com/56865/enterprise-contact-form
+  price_source: https://thrivecart.com/products/proplus/
+  included:
+  - White-glove setup
+  - Dedicated account manager
+  - Volume-based processing rates
+  - Unlimited team seats
+  - Custom API support
+  api_access: included
+  api_quota: 'negotiable - "custom API support" is named as an Enterprise line item, but no
+    figure is published'
+  overage: not published
+lifetime_offer:
+  note: >-
+    ThriveCart historically sold a one-time lifetime licence and still runs a
+    https://checkout.thrivecart.com/thrivecart-standard-account/ checkout. It is not presented as
+    a tier on the current plan page, so it is not counted in plan_count.
+evidence:
+- url: https://thrivecart.com/products/proplus/
+  http_status: 200
+- url: https://checkout.thrivecart.com/thrivecart-standard-monthly-plan/
+  http_status: 200
+- url: https://checkout.thrivecart.com/thrivecart-pro-monthly-plan/
+  http_status: 200
+- url: https://thrivecart.com/pricing
+  http_status: 200
+  finding: redirects to https://thrivecart.com/signin/ - no public pricing page at the obvious path

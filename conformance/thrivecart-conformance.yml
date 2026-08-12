@@ -1,0 +1,160 @@
+generated: '2026-08-12'
+method: searched
+source: >-
+  https://developers.thrivecart.com/documentation/, https://thrivecart.com/,
+  https://thrivecart.com/legal/thrivecart/, https://thrivecart.com/.well-known/security.txt,
+  openapi/thrivecart-api-openapi.yml, conventions/thrivecart-conventions.yml
+summary: >-
+  ThriveCart conforms to OAuth 2.0 and RFC 9116 and to nothing else this pipeline tests for. The
+  interesting negatives are the ones a payments-adjacent API would normally clear: no RFC 9457
+  problem details, no RFC 8414 authorization-server metadata despite running an OAuth flow, no
+  RFC 8594 sunset signalling, and no idempotency key on money-moving writes.
+standards:
+- id: oauth2
+  name: OAuth 2.0 (RFC 6749) authorization code grant
+  conforms: true
+  evidence: >-
+    Documented authorization-code flow for third-party applications with client ID, client secret,
+    redirect URI and state. Endpoints https://thrivecart.com/authorization/new and
+    https://thrivecart.com/authorization/token confirmed live (HTTP 400 and 200 respectively,
+    distinct from the site's SPA catch-all). The official PHP SDK builds on
+    league/oauth2-client's AbstractProvider.
+  source: https://developers.thrivecart.com/documentation/intro/authentication-via-oauth/
+  caveat: No scope model - consent grants account-wide access.
+- id: rfc6750
+  name: OAuth 2.0 Bearer Token Usage (RFC 6750)
+  conforms: true
+  evidence: 'All calls authenticate with `Authorization: Bearer <token>`; the 401 example body
+    uses the RFC 6750 error code `invalid_token` with `error_description`.'
+  caveat: The live 401 on GET /ping returns `{"error":"auth.missing"}` with no WWW-Authenticate
+    challenge header, which RFC 6750 expects on a 401.
+- id: rfc8414
+  name: OAuth 2.0 Authorization Server Metadata
+  conforms: false
+  evidence: >-
+    https://thrivecart.com/.well-known/oauth-authorization-server returns HTTP 200 with the
+    ThriveCart SPA HTML shell, not metadata. The real OAuth endpoints are undiscoverable from the
+    documentation and were only recoverable from src/Oauth.php in the PHP SDK.
+- id: rfc9728
+  name: OAuth 2.0 Protected Resource Metadata
+  conforms: false
+  evidence: /.well-known/oauth-protected-resource returns the SPA shell (soft 200).
+- id: oidc
+  name: OpenID Connect
+  conforms: false
+  evidence: No /.well-known/openid-configuration; ThriveCart is not an identity provider.
+- id: rfc9457
+  name: Problem Details for HTTP APIs
+  conforms: false
+  evidence: >-
+    Errors are `{"error": ..., "error_description": ...}` served as application/json. No
+    application/problem+json, no type URI, no title/instance members.
+  artifact: errors/thrivecart-problem-types.yml
+- id: rfc9116
+  name: security.txt
+  conforms: true
+  evidence: >-
+    https://thrivecart.com/.well-known/security.txt returns 200 text/plain with Contact, Policy
+    and Preferred-Languages fields.
+  caveat: No Expires field, which RFC 9116 makes REQUIRED.
+  artifact: well-known/thrivecart-security.txt
+- id: rfc8594
+  name: Sunset / Deprecation HTTP headers
+  conforms: false
+  evidence: No Sunset or Deprecation headers, and no deprecation policy of any kind.
+  artifact: lifecycle/thrivecart-lifecycle.yml
+- id: rfc9727
+  name: API catalog (/.well-known/api-catalog)
+  conforms: false
+  evidence: Path returns the SPA shell (soft 200).
+- id: idempotency
+  name: Idempotent write semantics (draft-ietf-httpapi-idempotency-key-header)
+  conforms: partial
+  evidence: >-
+    Inbound webhook deliveries carry a retry-stable `webhook_id` UUID that ThriveCart explicitly
+    names as the idempotency key. The REST API itself accepts no Idempotency-Key header, so
+    POST /refund, /cancelSubscription, /pauseSubscription and /resumeSubscription can double-apply
+    on client retry.
+  artifact: conventions/thrivecart-conventions.yml
+- id: pagination
+  name: Documented pagination
+  conforms: partial
+  evidence: >-
+    GET /transactions and GET /affiliates take page and perPage with documented maxima (100 and 25
+    respectively). No total, next or cursor field is documented, and the product/bump/upsell/
+    downsell list endpoints return bare arrays with no envelope and no paging at all.
+- id: openapi
+  name: OpenAPI
+  conforms: false
+  evidence: >-
+    ThriveCart publishes no OpenAPI. The reference is a Postman collection at
+    https://apidocs.thrivecart.com/. openapi/thrivecart-api-openapi.yml in this repo is derived
+    by API Evangelist from that collection.
+- id: asyncapi
+  name: AsyncAPI
+  conforms: false
+  evidence: >-
+    No AsyncAPI published for either event surface. asyncapi/thrivecart-events-asyncapi.yml is
+    derived from the Event Subscription documentation.
+- id: webhook-signatures
+  name: Signed webhook deliveries (HMAC / RFC 9421 HTTP Message Signatures)
+  conforms: false
+  evidence: >-
+    Authenticity relies on a static `thrivecart_secret` echoed in the payload body. No signature
+    header, no timestamp, no replay window.
+- id: json-api
+  name: 'JSON:API'
+  conforms: false
+- id: odata
+  name: OData
+  conforms: false
+- id: scim
+  name: SCIM
+  conforms: false
+- id: mcp
+  name: Model Context Protocol
+  conforms: false
+  evidence: No first-party MCP server as of 2026-08-12; every MCP listing for ThriveCart is a
+    third-party gateway (Zapier, Pipedream, viaSocket).
+- id: a2a
+  name: A2A Agent Card
+  conforms: false
+  evidence: /.well-known/agent-card.json and /.well-known/agent.json both return the SPA HTML
+    shell on every host.
+compliance:
+- id: pci-dss
+  name: PCI DSS
+  claimed: true
+  status: self-asserted
+  evidence: '"PCI DSS Compliant" badge on https://thrivecart.com/'
+  attestation_published: false
+  note: >-
+    ThriveCart does not itself acquire card payments - Stripe, PayPal, Authorize.net and ThrivePay
+    do - so the scope of the claim is not stated. No AOC or SAQ level is published.
+- id: gdpr
+  name: GDPR
+  claimed: true
+  status: self-asserted
+  evidence: '"GDPR Compliant" badge on https://thrivecart.com/; legal terms describe ThriveCart as
+    a data processor acting on behalf of its customers.'
+  dpa_published: true
+  dpa_source: https://thrivecart.com/legal/thrivecart/
+- id: ccpa
+  name: CCPA
+  claimed: true
+  status: self-asserted
+  evidence: Legal terms describe ThriveCart as a "service provider" for CCPA purposes.
+- id: soc2
+  name: SOC 2
+  claimed: false
+- id: iso27001
+  name: ISO/IEC 27001
+  claimed: false
+- id: hipaa
+  name: HIPAA
+  claimed: false
+regulatory_context:
+  us_self_cancellation: >-
+    The April 2026 release notes reference U.S. self-cancellation rights, consistent with the FTC
+    negative-option / click-to-cancel expectations for recurring billing. The API exposes
+    POST /cancelSubscription, so the capability is programmatically reachable.
