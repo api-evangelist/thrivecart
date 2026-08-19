@@ -2,25 +2,23 @@ generated: '2026-08-12'
 method: derived
 source: openapi/thrivecart-api-openapi.yml
 status: candidate
-summary: >-
-  ThriveCart operates no first-party Model Context Protocol server. Probes on 2026-08-12 found no
-  /.well-known/mcp.json, no MCP endpoint on thrivecart.com or developers.thrivecart.com, and no
-  mention of MCP anywhere on developers.thrivecart.com or in the API reference. Every ThriveCart
-  "MCP server" currently discoverable is a third-party gateway wrapping the REST API - Zapier MCP,
-  Pipedream MCP, viaSocket, mcpforclaude - none of them ThriveCart-operated. The tool set below is
-  DERIVED by API Evangelist from the 33 operations of the ThriveCart API as a proposal for an
-  agent-facing surface. It is not published by ThriveCart.
+summary: ThriveCart operates no first-party Model Context Protocol server. Probes on 2026-08-12 found
+  no /.well-known/mcp.json, no MCP endpoint on thrivecart.com or developers.thrivecart.com, and no mention
+  of MCP anywhere on developers.thrivecart.com or in the API reference. Every ThriveCart "MCP server"
+  currently discoverable is a third-party gateway wrapping the REST API - Zapier MCP, Pipedream MCP, viaSocket,
+  mcpforclaude - none of them ThriveCart-operated. The tool set below is DERIVED by API Evangelist from
+  the 33 operations of the ThriveCart API as a proposal for an agent-facing surface. It is not published
+  by ThriveCart.
 server: null
 transport: null
 url: null
 auth:
   type: http
   scheme: bearer
-  note: >-
-    Any MCP server over this API would inherit ThriveCart's single account-wide bearer token. There
-    is no scope model, so an MCP server cannot be granted read-only access - a token that can list
-    products can also issue refunds and cancel subscriptions. That is the central design problem
-    for an agent surface here, and it is ThriveCart's to fix.
+  note: Any MCP server over this API would inherit ThriveCart's single account-wide bearer token. There
+    is no scope model, so an MCP server cannot be granted read-only access - a token that can list products
+    can also issue refunds and cancel subscriptions. That is the central design problem for an agent surface
+    here, and it is ThriveCart's to fix.
 third_party_servers:
 - name: Zapier MCP
   url: https://zapier.com/mcp/thrivecart
@@ -81,8 +79,8 @@ candidate_tools:
 - name: search_transactions
   maps_to: GET /transactions
   category: read
-  description: Page through transactions filtered by query, type (any/charge/rebill/refund/cancel)
-    and currency. perPage max 100.
+  description: Page through transactions filtered by query, type (any/charge/rebill/refund/cancel) and
+    currency. perPage max 100.
 - name: get_customer
   maps_to: POST /customer
   category: read
@@ -95,8 +93,7 @@ candidate_tools:
   maps_to: POST /refund
   category: write
   consequence: irreversible - moves money
-  description: Refund an item on an order, identified by order_id and a composite reference such
-    as "product-299".
+  description: Refund an item on an order, identified by order_id and a composite reference such as "product-299".
 - name: cancel_subscription
   maps_to: POST /cancelSubscription
   category: write
@@ -104,8 +101,8 @@ candidate_tools:
 - name: pause_subscription
   maps_to: POST /pauseSubscription
   category: write
-  description: Pause a subscription, optionally with an auto_resume Unix timestamp at least 24
-    hours in the future.
+  description: Pause a subscription, optionally with an auto_resume Unix timestamp at least 24 hours in
+    the future.
 - name: resume_subscription
   maps_to: POST /resumeSubscription
   category: write
@@ -156,11 +153,14 @@ candidate_tools:
   category: write
 candidate_tool_count: 33
 notes:
-- >-
-  Nine of the 33 candidate tools are consequential writes (refund, cancel, pause, resume, custom
-  commissions, delete affiliate, create student, subscribe, unsubscribe) and the API offers no
-  idempotency key on any of them, so an MCP client that retries after a timeout can double-refund.
-  Any real server built on this should carry its own idempotency layer.
-- >-
-  Because test and live share one credential (see sandbox/thrivecart-sandbox.yml), an MCP server
-  cannot be pointed at a safe environment for evaluation.
+- Nine of the 33 candidate tools are consequential writes (refund, cancel, pause, resume, custom commissions,
+  delete affiliate, create student, subscribe, unsubscribe) and the API offers no idempotency key on any
+  of them, so an MCP client that retries after a timeout can double-refund. Any real server built on this
+  should carry its own idempotency layer.
+- Because test and live share one credential (see sandbox/thrivecart-sandbox.yml), an MCP server cannot
+  be pointed at a safe environment for evaluation.
+deployment:
+  mode: none
+  verified: derived
+  checked: '2026-08-12'
+  source: catalog MCP census

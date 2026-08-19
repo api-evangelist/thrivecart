@@ -1,0 +1,45 @@
+# Kin Score artifact — thrivecart — 2026-08-19T082702
+# The API Evangelist rating (https://github.com/api-evangelist/kin-score). Generated; do not edit.
+---
+kin_score:
+  slug: thrivecart
+  schema_version: 0.12.0
+  scored_at: '2026-08-19'
+  run_ts: 2026-08-19T082702
+  composite: 67.4
+  band: exemplar
+  facets:
+    discoverability: 75.9
+    contract_quality: 55.9
+    governance: 30.3
+    operational_transparency: 71.1
+    developer_ergonomics: 58.3
+    commercial_clarity: 84.2
+    contract_governance: 30.3
+    access_clarity: 84.2
+  agent_readiness:
+    score: 49.5
+    band: agent-ready
+    band_gated_from: agent-native
+    dimensions:
+      spec_presence: true
+      agentic_access: false
+      reversibility_documented: documented
+      mcp_server: false
+      auth_clarity: true
+      idempotency: false
+      error_semantics: verified
+      openapi_examples: verified
+      rate_limit_signal: documented
+      event_surface_described: true
+      agent_skills: false
+      well_known_catalog: false
+      consent_identity: true
+      agent_card: false
+      dry_run_mode: false
+  regulatory:
+    applies: true
+    regime: Payments
+    regime_id: payments
+    score: 62.5
+    matched_via: tags

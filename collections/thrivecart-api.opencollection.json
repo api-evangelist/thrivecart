@@ -1,0 +1,1040 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "ThriveCart API",
+    "version": "1"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Account",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Ping",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://thrivecart.com/api/external/ping",
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Get information about the account that your API key or access token grants access to. No parameters are required for this endpoint. It's also useful to check the validity of your token."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Products",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List products",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://thrivecart.com/api/external/products",
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "List products"
+        },
+        {
+          "info": {
+            "name": "Get product",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://thrivecart.com/api/external/products/:product_id",
+            "params": [
+              {
+                "name": "product_id",
+                "value": "",
+                "type": "path",
+                "description": "Product ID"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Get product"
+        },
+        {
+          "info": {
+            "name": "Get product price details",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://thrivecart.com/api/external/products/:product_id/pricing_options",
+            "params": [
+              {
+                "name": "product_id",
+                "value": "",
+                "type": "path",
+                "description": "product_id path parameter."
+              },
+              {
+                "name": "affiliate_id",
+                "value": "",
+                "type": "query",
+                "description": "(Optional) Provide an affiliate ID to query the commissions tailored to this specific affiliate"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Get product price details"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Bumps",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List bump offers",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://thrivecart.com/api/external/bumps",
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "List bump offers"
+        },
+        {
+          "info": {
+            "name": "Get bump",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://thrivecart.com/api/external/bumps/:bump_id",
+            "params": [
+              {
+                "name": "bump_id",
+                "value": "",
+                "type": "path",
+                "description": "bump_id path parameter."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Get bump"
+        },
+        {
+          "info": {
+            "name": "Get bump price details",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://thrivecart.com/api/external/bumps/:bump_id/pricing_options",
+            "params": [
+              {
+                "name": "bump_id",
+                "value": "",
+                "type": "path",
+                "description": "bump_id path parameter."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Get bump price details"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Upsells",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List upsells",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://thrivecart.com/api/external/upsells",
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "List upsells"
+        },
+        {
+          "info": {
+            "name": "Get upsell",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://thrivecart.com/api/external/upsells/:upsell_id",
+            "params": [
+              {
+                "name": "upsell_id",
+                "value": "",
+                "type": "path",
+                "description": "Upsell ID"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Get upsell"
+        },
+        {
+          "info": {
+            "name": "Get upsell price details",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://thrivecart.com/api/external/upsells/:upsell_id/pricing_options",
+            "params": [
+              {
+                "name": "upsell_id",
+                "value": "",
+                "type": "path",
+                "description": "upsell_id path parameter."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Get upsell price details"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Downsells",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List downsells",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://thrivecart.com/api/external/downsells",
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "List downsells"
+        },
+        {
+          "info": {
+            "name": "Get downsell",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://thrivecart.com/api/external/downsells/:downsell_id",
+            "params": [
+              {
+                "name": "downsell_id",
+                "value": "",
+                "type": "path",
+                "description": "Downsell ID"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Get downsell"
+        },
+        {
+          "info": {
+            "name": "Get downsell price details",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://thrivecart.com/api/external/downsells/:downsell_id/pricing_options",
+            "params": [
+              {
+                "name": "downsell_id",
+                "value": "",
+                "type": "path",
+                "description": "downsell_id path parameter."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Get downsell price details"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Transactions",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Search transactions",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://thrivecart.com/api/external/transactions",
+            "params": [
+              {
+                "name": "page",
+                "value": "1",
+                "type": "query",
+                "description": "Page number (1 through N)"
+              },
+              {
+                "name": "perPage",
+                "value": "10",
+                "type": "query",
+                "description": "Results per page (max of 100)"
+              },
+              {
+                "name": "query",
+                "value": "",
+                "type": "query",
+                "description": "Search query (e.g. customer email, order ID, etc)"
+              },
+              {
+                "name": "transactionType",
+                "value": "any",
+                "type": "query",
+                "description": "'any', 'charge', 'rebill', 'refund', 'cancel'"
+              },
+              {
+                "name": "currency",
+                "value": "",
+                "type": "query",
+                "description": "'usd', 'gbp', etc (optional; leave blank for all currencies)"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Search through transaction events and return the info about activity within your account.\n\nEvents such as charges, rebills, refunds and cancellations will be included under the transaction_type key."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Customers",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Read customer information",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://thrivecart.com/api/external/customer",
+            "body": {
+              "type": "form-urlencoded",
+              "data": [
+                {
+                  "name": "email",
+                  "value": ""
+                }
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Read the full history of an individual customer and all of their purchases and subscriptions."
+        },
+        {
+          "info": {
+            "name": "Update Customer Email Address",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://thrivecart.com/api/external/customerEmailUpdate",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Update a customer's email address in your ThriveCart account. This affects all their orders and customer hub access associated with the customer. When the new email matches an existing customer in your account, explicit merge confirmation is required to prevent accidental data consolidation."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Subscriptions",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Cancel a subscription",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://thrivecart.com/api/external/cancelSubscription",
+            "body": {
+              "type": "form-urlencoded",
+              "data": [
+                {
+                  "name": "order_id",
+                  "value": ""
+                },
+                {
+                  "name": "subscription_id",
+                  "value": ""
+                }
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Cancel a subscription using the order ID and subscription ID pulled from either a Transaction search or the full history of a customer."
+        },
+        {
+          "info": {
+            "name": "Refund a transaction",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://thrivecart.com/api/external/refund",
+            "body": {
+              "type": "form-urlencoded",
+              "data": [
+                {
+                  "name": "order_id",
+                  "value": ""
+                },
+                {
+                  "name": "reference",
+                  "value": ""
+                }
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Refund a specific transaction using the order ID and purchase reference pulled from either a Transaction search or the full history of a customer."
+        },
+        {
+          "info": {
+            "name": "Pause a subscription",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://thrivecart.com/api/external/pauseSubscription",
+            "body": {
+              "type": "form-urlencoded",
+              "data": [
+                {
+                  "name": "order_id",
+                  "value": ""
+                },
+                {
+                  "name": "subscription_id",
+                  "value": ""
+                },
+                {
+                  "name": "auto_resume",
+                  "value": ""
+                }
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Pause a subscription using the order ID and subscription ID pulled from either a Transaction search or the full history of a customer.\n\nNote that you can provide an optional timestamp to automatically resume the subscription on that date, or leave this blank to pause indefinitely."
+        },
+        {
+          "info": {
+            "name": "Resume a subscription",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://thrivecart.com/api/external/resumeSubscription",
+            "body": {
+              "type": "form-urlencoded",
+              "data": [
+                {
+                  "name": "order_id",
+                  "value": ""
+                },
+                {
+                  "name": "subscription_id",
+                  "value": ""
+                }
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Resume a subscription using the order ID and subscription ID pulled from either a Transaction search or the full history of a customer."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Affiliates",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Search affiliates",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://thrivecart.com/api/external/affiliates",
+            "params": [
+              {
+                "name": "product_id",
+                "value": "",
+                "type": "query",
+                "description": "(Optional) Product ID"
+              },
+              {
+                "name": "query",
+                "value": "",
+                "type": "query",
+                "description": "(Optional) Search by affiliate name, email, affiliate ID"
+              },
+              {
+                "name": "page",
+                "value": "1",
+                "type": "query",
+                "description": "Page number (1 through N)"
+              },
+              {
+                "name": "perPage",
+                "value": "5",
+                "type": "query",
+                "description": "Results per page (max of 25)"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Search for affiliates by the product ID they're approved for, or by their name, email, or affiliate ID."
+        },
+        {
+          "info": {
+            "name": "Create new affiliate",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://thrivecart.com/api/external/affiliates",
+            "body": {
+              "type": "form-urlencoded",
+              "data": [
+                {
+                  "name": "email",
+                  "value": ""
+                },
+                {
+                  "name": "name",
+                  "value": ""
+                },
+                {
+                  "name": "affiliate_id",
+                  "value": ""
+                },
+                {
+                  "name": "product_ids",
+                  "value": ""
+                },
+                {
+                  "name": "auto_approve",
+                  "value": ""
+                },
+                {
+                  "name": "parent_affiliate",
+                  "value": ""
+                },
+                {
+                  "name": "first_name",
+                  "value": ""
+                },
+                {
+                  "name": "last_name",
+                  "value": ""
+                },
+                {
+                  "name": "company",
+                  "value": ""
+                },
+                {
+                  "name": "country",
+                  "value": ""
+                },
+                {
+                  "name": "city",
+                  "value": ""
+                },
+                {
+                  "name": "state",
+                  "value": ""
+                },
+                {
+                  "name": "zip",
+                  "value": ""
+                },
+                {
+                  "name": "trigger_emails",
+                  "value": ""
+                }
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Create a new affiliate in your account.\n\nYou can optionally specify an affiliate_id key to set their preferred affiliate ID. Affiliate IDs are unique across the system, so this may be modified by the system to ensure uniqueness.\n\nIf you do not specify any affiliate_id, we will generate one based on the user's name or email address.\n\nIf the user already exists in the system and has an affiliate ID set already, your parameter will be ignored and their affiliate ID will not be modified."
+        },
+        {
+          "info": {
+            "name": "Read affiliate info",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://thrivecart.com/api/external/affiliate",
+            "body": {
+              "type": "form-urlencoded",
+              "data": [
+                {
+                  "name": "affiliate_id",
+                  "value": ""
+                }
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Return the information about a specific affiliate by their affiliate ID, their numeric user ID, or their email address."
+        },
+        {
+          "info": {
+            "name": "Mark affiliate as favorite",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://thrivecart.com/api/external/affiliates/:affiliate_id/favorite",
+            "params": [
+              {
+                "name": "affiliate_id",
+                "value": "",
+                "type": "path",
+                "description": "Affiliate ID"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Mark an affiliate as a 'favorite' or VIP affiliate."
+        },
+        {
+          "info": {
+            "name": "Un-favourite an affiliate",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://thrivecart.com/api/external/affiliates/:affiliate_id/unfavorite",
+            "params": [
+              {
+                "name": "affiliate_id",
+                "value": "",
+                "type": "path",
+                "description": "Affiliate ID"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Remove the 'favorite' marker from an affiliate."
+        },
+        {
+          "info": {
+            "name": "Register affiliate for a product",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://thrivecart.com/api/external/affiliates/:affiliate_id/register",
+            "params": [
+              {
+                "name": "affiliate_id",
+                "value": "",
+                "type": "path",
+                "description": "Affiliate ID"
+              }
+            ],
+            "body": {
+              "type": "form-urlencoded",
+              "data": [
+                {
+                  "name": "product_ids",
+                  "value": ""
+                },
+                {
+                  "name": "auto_approve",
+                  "value": ""
+                },
+                {
+                  "name": "trigger_emails",
+                  "value": ""
+                },
+                {
+                  "name": "parent_affiliate",
+                  "value": ""
+                }
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Register an existing affiliate for a specific product or list of products."
+        },
+        {
+          "info": {
+            "name": "Approve an affiliate for a product",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://thrivecart.com/api/external/affiliates/:affiliate_id/approve",
+            "params": [
+              {
+                "name": "affiliate_id",
+                "value": "",
+                "type": "path",
+                "description": "Affiliate ID"
+              }
+            ],
+            "body": {
+              "type": "form-urlencoded",
+              "data": [
+                {
+                  "name": "product_ids",
+                  "value": ""
+                },
+                {
+                  "name": "trigger_emails",
+                  "value": ""
+                }
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Approve an affiliate for a pending application to a product or products. Note, if the application isn't already pending, no changes will be made."
+        },
+        {
+          "info": {
+            "name": "Reject an affiliate for a product",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://thrivecart.com/api/external/affiliates/:affiliate_id/reject",
+            "params": [
+              {
+                "name": "affiliate_id",
+                "value": "",
+                "type": "path",
+                "description": "Affiliate ID"
+              }
+            ],
+            "body": {
+              "type": "form-urlencoded",
+              "data": [
+                {
+                  "name": "product_ids",
+                  "value": ""
+                },
+                {
+                  "name": "trigger_emails",
+                  "value": ""
+                }
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Approve an affiliate for a pending application to a product or products. Note, if the application isn't already pending, no changes will be made."
+        },
+        {
+          "info": {
+            "name": "Specify custom commissions",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://thrivecart.com/api/external/affiliates/:affiliate_id/custom_commissions",
+            "params": [
+              {
+                "name": "affiliate_id",
+                "value": "",
+                "type": "path",
+                "description": "Affiliate ID"
+              }
+            ],
+            "body": {
+              "type": "form-urlencoded",
+              "data": [
+                {
+                  "name": "product_id",
+                  "value": ""
+                },
+                {
+                  "name": "commission_object",
+                  "value": ""
+                }
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Specify a block of custom commissions for a specific affiliate and product they are promoting.\n\nThis enables you to override the affiliate much like affiliate rules, and change how much, when, and how they get paid.\n\nSee our example SDK for further examples and insight."
+        },
+        {
+          "info": {
+            "name": "Delete affiliate user",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://thrivecart.com/api/external/affiliates/:affiliate_id/delete",
+            "params": [
+              {
+                "name": "affiliate_id",
+                "value": "",
+                "type": "path",
+                "description": "Affiliate ID"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Return the information about a specific affiliate by their affiliate ID, their numeric user ID, or their email address."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Learn",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Create new student",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://thrivecart.com/api/external/students",
+            "body": {
+              "type": "multipart-form",
+              "data": [
+                {
+                  "name": "email",
+                  "type": "text",
+                  "value": ""
+                },
+                {
+                  "name": "name",
+                  "type": "text",
+                  "value": ""
+                },
+                {
+                  "name": "course_id",
+                  "type": "text",
+                  "value": ""
+                },
+                {
+                  "name": "tags[]",
+                  "type": "text",
+                  "value": ""
+                },
+                {
+                  "name": "order_info[order_id]",
+                  "type": "text",
+                  "value": ""
+                },
+                {
+                  "name": "order_info[purchase_type]",
+                  "type": "text",
+                  "value": ""
+                },
+                {
+                  "name": "order_info[purchase_id]",
+                  "type": "text",
+                  "value": ""
+                },
+                {
+                  "name": "trigger_emails",
+                  "type": "text",
+                  "value": ""
+                }
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Create a new student in your Learn account.\n\nSpecify the student's email address (which they will use to sign in), and the numeric course ID to add them to.\n\nYou will receive a key auto_signin_url which will either take them to set up their password for the first time (if they aren't a student of yours already), or to sign in to your course automatically. Students should be taken here immediately after creating their access.\n\nYou may specify an array of tags to apply to them.\n\nYou may also speci"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Event subscriptions",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Create event subscription",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://thrivecart.com/api/external/subscribe",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Subscribe an endpoint to receive custom webhook notifications. Accepts JSON containing event, target_url and trigger_fields.\n\nTarget URL\nYou must have registered the beginning of your target URL with your app. For example, to receive events at https://mysite.com/webhook, you must register at least https://mysite.com within your app's URL settings or you will receive an error.\n\nImportant: Unsubscribing is done by URL. As such, as highly recommend creating a unique URL for each subscription you cr"
+        },
+        {
+          "info": {
+            "name": "Unsubscribe from an event",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://thrivecart.com/api/external/unsubscribe",
+            "body": {
+              "type": "form-urlencoded",
+              "data": [
+                {
+                  "name": "url",
+                  "value": ""
+                }
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Unsubscribe an endpoint and no longer receive notifications to it.\n\nImportant: As noted when creating an event subscription, we highly recommend using random and unique URLs for each subscription so that they are easily removable."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}
