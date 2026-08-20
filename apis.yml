@@ -23,6 +23,17 @@ tags:
 - Checkout
 - Shopping Cart
 - Payments
+- E-Commerce
+- Subscription
+- Affiliate Marketing
+- Learning Management
+- Creator Economy
+- Webhook
+tags_raw:
+- Company
+- Checkout
+- Shopping Cart
+- Payments
 - eCommerce
 - Subscriptions
 - Affiliate Marketing
@@ -42,6 +53,12 @@ apis:
   humanURL: https://developers.thrivecart.com/documentation/
   baseURL: https://thrivecart.com/api/external
   tags:
+  - Checkout
+  - Payments
+  - Subscription
+  - Affiliate Marketing
+  - Transaction
+  tags_raw:
   - Checkout
   - Payments
   - Subscriptions
