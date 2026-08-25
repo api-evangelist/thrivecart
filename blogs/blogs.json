@@ -1,0 +1,21 @@
+{
+  "repo": "thrivecart",
+  "feeds": [
+    {
+      "source": "https://support.thrivecart.com/",
+      "feed_url": "https://support.thrivecart.com/feed/",
+      "title": "",
+      "saved": 0,
+      "method": "discovered"
+    },
+    {
+      "source": "https://thrivecart.com/blog/",
+      "feed_url": "https://thrivecart.com/blog/feed/",
+      "title": "",
+      "saved": 3,
+      "method": "discovered"
+    }
+  ],
+  "post_count": 3,
+  "fetched": "2026-08-22T20:20:02Z"
+}
