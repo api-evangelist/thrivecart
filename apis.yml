@@ -41,36 +41,18 @@ tags_raw:
 - Creator Economy
 - Webhooks
 apis:
-- aid: thrivecart-api
-  name: ThriveCart API
-  description: 'REST API for a ThriveCart account. Reads products, bump offers, upsells,
-    downsells and their pricing options; searches transactions and affiliates; reads customer
-    records; refunds transactions; cancels, pauses and resumes subscriptions; creates and
-    manages affiliates and their commissions; creates Learn students; and creates or removes
-    targeted event subscriptions. Authenticated with an account API key or an OAuth 2.0
-    access token sent as a bearer token. Rate limited to 60 requests per minute per connected
-    account.'
+- aid: thrivecart:thrivecart-account-api
+  name: ThriveCart Account API
+  description: The Account API from ThriveCart — 1 operation(s) for account.
   humanURL: https://developers.thrivecart.com/documentation/
   baseURL: https://thrivecart.com/api/external
   tags:
-  - Checkout
-  - Payments
-  - Subscription
-  - Affiliate Marketing
-  - Transaction
-  tags_raw:
-  - Checkout
-  - Payments
-  - Subscriptions
-  - Affiliate Marketing
-  - Transactions
+  - Account
   properties:
   - type: OpenAPI
-    url: openapi/thrivecart-api-openapi.yml
+    url: openapi/thrivecart-account-api-openapi.yml
   - type: Postman
     url: postman/thrivecart-api.postman_collection.json
-  - type: Overlay
-    url: overlays/thrivecart-api-overlay.yaml
   - type: Documentation
     url: https://developers.thrivecart.com/documentation/
   - type: APIReference
@@ -93,18 +75,380 @@ apis:
     url: asyncapi/thrivecart-events-asyncapi.yml
   - type: AsyncAPI
     url: asyncapi/thrivecart-events-asyncapi.yml
-  - type: MCPServer
-    url: mcp/thrivecart-mcp.yml
   - type: ToolCrosswalk
     url: mcp/thrivecart-tool-crosswalk.yml
-  - type: AgentSkill
-    url: skills/_index.yml
+- aid: thrivecart:thrivecart-affiliates-api
+  name: ThriveCart Affiliates API
+  description: The Affiliates API from ThriveCart — 9 operation(s) for affiliates.
+  humanURL: https://developers.thrivecart.com/documentation/
+  baseURL: https://thrivecart.com/api/external
+  tags:
+  - Affiliates
+  properties:
+  - type: OpenAPI
+    url: openapi/thrivecart-affiliates-api-openapi.yml
+  - type: Postman
+    url: postman/thrivecart-api.postman_collection.json
+  - type: Documentation
+    url: https://developers.thrivecart.com/documentation/
+  - type: APIReference
+    url: https://apidocs.thrivecart.com/
+  - type: GettingStarted
+    url: https://developers.thrivecart.com/documentation/
+  - type: Authentication
+    url: authentication/thrivecart-authentication.yml
+  - type: ErrorCatalog
+    url: errors/thrivecart-problem-types.yml
+  - type: RateLimits
+    url: rate-limits/thrivecart-rate-limits.yml
+  - type: Conventions
+    url: conventions/thrivecart-conventions.yml
+  - type: Idempotency
+    url: conventions/thrivecart-conventions.yml
+  - type: DataModel
+    url: data-model/thrivecart-data-model.yml
+  - type: Webhooks
+    url: asyncapi/thrivecart-events-asyncapi.yml
+  - type: AsyncAPI
+    url: asyncapi/thrivecart-events-asyncapi.yml
+  - type: ToolCrosswalk
+    url: mcp/thrivecart-tool-crosswalk.yml
+- aid: thrivecart:thrivecart-bumps-api
+  name: ThriveCart Bumps API
+  description: The Bumps API from ThriveCart — 3 operation(s) for bumps.
+  humanURL: https://developers.thrivecart.com/documentation/
+  baseURL: https://thrivecart.com/api/external
+  tags:
+  - Bumps
+  properties:
+  - type: OpenAPI
+    url: openapi/thrivecart-bumps-api-openapi.yml
+  - type: Postman
+    url: postman/thrivecart-api.postman_collection.json
+  - type: Documentation
+    url: https://developers.thrivecart.com/documentation/
+  - type: APIReference
+    url: https://apidocs.thrivecart.com/
+  - type: GettingStarted
+    url: https://developers.thrivecart.com/documentation/
+  - type: Authentication
+    url: authentication/thrivecart-authentication.yml
+  - type: ErrorCatalog
+    url: errors/thrivecart-problem-types.yml
+  - type: RateLimits
+    url: rate-limits/thrivecart-rate-limits.yml
+  - type: Conventions
+    url: conventions/thrivecart-conventions.yml
+  - type: Idempotency
+    url: conventions/thrivecart-conventions.yml
+  - type: DataModel
+    url: data-model/thrivecart-data-model.yml
+  - type: Webhooks
+    url: asyncapi/thrivecart-events-asyncapi.yml
+  - type: AsyncAPI
+    url: asyncapi/thrivecart-events-asyncapi.yml
+  - type: ToolCrosswalk
+    url: mcp/thrivecart-tool-crosswalk.yml
+- aid: thrivecart:thrivecart-customers-api
+  name: ThriveCart Customers API
+  description: The Customers API from ThriveCart — 2 operation(s) for customers.
+  humanURL: https://developers.thrivecart.com/documentation/
+  baseURL: https://thrivecart.com/api/external
+  tags:
+  - Customers
+  properties:
+  - type: OpenAPI
+    url: openapi/thrivecart-customers-api-openapi.yml
+  - type: Postman
+    url: postman/thrivecart-api.postman_collection.json
+  - type: Documentation
+    url: https://developers.thrivecart.com/documentation/
+  - type: APIReference
+    url: https://apidocs.thrivecart.com/
+  - type: GettingStarted
+    url: https://developers.thrivecart.com/documentation/
+  - type: Authentication
+    url: authentication/thrivecart-authentication.yml
+  - type: ErrorCatalog
+    url: errors/thrivecart-problem-types.yml
+  - type: RateLimits
+    url: rate-limits/thrivecart-rate-limits.yml
+  - type: Conventions
+    url: conventions/thrivecart-conventions.yml
+  - type: Idempotency
+    url: conventions/thrivecart-conventions.yml
+  - type: DataModel
+    url: data-model/thrivecart-data-model.yml
+  - type: Webhooks
+    url: asyncapi/thrivecart-events-asyncapi.yml
+  - type: AsyncAPI
+    url: asyncapi/thrivecart-events-asyncapi.yml
+  - type: ToolCrosswalk
+    url: mcp/thrivecart-tool-crosswalk.yml
+- aid: thrivecart:thrivecart-downsells-api
+  name: ThriveCart Downsells API
+  description: The Downsells API from ThriveCart — 3 operation(s) for downsells.
+  humanURL: https://developers.thrivecart.com/documentation/
+  baseURL: https://thrivecart.com/api/external
+  tags:
+  - Downsells
+  properties:
+  - type: OpenAPI
+    url: openapi/thrivecart-downsells-api-openapi.yml
+  - type: Postman
+    url: postman/thrivecart-api.postman_collection.json
+  - type: Documentation
+    url: https://developers.thrivecart.com/documentation/
+  - type: APIReference
+    url: https://apidocs.thrivecart.com/
+  - type: GettingStarted
+    url: https://developers.thrivecart.com/documentation/
+  - type: Authentication
+    url: authentication/thrivecart-authentication.yml
+  - type: ErrorCatalog
+    url: errors/thrivecart-problem-types.yml
+  - type: RateLimits
+    url: rate-limits/thrivecart-rate-limits.yml
+  - type: Conventions
+    url: conventions/thrivecart-conventions.yml
+  - type: Idempotency
+    url: conventions/thrivecart-conventions.yml
+  - type: DataModel
+    url: data-model/thrivecart-data-model.yml
+  - type: Webhooks
+    url: asyncapi/thrivecart-events-asyncapi.yml
+  - type: AsyncAPI
+    url: asyncapi/thrivecart-events-asyncapi.yml
+  - type: ToolCrosswalk
+    url: mcp/thrivecart-tool-crosswalk.yml
+- aid: thrivecart:thrivecart-event-subscriptions-api
+  name: ThriveCart Event subscriptions API
+  description: The Event subscriptions API from ThriveCart — 2 operation(s) for event subscriptions.
+  humanURL: https://developers.thrivecart.com/documentation/
+  baseURL: https://thrivecart.com/api/external
+  tags:
+  - Event subscriptions
+  properties:
+  - type: OpenAPI
+    url: openapi/thrivecart-event-subscriptions-api-openapi.yml
+  - type: Postman
+    url: postman/thrivecart-api.postman_collection.json
+  - type: Documentation
+    url: https://developers.thrivecart.com/documentation/
+  - type: APIReference
+    url: https://apidocs.thrivecart.com/
+  - type: GettingStarted
+    url: https://developers.thrivecart.com/documentation/
+  - type: Authentication
+    url: authentication/thrivecart-authentication.yml
+  - type: ErrorCatalog
+    url: errors/thrivecart-problem-types.yml
+  - type: RateLimits
+    url: rate-limits/thrivecart-rate-limits.yml
+  - type: Conventions
+    url: conventions/thrivecart-conventions.yml
+  - type: Idempotency
+    url: conventions/thrivecart-conventions.yml
+  - type: DataModel
+    url: data-model/thrivecart-data-model.yml
+  - type: Webhooks
+    url: asyncapi/thrivecart-events-asyncapi.yml
+  - type: AsyncAPI
+    url: asyncapi/thrivecart-events-asyncapi.yml
+  - type: ToolCrosswalk
+    url: mcp/thrivecart-tool-crosswalk.yml
+- aid: thrivecart:thrivecart-learn-api
+  name: ThriveCart Learn API
+  description: The Learn API from ThriveCart — 1 operation(s) for learn.
+  humanURL: https://developers.thrivecart.com/documentation/
+  baseURL: https://thrivecart.com/api/external
+  tags:
+  - Learn
+  properties:
+  - type: OpenAPI
+    url: openapi/thrivecart-learn-api-openapi.yml
+  - type: Postman
+    url: postman/thrivecart-api.postman_collection.json
+  - type: Documentation
+    url: https://developers.thrivecart.com/documentation/
+  - type: APIReference
+    url: https://apidocs.thrivecart.com/
+  - type: GettingStarted
+    url: https://developers.thrivecart.com/documentation/
+  - type: Authentication
+    url: authentication/thrivecart-authentication.yml
+  - type: ErrorCatalog
+    url: errors/thrivecart-problem-types.yml
+  - type: RateLimits
+    url: rate-limits/thrivecart-rate-limits.yml
+  - type: Conventions
+    url: conventions/thrivecart-conventions.yml
+  - type: Idempotency
+    url: conventions/thrivecart-conventions.yml
+  - type: DataModel
+    url: data-model/thrivecart-data-model.yml
+  - type: Webhooks
+    url: asyncapi/thrivecart-events-asyncapi.yml
+  - type: AsyncAPI
+    url: asyncapi/thrivecart-events-asyncapi.yml
+  - type: ToolCrosswalk
+    url: mcp/thrivecart-tool-crosswalk.yml
+- aid: thrivecart:thrivecart-products-api
+  name: ThriveCart Products API
+  description: The Products API from ThriveCart — 3 operation(s) for products.
+  humanURL: https://developers.thrivecart.com/documentation/
+  baseURL: https://thrivecart.com/api/external
+  tags:
+  - Products
+  properties:
+  - type: OpenAPI
+    url: openapi/thrivecart-products-api-openapi.yml
+  - type: Postman
+    url: postman/thrivecart-api.postman_collection.json
+  - type: Documentation
+    url: https://developers.thrivecart.com/documentation/
+  - type: APIReference
+    url: https://apidocs.thrivecart.com/
+  - type: GettingStarted
+    url: https://developers.thrivecart.com/documentation/
+  - type: Authentication
+    url: authentication/thrivecart-authentication.yml
+  - type: ErrorCatalog
+    url: errors/thrivecart-problem-types.yml
+  - type: RateLimits
+    url: rate-limits/thrivecart-rate-limits.yml
+  - type: Conventions
+    url: conventions/thrivecart-conventions.yml
+  - type: Idempotency
+    url: conventions/thrivecart-conventions.yml
+  - type: DataModel
+    url: data-model/thrivecart-data-model.yml
+  - type: Webhooks
+    url: asyncapi/thrivecart-events-asyncapi.yml
+  - type: AsyncAPI
+    url: asyncapi/thrivecart-events-asyncapi.yml
+  - type: ToolCrosswalk
+    url: mcp/thrivecart-tool-crosswalk.yml
+- aid: thrivecart:thrivecart-subscriptions-api
+  name: ThriveCart Subscriptions API
+  description: The Subscriptions API from ThriveCart — 4 operation(s) for subscriptions.
+  humanURL: https://developers.thrivecart.com/documentation/
+  baseURL: https://thrivecart.com/api/external
+  tags:
+  - Subscriptions
+  properties:
+  - type: OpenAPI
+    url: openapi/thrivecart-subscriptions-api-openapi.yml
+  - type: Postman
+    url: postman/thrivecart-api.postman_collection.json
+  - type: Documentation
+    url: https://developers.thrivecart.com/documentation/
+  - type: APIReference
+    url: https://apidocs.thrivecart.com/
+  - type: GettingStarted
+    url: https://developers.thrivecart.com/documentation/
+  - type: Authentication
+    url: authentication/thrivecart-authentication.yml
+  - type: ErrorCatalog
+    url: errors/thrivecart-problem-types.yml
+  - type: RateLimits
+    url: rate-limits/thrivecart-rate-limits.yml
+  - type: Conventions
+    url: conventions/thrivecart-conventions.yml
+  - type: Idempotency
+    url: conventions/thrivecart-conventions.yml
+  - type: DataModel
+    url: data-model/thrivecart-data-model.yml
+  - type: Webhooks
+    url: asyncapi/thrivecart-events-asyncapi.yml
+  - type: AsyncAPI
+    url: asyncapi/thrivecart-events-asyncapi.yml
+  - type: ToolCrosswalk
+    url: mcp/thrivecart-tool-crosswalk.yml
+- aid: thrivecart:thrivecart-transactions-api
+  name: ThriveCart Transactions API
+  description: The Transactions API from ThriveCart — 1 operation(s) for transactions.
+  humanURL: https://developers.thrivecart.com/documentation/
+  baseURL: https://thrivecart.com/api/external
+  tags:
+  - Transactions
+  properties:
+  - type: OpenAPI
+    url: openapi/thrivecart-transactions-api-openapi.yml
+  - type: Postman
+    url: postman/thrivecart-api.postman_collection.json
+  - type: Documentation
+    url: https://developers.thrivecart.com/documentation/
+  - type: APIReference
+    url: https://apidocs.thrivecart.com/
+  - type: GettingStarted
+    url: https://developers.thrivecart.com/documentation/
+  - type: Authentication
+    url: authentication/thrivecart-authentication.yml
+  - type: ErrorCatalog
+    url: errors/thrivecart-problem-types.yml
+  - type: RateLimits
+    url: rate-limits/thrivecart-rate-limits.yml
+  - type: Conventions
+    url: conventions/thrivecart-conventions.yml
+  - type: Idempotency
+    url: conventions/thrivecart-conventions.yml
+  - type: DataModel
+    url: data-model/thrivecart-data-model.yml
+  - type: Webhooks
+    url: asyncapi/thrivecart-events-asyncapi.yml
+  - type: AsyncAPI
+    url: asyncapi/thrivecart-events-asyncapi.yml
+  - type: ToolCrosswalk
+    url: mcp/thrivecart-tool-crosswalk.yml
+- aid: thrivecart:thrivecart-upsells-api
+  name: ThriveCart Upsells API
+  description: The Upsells API from ThriveCart — 3 operation(s) for upsells.
+  humanURL: https://developers.thrivecart.com/documentation/
+  baseURL: https://thrivecart.com/api/external
+  tags:
+  - Upsells
+  properties:
+  - type: OpenAPI
+    url: openapi/thrivecart-upsells-api-openapi.yml
+  - type: Postman
+    url: postman/thrivecart-api.postman_collection.json
+  - type: Documentation
+    url: https://developers.thrivecart.com/documentation/
+  - type: APIReference
+    url: https://apidocs.thrivecart.com/
+  - type: GettingStarted
+    url: https://developers.thrivecart.com/documentation/
+  - type: Authentication
+    url: authentication/thrivecart-authentication.yml
+  - type: ErrorCatalog
+    url: errors/thrivecart-problem-types.yml
+  - type: RateLimits
+    url: rate-limits/thrivecart-rate-limits.yml
+  - type: Conventions
+    url: conventions/thrivecart-conventions.yml
+  - type: Idempotency
+    url: conventions/thrivecart-conventions.yml
+  - type: DataModel
+    url: data-model/thrivecart-data-model.yml
+  - type: Webhooks
+    url: asyncapi/thrivecart-events-asyncapi.yml
+  - type: AsyncAPI
+    url: asyncapi/thrivecart-events-asyncapi.yml
+  - type: ToolCrosswalk
+    url: mcp/thrivecart-tool-crosswalk.yml
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com
 - FN: APIs.json
   email: info@apis.io
 common:
+- type: Overlay
+  url: overlays/thrivecart-api-overlay.yaml
+- type: MCPServer
+  url: mcp/thrivecart-mcp.yml
+- type: AgentSkill
+  url: skills/_index.yml
 # NOTE: no `TrustCenter` pointer is emitted. security/thrivecart-trust-center.yml records that
 # ThriveCart operates NO trust centre (trust.thrivecart.com redirects to the sign-in catch-all);
 # what it does publish is two self-asserted compliance badges, which are carried by the
