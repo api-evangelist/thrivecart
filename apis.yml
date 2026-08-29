@@ -11,6 +11,18 @@ description: 'ThriveCart is a hosted shopping cart, checkout and course platform
   covering products, bump offers, upsells, downsells, pricing options, transactions,
   customers, subscriptions, affiliates, Learn students and event subscriptions, with an
   account-wide webhook surface and a targeted Event Subscription API alongside it.'
+deliveryModel:
+  model: saas
+  open_source: false
+  commercial: true
+  callable_host: true
+  label: Hosted service · you call their endpoint
+  confidence: high
+  source:
+  - openapi
+  - pricing
+  generated: '2026-08-28'
+  method: derived
 image: https://thrivecart.com/wp-content/uploads/2025/07/TC-logo-on-White.png
 url: https://raw.githubusercontent.com/api-evangelist/thrivecart/refs/heads/main/apis.yml
 x-type: company
