@@ -1,0 +1,244 @@
+openapi: 3.2.0
+info:
+  title: ThriveCart Learn API
+  version: '1'
+  description: 'The ThriveCart API lets you read and manage the products, bumps, upsells, downsells, transactions, customers, subscriptions, affiliates and Learn students in a ThriveCart account, and to create targeted event subscriptions (webhooks).
+
+
+    This OpenAPI document is DERIVED by API Evangelist from ThriveCart''s own published Postman collection (https://apidocs.thrivecart.com/). Every path, method, parameter, request field, description and example response body is carried over from that first-party source. ThriveCart does not publish an OpenAPI definition of its own.'
+  termsOfService: https://thrivecart.com/legal/thrivecart/
+  contact:
+    name: ThriveCart Developer Support
+    url: https://developers.thrivecart.com/
+    email: support@thrivecart.com
+servers:
+- url: https://thrivecart.com/api/external
+  description: Production
+security:
+- bearerAuth: []
+- oauth2: []
+tags:
+- name: Learn
+paths:
+  /students:
+    post:
+      operationId: createNewStudent
+      summary: Create new student
+      description: 'Create a new student in your Learn account.
+
+
+        Specify the student''s email address (which they will use to sign in), and the numeric course ID to add them to.
+
+
+        You will receive a key auto_signin_url which will either take them to set up their password for the first time (if they aren''t a student of yours already), or to sign in to your course automatically. Students should be taken here immediately after creating their access.
+
+
+        You may specify an array of tags to apply to them.
+
+
+        You may also specify an order ID, purchase type and purchase ID to assign this relationship to a purchase of theirs. The system will then automatically cancel their membership if the corresponding subscription is cancelled (depending on your course settings).'
+      tags:
+      - Learn
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  description: Student's email (used to sign in)
+                name:
+                  type: string
+                  description: '(Optional) Student''s name (max length: 150 characters)'
+                course_id:
+                  type: string
+                  description: Course ID to grant access to
+                tags[]:
+                  type: string
+                  description: (Optional) Array of tags to apply to the student
+                order_info[order_id]:
+                  type: string
+                  description: (Optional) Associate this with a ThriveCart order
+                order_info[purchase_type]:
+                  type: string
+                  description: (Optional) If associating with a ThriveCart order, specify the type of purchase (product, bump, upsell, downsell)
+                order_info[purchase_id]:
+                  type: string
+                  description: (Optional) If associating with a ThriveCart order, specify the numeric ID of the item purchased
+                trigger_emails:
+                  type: string
+                  description: (Optional) Trigger email to student? Defaults to true
+              required:
+              - email
+              - course_id
+      responses:
+        '200':
+          description: Successful student addition (associated with order)
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  auto_signin_url:
+                    type: string
+                  signin_url:
+                    type: string
+                  student:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                      username:
+                        type: string
+                      name:
+                        type: string
+                      status:
+                        type: string
+                      date_created:
+                        type: string
+                      account_id:
+                        type: string
+              examples:
+                Successful_student_addition_associated_with_order:
+                  value:
+                    auto_signin_url: https://myaccount.thrivecart.com/signin/?username=c3R1ZGVudEB0aHJpdmVjYXJ0LmNvbQ%3D%3D
+                    signin_url: https://myaccount.thrivecart.com/l/my-course-name/
+                    student:
+                      id: '1000002'
+                      username: student@thrivecart.com
+                      name: Jane Smith
+                      status: '1'
+                      date_created: '2022-03-10 21:25:38'
+                      account_id: '1'
+                Successful_student_addition:
+                  value:
+                    auto_signin_url: https://myaccount.thrivecart.com/signin/?username=c3R1ZGVudEB0aHJpdmVjYXJ0LmNvbQ%3D%3D
+                    signin_url: https://myaccount.thrivecart.com/l/my-course-name/
+                    student:
+                      id: '1000002'
+                      username: student@thrivecart.com
+                      name: Jane Smith
+                      status: '1'
+                      date_created: '2022-03-10 21:25:38'
+                      account_id: '1'
+                Successful_student_creation:
+                  value:
+                    auto_signin_url: https://myaccount.thrivecart.com/signin/?access=NlY2TEQxRVVSWllaUzg3NURTR1ZNNkVXQjFHQk1SRzQ%3D&username=c3R1ZGVudEB0aHJpdmVjYXJ0LmNvbQ%3D%3D
+                    signin_url: https://myaccount.thrivecart.com/l/my-course-name/
+                    student:
+                      id: '1000002'
+                      username: student@thrivecart.com
+                      name: Jane Smith
+                      status: '1'
+                      date_created: '2022-03-10 21:31:43'
+                      account_id: '1'
+                Create_new_student:
+                  value:
+                    auto_signin_url: https://dfr.dev.thrivecart.com/signin/?access=NlY2TEQxRVVSWllaUzg3NURTR1ZNNkVXQjFHQk1SRzQ%3D&username=bWFyYythcGlzdHVkZW50N0BkZnIubWU%3D
+                    signin_url: https://dfr.dev.thrivecart.com/l/tiktok-for-boomers/
+                    student:
+                      id: '90'
+                      username: marc+apistudent7@dfr.me
+                      name: API Made
+                      status: '1'
+                      date_created: '2022-03-10 21:31:43'
+                      account_id: '1'
+          headers:
+            X-ThriveCart-Account-Name:
+              description: X-ThriveCart-Account-Name
+              schema:
+                type: string
+              example: myaccount
+            X-ThriveCart-Account-URL:
+              description: X-ThriveCart-Account-URL
+              schema:
+                type: string
+              example: https://myaccount.thrivecart.com/
+            X-ThriveCart-RequestID:
+              description: X-ThriveCart-RequestID
+              schema:
+                type: string
+              example: 123456-323032322d30332d31302032313a33313a3433-c8371f1a8cffc1b802bd4e6d40258b8e6b5eff
+        '400':
+          description: Invalid email provided
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+              examples:
+                Invalid_email_provided:
+                  value:
+                    error: You must provide a valid student email address (you provided "invalid_email_here").
+                Invalid_order_details:
+                  value:
+                    error: To associate with an order, you must provide a valid order ID from your account.
+          headers:
+            X-ThriveCart-Account-Name:
+              description: X-ThriveCart-Account-Name
+              schema:
+                type: string
+              example: myaccount
+            X-ThriveCart-Account-URL:
+              description: X-ThriveCart-Account-URL
+              schema:
+                type: string
+              example: https://myaccount.thrivecart.com/
+            X-ThriveCart-RequestID:
+              description: X-ThriveCart-RequestID
+              schema:
+                type: string
+              example: 123456-323032322d30332d31302032313a33353a3437-bdd89c52f2c91de9ee611784f79d3eaaac676c
+        '401':
+          description: Unauthorized - the API key or access token is missing, invalid or expired.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                auth_missing:
+                  value:
+                    error: auth.missing
+                invalid_token:
+                  value:
+                    error: invalid_token
+                    error_description: The access token provided is invalid
+        '429':
+          description: Too Many Requests - the account has exceeded 60 requests per minute.
+      security:
+      - bearerAuth: []
+      - oauth2: []
+components:
+  schemas:
+    Error:
+      type: object
+      description: ThriveCart error envelope. Not RFC 9457 problem+json.
+      properties:
+        error:
+          type: string
+          description: Machine-readable error key.
+        error_description:
+          type: string
+          description: Human-readable description, when present.
+      required:
+      - error
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: 'Account-scoped API key created under Settings > API & webhooks > API tokens, or an OAuth access token, sent as `Authorization: Bearer <token>`.'
+    oauth2:
+      type: oauth2
+      description: OAuth 2.0 authorization code grant for applications acting on behalf of another ThriveCart account. ThriveCart does not publish a scope reference; access is granted account-wide on consent.
+      flows:
+        authorizationCode:
+          authorizationUrl: https://thrivecart.com/authorization/new
+          tokenUrl: https://thrivecart.com/authorization/token
+          scopes: {}
+externalDocs:
+  description: ThriveCart Developers
+  url: https://developers.thrivecart.com/documentation/

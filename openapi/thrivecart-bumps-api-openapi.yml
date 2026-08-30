@@ -1,0 +1,314 @@
+openapi: 3.2.0
+info:
+  title: ThriveCart Bumps API
+  version: '1'
+  description: 'The ThriveCart API lets you read and manage the products, bumps, upsells, downsells, transactions, customers, subscriptions, affiliates and Learn students in a ThriveCart account, and to create targeted event subscriptions (webhooks).
+
+
+    This OpenAPI document is DERIVED by API Evangelist from ThriveCart''s own published Postman collection (https://apidocs.thrivecart.com/). Every path, method, parameter, request field, description and example response body is carried over from that first-party source. ThriveCart does not publish an OpenAPI definition of its own.'
+  termsOfService: https://thrivecart.com/legal/thrivecart/
+  contact:
+    name: ThriveCart Developer Support
+    url: https://developers.thrivecart.com/
+    email: support@thrivecart.com
+servers:
+- url: https://thrivecart.com/api/external
+  description: Production
+security:
+- bearerAuth: []
+- oauth2: []
+tags:
+- name: Bumps
+paths:
+  /bumps:
+    get:
+      operationId: listBumpOffers
+      summary: List bump offers
+      tags:
+      - Bumps
+      responses:
+        '200':
+          description: List bump offers
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    product_id:
+                      type: string
+                    product_name:
+                      type: string
+                    product_label:
+                      type: string
+                    bump_id:
+                      type: string
+                    bump_name:
+                      type: string
+                    name:
+                      type: string
+                    id:
+                      type: string
+                    url:
+                      type: string
+                    embed_type:
+                      type: string
+                    status:
+                      type: string
+                    statusString:
+                      type: string
+                    type:
+                      type: string
+                    typeString:
+                      type: string
+                    payment_currency:
+                      type: string
+                    payment_amount:
+                      type: integer
+              examples:
+                List_bump_offers:
+                  value:
+                  - product_id: '4'
+                    product_name: My Product + Bump
+                    product_label: Internal product label
+                    bump_id: '4'
+                    bump_name: Special Bump Offer
+                    name: Special Bump Offer
+                    id: '4'
+                    url: https://myaccount.thrivecart.com/my-bump/
+                    embed_type: standard
+                    status: '2'
+                    statusString: live
+                    type: '1'
+                    typeString: digital
+                    payment_currency: GBP
+                    payment_amount: 3200
+                  - product_id: '1'
+                    product_name: Product with Bump
+                    product_label: Internal label for this product
+                    bump_id: '1'
+                    bump_name: Demo Bump
+                    name: Demo Bump
+                    id: '1'
+                    url: https://myaccount.thrivecart.com/product-with-bump/
+                    embed_type: standard
+                    status: '2'
+                    statusString: live
+                    type: '1'
+                    typeString: digital
+                    payment_currency: USD
+                    payment_amount: 1200
+          headers:
+            X-ThriveCart-Account-Name:
+              description: X-ThriveCart-Account-Name
+              schema:
+                type: string
+              example: myaccount
+            X-ThriveCart-Account-URL:
+              description: X-ThriveCart-Account-URL
+              schema:
+                type: string
+              example: https://myaccount.thrivecart.com/
+        '401':
+          description: Unauthorized - the API key or access token is missing, invalid or expired.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                auth_missing:
+                  value:
+                    error: auth.missing
+                invalid_token:
+                  value:
+                    error: invalid_token
+                    error_description: The access token provided is invalid
+        '429':
+          description: Too Many Requests - the account has exceeded 60 requests per minute.
+      security:
+      - bearerAuth: []
+      - oauth2: []
+  /bumps/{bump_id}:
+    get:
+      operationId: getBump
+      summary: Get bump
+      tags:
+      - Bumps
+      parameters:
+      - name: bump_id
+        in: path
+        required: true
+        description: bump_id path parameter.
+        schema:
+          type: string
+      responses:
+        '404':
+          description: No such bump
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  reason:
+                    type: string
+              examples:
+                No_such_bump:
+                  value:
+                    error: method.exception
+                    reason: The requested bump cannot be identified.
+          headers:
+            X-ThriveCart-Account-Name:
+              description: X-ThriveCart-Account-Name
+              schema:
+                type: string
+              example: myaccount
+            X-ThriveCart-Account-URL:
+              description: X-ThriveCart-Account-URL
+              schema:
+                type: string
+              example: https://myaccount.thrivecart.com/
+        '200':
+          description: Bump offer details
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  product_id:
+                    type: string
+                  product_name:
+                    type: string
+                  bump_id:
+                    type: string
+                  name:
+                    type: string
+                  slug:
+                    type: string
+                  label:
+                    type: string
+                  status:
+                    type: string
+                  statusString:
+                    type: string
+                  type:
+                    type: string
+                  typeString:
+                    type: string
+                  payment_currency:
+                    type: string
+                  url:
+                    type: string
+                  embed_type:
+                    type: string
+              examples:
+                Bump_offer_details:
+                  value:
+                    product_id: '1'
+                    product_name: My Bump Product
+                    bump_id: '1'
+                    name: My Bump
+                    slug: my-bump-product
+                    label: ''
+                    status: '2'
+                    statusString: live
+                    type: '1'
+                    typeString: digital
+                    payment_currency: USD
+                    url: https://myaccount.thrivecart.com/my-bump-product/
+                    embed_type: standard
+          headers:
+            X-ThriveCart-Account-Name:
+              description: X-ThriveCart-Account-Name
+              schema:
+                type: string
+              example: myaccount
+            X-ThriveCart-Account-URL:
+              description: X-ThriveCart-Account-URL
+              schema:
+                type: string
+              example: https://myaccount.thrivecart.com/
+        '401':
+          description: Unauthorized - the API key or access token is missing, invalid or expired.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                auth_missing:
+                  value:
+                    error: auth.missing
+                invalid_token:
+                  value:
+                    error: invalid_token
+                    error_description: The access token provided is invalid
+        '429':
+          description: Too Many Requests - the account has exceeded 60 requests per minute.
+      security:
+      - bearerAuth: []
+      - oauth2: []
+  /bumps/{bump_id}/pricing_options:
+    get:
+      operationId: getBumpPriceDetails
+      summary: Get bump price details
+      tags:
+      - Bumps
+      parameters:
+      - name: bump_id
+        in: path
+        required: true
+        description: bump_id path parameter.
+        schema:
+          type: string
+      responses:
+        '401':
+          description: Unauthorized - the API key or access token is missing, invalid or expired.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                auth_missing:
+                  value:
+                    error: auth.missing
+                invalid_token:
+                  value:
+                    error: invalid_token
+                    error_description: The access token provided is invalid
+        '429':
+          description: Too Many Requests - the account has exceeded 60 requests per minute.
+      security:
+      - bearerAuth: []
+      - oauth2: []
+components:
+  schemas:
+    Error:
+      type: object
+      description: ThriveCart error envelope. Not RFC 9457 problem+json.
+      properties:
+        error:
+          type: string
+          description: Machine-readable error key.
+        error_description:
+          type: string
+          description: Human-readable description, when present.
+      required:
+      - error
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: 'Account-scoped API key created under Settings > API & webhooks > API tokens, or an OAuth access token, sent as `Authorization: Bearer <token>`.'
+    oauth2:
+      type: oauth2
+      description: OAuth 2.0 authorization code grant for applications acting on behalf of another ThriveCart account. ThriveCart does not publish a scope reference; access is granted account-wide on consent.
+      flows:
+        authorizationCode:
+          authorizationUrl: https://thrivecart.com/authorization/new
+          tokenUrl: https://thrivecart.com/authorization/token
+          scopes: {}
+externalDocs:
+  description: ThriveCart Developers
+  url: https://developers.thrivecart.com/documentation/

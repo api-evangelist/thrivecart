@@ -1,0 +1,217 @@
+openapi: 3.2.0
+info:
+  title: ThriveCart Upsells API
+  version: '1'
+  description: 'The ThriveCart API lets you read and manage the products, bumps, upsells, downsells, transactions, customers, subscriptions, affiliates and Learn students in a ThriveCart account, and to create targeted event subscriptions (webhooks).
+
+
+    This OpenAPI document is DERIVED by API Evangelist from ThriveCart''s own published Postman collection (https://apidocs.thrivecart.com/). Every path, method, parameter, request field, description and example response body is carried over from that first-party source. ThriveCart does not publish an OpenAPI definition of its own.'
+  termsOfService: https://thrivecart.com/legal/thrivecart/
+  contact:
+    name: ThriveCart Developer Support
+    url: https://developers.thrivecart.com/
+    email: support@thrivecart.com
+servers:
+- url: https://thrivecart.com/api/external
+  description: Production
+security:
+- bearerAuth: []
+- oauth2: []
+tags:
+- name: Upsells
+paths:
+  /upsells:
+    get:
+      operationId: listUpsells
+      summary: List upsells
+      tags:
+      - Upsells
+      responses:
+        '200':
+          description: List upsells
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    upsell_id:
+                      type: string
+                    name:
+                      type: string
+                    label:
+                      type: string
+                    type:
+                      type: string
+                    typeString:
+                      type: string
+              examples:
+                List_upsells:
+                  value:
+                  - upsell_id: '2'
+                    name: My Example Upsell
+                    label: Internal label for this upsell
+                    type: '1'
+                    typeString: digital
+                  - upsell_id: '1'
+                    name: My First Upsell
+                    label: Optional internal label
+                    type: '2'
+                    typeString: physical
+          headers:
+            X-ThriveCart-Account-Name:
+              description: X-ThriveCart-Account-Name
+              schema:
+                type: string
+              example: myaccount
+            X-ThriveCart-Account-URL:
+              description: X-ThriveCart-Account-URL
+              schema:
+                type: string
+              example: https://myaccount.thrivecart.com/
+        '401':
+          description: Unauthorized - the API key or access token is missing, invalid or expired.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                auth_missing:
+                  value:
+                    error: auth.missing
+                invalid_token:
+                  value:
+                    error: invalid_token
+                    error_description: The access token provided is invalid
+        '429':
+          description: Too Many Requests - the account has exceeded 60 requests per minute.
+      security:
+      - bearerAuth: []
+      - oauth2: []
+  /upsells/{upsell_id}:
+    get:
+      operationId: getUpsell
+      summary: Get upsell
+      tags:
+      - Upsells
+      parameters:
+      - name: upsell_id
+        in: path
+        required: true
+        description: Upsell ID
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Upsell details
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  upsell_id:
+                    type: string
+                  name:
+                    type: string
+                  label:
+                    type: string
+              examples:
+                Upsell_details:
+                  value:
+                    upsell_id: '1'
+                    name: 'Example Upsell #123'
+                    label: Internal label for this upsell
+          headers:
+            X-ThriveCart-Account-Name:
+              description: X-ThriveCart-Account-Name
+              schema:
+                type: string
+              example: myaccount
+            X-ThriveCart-Account-URL:
+              description: X-ThriveCart-Account-URL
+              schema:
+                type: string
+              example: https://myaccount.thrivecart.com/
+        '401':
+          description: Unauthorized - the API key or access token is missing, invalid or expired.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                auth_missing:
+                  value:
+                    error: auth.missing
+                invalid_token:
+                  value:
+                    error: invalid_token
+                    error_description: The access token provided is invalid
+        '429':
+          description: Too Many Requests - the account has exceeded 60 requests per minute.
+      security:
+      - bearerAuth: []
+      - oauth2: []
+  /upsells/{upsell_id}/pricing_options:
+    get:
+      operationId: getUpsellPriceDetails
+      summary: Get upsell price details
+      tags:
+      - Upsells
+      parameters:
+      - name: upsell_id
+        in: path
+        required: true
+        description: upsell_id path parameter.
+        schema:
+          type: string
+      responses:
+        '401':
+          description: Unauthorized - the API key or access token is missing, invalid or expired.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                auth_missing:
+                  value:
+                    error: auth.missing
+                invalid_token:
+                  value:
+                    error: invalid_token
+                    error_description: The access token provided is invalid
+        '429':
+          description: Too Many Requests - the account has exceeded 60 requests per minute.
+      security:
+      - bearerAuth: []
+      - oauth2: []
+components:
+  schemas:
+    Error:
+      type: object
+      description: ThriveCart error envelope. Not RFC 9457 problem+json.
+      properties:
+        error:
+          type: string
+          description: Machine-readable error key.
+        error_description:
+          type: string
+          description: Human-readable description, when present.
+      required:
+      - error
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: 'Account-scoped API key created under Settings > API & webhooks > API tokens, or an OAuth access token, sent as `Authorization: Bearer <token>`.'
+    oauth2:
+      type: oauth2
+      description: OAuth 2.0 authorization code grant for applications acting on behalf of another ThriveCart account. ThriveCart does not publish a scope reference; access is granted account-wide on consent.
+      flows:
+        authorizationCode:
+          authorizationUrl: https://thrivecart.com/authorization/new
+          tokenUrl: https://thrivecart.com/authorization/token
+          scopes: {}
+externalDocs:
+  description: ThriveCart Developers
+  url: https://developers.thrivecart.com/documentation/

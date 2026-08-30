@@ -1,0 +1,706 @@
+openapi: 3.2.0
+info:
+  title: ThriveCart Affiliates API
+  version: '1'
+  description: 'The ThriveCart API lets you read and manage the products, bumps, upsells, downsells, transactions, customers, subscriptions, affiliates and Learn students in a ThriveCart account, and to create targeted event subscriptions (webhooks).
+
+
+    This OpenAPI document is DERIVED by API Evangelist from ThriveCart''s own published Postman collection (https://apidocs.thrivecart.com/). Every path, method, parameter, request field, description and example response body is carried over from that first-party source. ThriveCart does not publish an OpenAPI definition of its own.'
+  termsOfService: https://thrivecart.com/legal/thrivecart/
+  contact:
+    name: ThriveCart Developer Support
+    url: https://developers.thrivecart.com/
+    email: support@thrivecart.com
+servers:
+- url: https://thrivecart.com/api/external
+  description: Production
+security:
+- bearerAuth: []
+- oauth2: []
+tags:
+- name: Affiliates
+paths:
+  /affiliates:
+    get:
+      operationId: searchAffiliates
+      summary: Search affiliates
+      description: Search for affiliates by the product ID they're approved for, or by their name, email, or affiliate ID.
+      tags:
+      - Affiliates
+      parameters:
+      - name: product_id
+        in: query
+        required: false
+        description: (Optional) Product ID
+        schema:
+          type: string
+      - name: query
+        in: query
+        required: false
+        description: (Optional) Search by affiliate name, email, affiliate ID
+        schema:
+          type: string
+      - name: page
+        in: query
+        required: true
+        description: Page number (1 through N)
+        schema:
+          type: string
+        example: '1'
+      - name: perPage
+        in: query
+        required: true
+        description: Results per page (max of 25)
+        schema:
+          type: string
+        example: '5'
+      responses:
+        '200':
+          description: Search affiliates
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  affiliates:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        user_id:
+                          type: string
+                        email:
+                          type: string
+                        affiliate_id:
+                          type: string
+                        label:
+                          type: string
+                        name:
+                          type: string
+                        is_favourite:
+                          type: boolean
+                        products:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              product_id:
+                                type: string
+                              product_name:
+                                type: string
+                              status_string:
+                                type: string
+                              status:
+                                type: string
+                              affiliate_link:
+                                type: string
+                  meta:
+                    type: object
+                    properties:
+                      total:
+                        type: integer
+                      results:
+                        type: integer
+              examples:
+                Search_affiliates:
+                  value:
+                    affiliates:
+                    - user_id: '649'
+                      email: alexis_fortier@thrivecart.com
+                      affiliate_id: alexis_fortier
+                      label: alexis_fortier (alexis_fortier@thrivecart.com)
+                      name: Alexis Fortier
+                      is_favourite: false
+                      products:
+                      - product_id: '250'
+                        product_name: My Demo Subscription
+                        status_string: active
+                        status: '2'
+                        affiliate_link: https://alexis_fortier--myaccount.thrivecart.com/my-demo-subscription/
+                      - product_id: '296'
+                        product_name: Demo Product
+                        status_string: active
+                        status: '2'
+                        affiliate_link: https://alexis_fortier--myaccount.thrivecart.com/demo-product/
+                    - user_id: '650'
+                      email: amy_greene_dittz@thrivecart.com
+                      affiliate_id: amy_greene_dittz
+                      label: amy_greene_dittz (amy_greene_dittz@thrivecart.com)
+                      name: Amy Greene-Dittz
+                      is_favourite: false
+                      products:
+                      - product_id: '250'
+                        product_name: My Demo Subscription
+                        status_string: active
+                        status: '2'
+                        affiliate_link: https://amy_greene_dittz--myaccount.thrivecart.com/my-demo-subscription/
+                      - product_id: '296'
+                        product_name: Demo Product
+                        status_string: active
+                        status: '2'
+                        affiliate_link: https://amy_greene_dittz--myaccount.thrivecart.com/demo-product/
+                    meta:
+                      total: 5672
+                      results: 2
+          headers:
+            X-ThriveCart-Account-Name:
+              description: X-ThriveCart-Account-Name
+              schema:
+                type: string
+              example: myaccount
+            X-ThriveCart-Account-URL:
+              description: X-ThriveCart-Account-URL
+              schema:
+                type: string
+              example: https://myaccount.thrivecart.com/
+        '401':
+          description: Unauthorized - the API key or access token is missing, invalid or expired.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                auth_missing:
+                  value:
+                    error: auth.missing
+                invalid_token:
+                  value:
+                    error: invalid_token
+                    error_description: The access token provided is invalid
+        '429':
+          description: Too Many Requests - the account has exceeded 60 requests per minute.
+      security:
+      - bearerAuth: []
+      - oauth2: []
+    post:
+      operationId: createNewAffiliate
+      summary: Create new affiliate
+      description: 'Create a new affiliate in your account.
+
+
+        You can optionally specify an affiliate_id key to set their preferred affiliate ID. Affiliate IDs are unique across the system, so this may be modified by the system to ensure uniqueness.
+
+
+        If you do not specify any affiliate_id, we will generate one based on the user''s name or email address.
+
+
+        If the user already exists in the system and has an affiliate ID set already, your parameter will be ignored and their affiliate ID will not be modified.'
+      tags:
+      - Affiliates
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  description: Affiliate's email (used to sign in)
+                name:
+                  type: string
+                  description: (Optional) Affiliate's name
+                affiliate_id:
+                  type: string
+                  description: (Optional) Desired affiliate ID - may be updated by the system
+                product_ids:
+                  type: string
+                  description: Array of at least one product ID to add them to
+                auto_approve:
+                  type: string
+                  description: (Optional) Auto-approve the affiliate for these products?
+                parent_affiliate:
+                  type: string
+                  description: (Optional) Mark this affiliate as having been referred by another?
+                first_name:
+                  type: string
+                  description: (Optional) Affiliate's first name
+                last_name:
+                  type: string
+                  description: (Optional) Affiliate's last name
+                company:
+                  type: string
+                  description: (Optional) Affiliate's company/business name
+                country:
+                  type: string
+                  description: (Optional) 2-digit country code for affiliate's country
+                city:
+                  type: string
+                  description: (Optional) Affiliate's city
+                state:
+                  type: string
+                  description: (Optional) Affiliate's state/region
+                zip:
+                  type: string
+                  description: (Optional) Affiliate's ZIP/post code
+                trigger_emails:
+                  type: string
+                  description: (Optional) Trigger email to affiliate and vendor? Defaults to true
+              required:
+              - email
+              - product_ids
+      responses:
+        '401':
+          description: Unauthorized - the API key or access token is missing, invalid or expired.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                auth_missing:
+                  value:
+                    error: auth.missing
+                invalid_token:
+                  value:
+                    error: invalid_token
+                    error_description: The access token provided is invalid
+        '429':
+          description: Too Many Requests - the account has exceeded 60 requests per minute.
+      security:
+      - bearerAuth: []
+      - oauth2: []
+  /affiliate:
+    post:
+      operationId: readAffiliateInfo
+      summary: Read affiliate info
+      description: Return the information about a specific affiliate by their affiliate ID, their numeric user ID, or their email address.
+      tags:
+      - Affiliates
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                affiliate_id:
+                  type: string
+                  description: Affiliate user ID, affiliate id, or email
+              required:
+              - affiliate_id
+      responses:
+        '200':
+          description: Read affiliate info
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  user_id:
+                    type: string
+                  email:
+                    type: string
+                  affiliate_id:
+                    type: string
+                  label:
+                    type: string
+                  name:
+                    type: string
+                  is_favourite:
+                    type: boolean
+                  products:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        product_id:
+                          type: string
+                        product_name:
+                          type: string
+                        status_string:
+                          type: string
+                        status:
+                          type: string
+                        affiliate_link:
+                          type: string
+              examples:
+                Read_affiliate_info:
+                  value:
+                    user_id: '649'
+                    email: edwardmann@thrivecart.com
+                    affiliate_id: edward_mann
+                    label: alexis_fortier (demoaffiliate@thrivecart.com)
+                    name: Edward Mann
+                    is_favourite: false
+                    products:
+                    - product_id: '250'
+                      product_name: My Demo Subscription
+                      status_string: active
+                      status: '2'
+                      affiliate_link: https://edward_mann--myaccount.thrivecart.com/my-demo-subscription/
+                    - product_id: '296'
+                      product_name: Demo Product
+                      status_string: active
+                      status: '2'
+                      affiliate_link: https://edward_mann--myaccount.thrivecart.com/demo-product/
+          headers:
+            X-ThriveCart-Account-Name:
+              description: X-ThriveCart-Account-Name
+              schema:
+                type: string
+              example: myaccount
+            X-ThriveCart-Account-URL:
+              description: X-ThriveCart-Account-URL
+              schema:
+                type: string
+              example: https://myaccount.thrivecart.com/
+        '401':
+          description: Unauthorized - the API key or access token is missing, invalid or expired.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                auth_missing:
+                  value:
+                    error: auth.missing
+                invalid_token:
+                  value:
+                    error: invalid_token
+                    error_description: The access token provided is invalid
+        '429':
+          description: Too Many Requests - the account has exceeded 60 requests per minute.
+      security:
+      - bearerAuth: []
+      - oauth2: []
+  /affiliates/{affiliate_id}/favorite:
+    post:
+      operationId: markAffiliateAsFavorite
+      summary: Mark affiliate as favorite
+      description: Mark an affiliate as a 'favorite' or VIP affiliate.
+      tags:
+      - Affiliates
+      parameters:
+      - name: affiliate_id
+        in: path
+        required: true
+        description: Affiliate ID
+        schema:
+          type: string
+      responses:
+        '401':
+          description: Unauthorized - the API key or access token is missing, invalid or expired.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                auth_missing:
+                  value:
+                    error: auth.missing
+                invalid_token:
+                  value:
+                    error: invalid_token
+                    error_description: The access token provided is invalid
+        '429':
+          description: Too Many Requests - the account has exceeded 60 requests per minute.
+      security:
+      - bearerAuth: []
+      - oauth2: []
+  /affiliates/{affiliate_id}/unfavorite:
+    post:
+      operationId: unFavouriteAnAffiliate
+      summary: Un-favourite an affiliate
+      description: Remove the 'favorite' marker from an affiliate.
+      tags:
+      - Affiliates
+      parameters:
+      - name: affiliate_id
+        in: path
+        required: true
+        description: Affiliate ID
+        schema:
+          type: string
+      responses:
+        '401':
+          description: Unauthorized - the API key or access token is missing, invalid or expired.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                auth_missing:
+                  value:
+                    error: auth.missing
+                invalid_token:
+                  value:
+                    error: invalid_token
+                    error_description: The access token provided is invalid
+        '429':
+          description: Too Many Requests - the account has exceeded 60 requests per minute.
+      security:
+      - bearerAuth: []
+      - oauth2: []
+  /affiliates/{affiliate_id}/register:
+    post:
+      operationId: registerAffiliateForAProduct
+      summary: Register affiliate for a product
+      description: Register an existing affiliate for a specific product or list of products.
+      tags:
+      - Affiliates
+      parameters:
+      - name: affiliate_id
+        in: path
+        required: true
+        description: Affiliate ID
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                product_ids:
+                  type: string
+                  description: Array of at least one product ID to add them to
+                auto_approve:
+                  type: string
+                  description: (Optional) Auto-approve the affiliate for these products?
+                trigger_emails:
+                  type: string
+                  description: (Optional) Trigger email to affiliate and vendor? Defaults to true
+                parent_affiliate:
+                  type: string
+                  description: (Optional) Mark this affiliate as having been referred by another?
+              required:
+              - product_ids
+      responses:
+        '401':
+          description: Unauthorized - the API key or access token is missing, invalid or expired.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                auth_missing:
+                  value:
+                    error: auth.missing
+                invalid_token:
+                  value:
+                    error: invalid_token
+                    error_description: The access token provided is invalid
+        '429':
+          description: Too Many Requests - the account has exceeded 60 requests per minute.
+      security:
+      - bearerAuth: []
+      - oauth2: []
+  /affiliates/{affiliate_id}/approve:
+    post:
+      operationId: approveAnAffiliateForAProduct
+      summary: Approve an affiliate for a product
+      description: Approve an affiliate for a pending application to a product or products. Note, if the application isn't already pending, no changes will be made.
+      tags:
+      - Affiliates
+      parameters:
+      - name: affiliate_id
+        in: path
+        required: true
+        description: Affiliate ID
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                product_ids:
+                  type: string
+                  description: Array of at least one product ID to approve their application for
+                trigger_emails:
+                  type: string
+                  description: (Optional) Trigger email to affiliate and vendor? Defaults to true
+              required:
+              - product_ids
+      responses:
+        '401':
+          description: Unauthorized - the API key or access token is missing, invalid or expired.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                auth_missing:
+                  value:
+                    error: auth.missing
+                invalid_token:
+                  value:
+                    error: invalid_token
+                    error_description: The access token provided is invalid
+        '429':
+          description: Too Many Requests - the account has exceeded 60 requests per minute.
+      security:
+      - bearerAuth: []
+      - oauth2: []
+  /affiliates/{affiliate_id}/reject:
+    post:
+      operationId: rejectAnAffiliateForAProduct
+      summary: Reject an affiliate for a product
+      description: Approve an affiliate for a pending application to a product or products. Note, if the application isn't already pending, no changes will be made.
+      tags:
+      - Affiliates
+      parameters:
+      - name: affiliate_id
+        in: path
+        required: true
+        description: Affiliate ID
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                product_ids:
+                  type: string
+                  description: Array of at least one product ID to reject their application for
+                trigger_emails:
+                  type: string
+                  description: (Optional) Trigger email to affiliate and vendor? Defaults to true
+              required:
+              - product_ids
+      responses:
+        '401':
+          description: Unauthorized - the API key or access token is missing, invalid or expired.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                auth_missing:
+                  value:
+                    error: auth.missing
+                invalid_token:
+                  value:
+                    error: invalid_token
+                    error_description: The access token provided is invalid
+        '429':
+          description: Too Many Requests - the account has exceeded 60 requests per minute.
+      security:
+      - bearerAuth: []
+      - oauth2: []
+  /affiliates/{affiliate_id}/custom_commissions:
+    post:
+      operationId: specifyCustomCommissions
+      summary: Specify custom commissions
+      description: 'Specify a block of custom commissions for a specific affiliate and product they are promoting.
+
+
+        This enables you to override the affiliate much like affiliate rules, and change how much, when, and how they get paid.
+
+
+        See our example SDK for further examples and insight.'
+      tags:
+      - Affiliates
+      parameters:
+      - name: affiliate_id
+        in: path
+        required: true
+        description: Affiliate ID
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                product_id:
+                  type: string
+                  description: Product ID to apply custom commissions for
+                commission_object:
+                  type: string
+                  description: Custom commissions object (or null to remove any custom commissions set for this product)
+              required:
+              - product_id
+              - commission_object
+      responses:
+        '401':
+          description: Unauthorized - the API key or access token is missing, invalid or expired.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                auth_missing:
+                  value:
+                    error: auth.missing
+                invalid_token:
+                  value:
+                    error: invalid_token
+                    error_description: The access token provided is invalid
+        '429':
+          description: Too Many Requests - the account has exceeded 60 requests per minute.
+      security:
+      - bearerAuth: []
+      - oauth2: []
+  /affiliates/{affiliate_id}/delete:
+    post:
+      operationId: deleteAffiliateUser
+      summary: Delete affiliate user
+      description: Return the information about a specific affiliate by their affiliate ID, their numeric user ID, or their email address.
+      tags:
+      - Affiliates
+      parameters:
+      - name: affiliate_id
+        in: path
+        required: true
+        description: Affiliate ID
+        schema:
+          type: string
+      responses:
+        '401':
+          description: Unauthorized - the API key or access token is missing, invalid or expired.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                auth_missing:
+                  value:
+                    error: auth.missing
+                invalid_token:
+                  value:
+                    error: invalid_token
+                    error_description: The access token provided is invalid
+        '429':
+          description: Too Many Requests - the account has exceeded 60 requests per minute.
+      security:
+      - bearerAuth: []
+      - oauth2: []
+components:
+  schemas:
+    Error:
+      type: object
+      description: ThriveCart error envelope. Not RFC 9457 problem+json.
+      properties:
+        error:
+          type: string
+          description: Machine-readable error key.
+        error_description:
+          type: string
+          description: Human-readable description, when present.
+      required:
+      - error
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: 'Account-scoped API key created under Settings > API & webhooks > API tokens, or an OAuth access token, sent as `Authorization: Bearer <token>`.'
+    oauth2:
+      type: oauth2
+      description: OAuth 2.0 authorization code grant for applications acting on behalf of another ThriveCart account. ThriveCart does not publish a scope reference; access is granted account-wide on consent.
+      flows:
+        authorizationCode:
+          authorizationUrl: https://thrivecart.com/authorization/new
+          tokenUrl: https://thrivecart.com/authorization/token
+          scopes: {}
+externalDocs:
+  description: ThriveCart Developers
+  url: https://developers.thrivecart.com/documentation/

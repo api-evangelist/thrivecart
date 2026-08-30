@@ -1,0 +1,320 @@
+openapi: 3.2.0
+info:
+  title: ThriveCart Customers API
+  version: '1'
+  description: 'The ThriveCart API lets you read and manage the products, bumps, upsells, downsells, transactions, customers, subscriptions, affiliates and Learn students in a ThriveCart account, and to create targeted event subscriptions (webhooks).
+
+
+    This OpenAPI document is DERIVED by API Evangelist from ThriveCart''s own published Postman collection (https://apidocs.thrivecart.com/). Every path, method, parameter, request field, description and example response body is carried over from that first-party source. ThriveCart does not publish an OpenAPI definition of its own.'
+  termsOfService: https://thrivecart.com/legal/thrivecart/
+  contact:
+    name: ThriveCart Developer Support
+    url: https://developers.thrivecart.com/
+    email: support@thrivecart.com
+servers:
+- url: https://thrivecart.com/api/external
+  description: Production
+security:
+- bearerAuth: []
+- oauth2: []
+tags:
+- name: Customers
+paths:
+  /customer:
+    post:
+      operationId: readCustomerInformation
+      summary: Read customer information
+      description: Read the full history of an individual customer and all of their purchases and subscriptions.
+      tags:
+      - Customers
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  description: Customer email address
+              required:
+              - email
+      responses:
+        '200':
+          description: Example containing a subscription
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  customer:
+                    type: object
+                    properties:
+                      name:
+                        type: string
+                      email:
+                        type: string
+                  purchases:
+                    type: array
+                    items: {}
+                  subscriptions:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        status:
+                          type: string
+                        order_id:
+                          type: string
+                        invoice_id:
+                          type: string
+                        subscription_id:
+                          type: string
+                        subscription_reference:
+                          type: string
+                        currency:
+                          type: string
+                        frequency:
+                          type: string
+                        amount:
+                          type: string
+                        payments:
+                          type: string
+                        payments_remaining:
+                          type: string
+                        total_paid:
+                          type: string
+                        last_payment:
+                          type: string
+                        date_started:
+                          type: string
+                        processor:
+                          type: string
+                        item_name:
+                          type: string
+                        item_type:
+                          type: string
+                        item_id:
+                          type: string
+                        next_payment:
+                          type: string
+                        events:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              event_id:
+                                type: string
+                              event_type:
+                                type: string
+                              date:
+                                type: string
+                              amount:
+                                type: integer
+                              reference:
+                                type: string
+                  lifetime_value:
+                    type: object
+                    properties:
+                      USD:
+                        type: integer
+              examples:
+                Example_containing_a_subscription:
+                  value:
+                    customer:
+                      name: Katerine Patterson
+                      email: faux-customer-616855039-78@thrivecartfaux.com
+                    purchases: []
+                    subscriptions:
+                    - status: active
+                      order_id: '851411'
+                      invoice_id: '147484955'
+                      subscription_id: '253'
+                      subscription_reference: product-373-12132
+                      currency: USD
+                      frequency: month
+                      amount: '12500'
+                      payments: '1'
+                      payments_remaining: '4'
+                      total_paid: '12500'
+                      last_payment: '2020-10-01 05:18:42'
+                      date_started: '2020-10-01 05:18:42'
+                      processor: stripe
+                      item_name: Trial Funnel
+                      item_type: product
+                      item_id: '373'
+                      next_payment: '2020-10-08 05:18:39'
+                      events:
+                      - event_id: '62386787'
+                        event_type: charge
+                        date: '2020-09-26 14:00:00'
+                        amount: 12500
+                        reference: product-373-12132
+                    lifetime_value:
+                      USD: 12500
+                Example_containing_one_time_purchases:
+                  value:
+                    customer:
+                      name: Narcisa Joshua
+                      email: faux-customer-778560761-14@thrivecartfaux.com
+                    purchases:
+                    - status: paid
+                      order_id: '851362'
+                      invoice_id: '147484906'
+                      processor: stripe
+                      amount: 9500
+                      net_amount: 9500
+                      currency: USD
+                      item_name: My Example Product
+                      item_type: product
+                      item_id: '299'
+                      reference: product-299
+                    subscriptions: []
+                    lifetime_value:
+                      USD: 9500
+          headers:
+            X-ThriveCart-Account-Name:
+              description: X-ThriveCart-Account-Name
+              schema:
+                type: string
+              example: myaccount
+            X-ThriveCart-Account-URL:
+              description: X-ThriveCart-Account-URL
+              schema:
+                type: string
+              example: https://myaccount.thrivecart.com/
+        '404':
+          description: Customer does not exist
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+              examples:
+                Customer_does_not_exist:
+                  value:
+                    error: There are no orders associated with this customer.
+          headers:
+            X-ThriveCart-Account-Name:
+              description: X-ThriveCart-Account-Name
+              schema:
+                type: string
+              example: myaccount
+            X-ThriveCart-Account-URL:
+              description: X-ThriveCart-Account-URL
+              schema:
+                type: string
+              example: https://myaccount.thrivecart.com/
+        '401':
+          description: Unauthorized - the API key or access token is missing, invalid or expired.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                auth_missing:
+                  value:
+                    error: auth.missing
+                invalid_token:
+                  value:
+                    error: invalid_token
+                    error_description: The access token provided is invalid
+        '429':
+          description: Too Many Requests - the account has exceeded 60 requests per minute.
+      security:
+      - bearerAuth: []
+      - oauth2: []
+  /customerEmailUpdate:
+    post:
+      operationId: updateCustomerEmailAddress
+      summary: Update Customer Email Address
+      description: Update a customer's email address in your ThriveCart account. This affects all their orders and customer hub access associated with the customer. When the new email matches an existing customer in your account, explicit merge confirmation is required to prevent accidental data consolidation.
+      tags:
+      - Customers
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                current_email:
+                  type: string
+                new_email:
+                  type: string
+                allow_merge:
+                  type: boolean
+            example:
+              current_email: john.old@example.com
+              new_email: john.new@example.com
+              allow_merge: false
+      responses:
+        '401':
+          description: Update Customer Email Address
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+                  data:
+                    type: object
+                    properties:
+                      previous_email:
+                        type: string
+                      current_email:
+                        type: string
+                      updated_at:
+                        type: string
+                      customer_id:
+                        type: string
+              examples:
+                Update_Customer_Email_Address:
+                  value:
+                    success: true
+                    message: Customer email updated successfully
+                    data:
+                      previous_email: john.old@example.com
+                      current_email: john.new@example.com
+                      updated_at: '2025-01-16T10:30:45Z'
+                      customer_id: '2720136'
+        '429':
+          description: Too Many Requests - the account has exceeded 60 requests per minute.
+      security:
+      - bearerAuth: []
+      - oauth2: []
+components:
+  schemas:
+    Error:
+      type: object
+      description: ThriveCart error envelope. Not RFC 9457 problem+json.
+      properties:
+        error:
+          type: string
+          description: Machine-readable error key.
+        error_description:
+          type: string
+          description: Human-readable description, when present.
+      required:
+      - error
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: 'Account-scoped API key created under Settings > API & webhooks > API tokens, or an OAuth access token, sent as `Authorization: Bearer <token>`.'
+    oauth2:
+      type: oauth2
+      description: OAuth 2.0 authorization code grant for applications acting on behalf of another ThriveCart account. ThriveCart does not publish a scope reference; access is granted account-wide on consent.
+      flows:
+        authorizationCode:
+          authorizationUrl: https://thrivecart.com/authorization/new
+          tokenUrl: https://thrivecart.com/authorization/token
+          scopes: {}
+externalDocs:
+  description: ThriveCart Developers
+  url: https://developers.thrivecart.com/documentation/

@@ -1,0 +1,263 @@
+openapi: 3.2.0
+info:
+  title: ThriveCart Products API
+  version: '1'
+  description: 'The ThriveCart API lets you read and manage the products, bumps, upsells, downsells, transactions, customers, subscriptions, affiliates and Learn students in a ThriveCart account, and to create targeted event subscriptions (webhooks).
+
+
+    This OpenAPI document is DERIVED by API Evangelist from ThriveCart''s own published Postman collection (https://apidocs.thrivecart.com/). Every path, method, parameter, request field, description and example response body is carried over from that first-party source. ThriveCart does not publish an OpenAPI definition of its own.'
+  termsOfService: https://thrivecart.com/legal/thrivecart/
+  contact:
+    name: ThriveCart Developer Support
+    url: https://developers.thrivecart.com/
+    email: support@thrivecart.com
+servers:
+- url: https://thrivecart.com/api/external
+  description: Production
+security:
+- bearerAuth: []
+- oauth2: []
+tags:
+- name: Products
+paths:
+  /products:
+    get:
+      operationId: listProducts
+      summary: List products
+      tags:
+      - Products
+      responses:
+        '200':
+          description: List products
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    product_id:
+                      type: string
+                    name:
+                      type: string
+                    label:
+                      type: string
+                    url:
+                      type: string
+                    embed_type:
+                      type: string
+                    status:
+                      type: string
+                    statusString:
+                      type: string
+                    type:
+                      type: string
+                    typeString:
+                      type: string
+              examples:
+                List_products:
+                  value:
+                  - product_id: '2'
+                    name: My Example Product
+                    label: Internal label for this product
+                    url: https://myaccount.thrivecart.com/my-example-product/
+                    embed_type: standard
+                    status: '2'
+                    statusString: live
+                    type: '1'
+                    typeString: digital
+                  - product_id: '1'
+                    name: My First Product
+                    label: Optional internal label
+                    url: https://myaccount.thrivecart.com/my-first-product/
+                    embed_type: standard
+                    status: '1'
+                    statusString: test
+                    type: '2'
+                    typeString: physical
+          headers:
+            X-ThriveCart-Account-Name:
+              description: X-ThriveCart-Account-Name
+              schema:
+                type: string
+              example: myaccount
+            X-ThriveCart-Account-URL:
+              description: X-ThriveCart-Account-URL
+              schema:
+                type: string
+              example: https://myaccount.thrivecart.com/
+        '401':
+          description: Unauthorized - the API key or access token is missing, invalid or expired.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                auth_missing:
+                  value:
+                    error: auth.missing
+                invalid_token:
+                  value:
+                    error: invalid_token
+                    error_description: The access token provided is invalid
+        '429':
+          description: Too Many Requests - the account has exceeded 60 requests per minute.
+      security:
+      - bearerAuth: []
+      - oauth2: []
+  /products/{product_id}:
+    get:
+      operationId: getProduct
+      summary: Get product
+      tags:
+      - Products
+      parameters:
+      - name: product_id
+        in: path
+        required: true
+        description: Product ID
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Product details
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  product_id:
+                    type: string
+                  name:
+                    type: string
+                  slug:
+                    type: string
+                  label:
+                    type: string
+                  status:
+                    type: string
+                  statusString:
+                    type: string
+                  type:
+                    type: string
+                  typeString:
+                    type: string
+                  payment_currency:
+                    type: string
+                  url:
+                    type: string
+                  embed_type:
+                    type: string
+              examples:
+                Product_details:
+                  value:
+                    product_id: '1'
+                    name: My Product
+                    slug: my-product
+                    label: Internal label for this product
+                    status: '2'
+                    statusString: live
+                    type: '1'
+                    typeString: digital
+                    payment_currency: USD
+                    url: https://myaccount.thrivecart.com/my-product/
+                    embed_type: standard
+          headers:
+            X-ThriveCart-Account-Name:
+              description: X-ThriveCart-Account-Name
+              schema:
+                type: string
+              example: myaccount
+            X-ThriveCart-Account-URL:
+              description: X-ThriveCart-Account-URL
+              schema:
+                type: string
+              example: https://myaccount.thrivecart.com/
+        '401':
+          description: Unauthorized - the API key or access token is missing, invalid or expired.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                auth_missing:
+                  value:
+                    error: auth.missing
+                invalid_token:
+                  value:
+                    error: invalid_token
+                    error_description: The access token provided is invalid
+        '429':
+          description: Too Many Requests - the account has exceeded 60 requests per minute.
+      security:
+      - bearerAuth: []
+      - oauth2: []
+  /products/{product_id}/pricing_options:
+    get:
+      operationId: getProductPriceDetails
+      summary: Get product price details
+      tags:
+      - Products
+      parameters:
+      - name: product_id
+        in: path
+        required: true
+        description: product_id path parameter.
+        schema:
+          type: string
+      - name: affiliate_id
+        in: query
+        required: false
+        description: (Optional) Provide an affiliate ID to query the commissions tailored to this specific affiliate
+        schema:
+          type: string
+      responses:
+        '401':
+          description: Unauthorized - the API key or access token is missing, invalid or expired.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                auth_missing:
+                  value:
+                    error: auth.missing
+                invalid_token:
+                  value:
+                    error: invalid_token
+                    error_description: The access token provided is invalid
+        '429':
+          description: Too Many Requests - the account has exceeded 60 requests per minute.
+      security:
+      - bearerAuth: []
+      - oauth2: []
+components:
+  schemas:
+    Error:
+      type: object
+      description: ThriveCart error envelope. Not RFC 9457 problem+json.
+      properties:
+        error:
+          type: string
+          description: Machine-readable error key.
+        error_description:
+          type: string
+          description: Human-readable description, when present.
+      required:
+      - error
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: 'Account-scoped API key created under Settings > API & webhooks > API tokens, or an OAuth access token, sent as `Authorization: Bearer <token>`.'
+    oauth2:
+      type: oauth2
+      description: OAuth 2.0 authorization code grant for applications acting on behalf of another ThriveCart account. ThriveCart does not publish a scope reference; access is granted account-wide on consent.
+      flows:
+        authorizationCode:
+          authorizationUrl: https://thrivecart.com/authorization/new
+          tokenUrl: https://thrivecart.com/authorization/token
+          scopes: {}
+externalDocs:
+  description: ThriveCart Developers
+  url: https://developers.thrivecart.com/documentation/

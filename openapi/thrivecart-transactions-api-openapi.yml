@@ -1,0 +1,221 @@
+openapi: 3.2.0
+info:
+  title: ThriveCart Transactions API
+  version: '1'
+  description: 'The ThriveCart API lets you read and manage the products, bumps, upsells, downsells, transactions, customers, subscriptions, affiliates and Learn students in a ThriveCart account, and to create targeted event subscriptions (webhooks).
+
+
+    This OpenAPI document is DERIVED by API Evangelist from ThriveCart''s own published Postman collection (https://apidocs.thrivecart.com/). Every path, method, parameter, request field, description and example response body is carried over from that first-party source. ThriveCart does not publish an OpenAPI definition of its own.'
+  termsOfService: https://thrivecart.com/legal/thrivecart/
+  contact:
+    name: ThriveCart Developer Support
+    url: https://developers.thrivecart.com/
+    email: support@thrivecart.com
+servers:
+- url: https://thrivecart.com/api/external
+  description: Production
+security:
+- bearerAuth: []
+- oauth2: []
+tags:
+- name: Transactions
+paths:
+  /transactions:
+    get:
+      operationId: searchTransactions
+      summary: Search transactions
+      description: 'Search through transaction events and return the info about activity within your account.
+
+
+        Events such as charges, rebills, refunds and cancellations will be included under the transaction_type key.'
+      tags:
+      - Transactions
+      parameters:
+      - name: page
+        in: query
+        required: true
+        description: Page number (1 through N)
+        schema:
+          type: string
+        example: '1'
+      - name: perPage
+        in: query
+        required: true
+        description: Results per page (max of 100)
+        schema:
+          type: string
+        example: '10'
+      - name: query
+        in: query
+        required: true
+        description: Search query (e.g. customer email, order ID, etc)
+        schema:
+          type: string
+      - name: transactionType
+        in: query
+        required: true
+        description: '''any'', ''charge'', ''rebill'', ''refund'', ''cancel'''
+        schema:
+          type: string
+        example: any
+      - name: currency
+        in: query
+        required: true
+        description: '''usd'', ''gbp'', etc (optional; leave blank for all currencies)'
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Search transactions
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  transactions:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        event_id:
+                          type: string
+                        base_product:
+                          type: string
+                        date:
+                          type: string
+                        time:
+                          type: string
+                        timestamp:
+                          type: integer
+                        transaction_type:
+                          type: string
+                        item_type:
+                          type: string
+                        item_id:
+                          type: integer
+                        amount:
+                          type: integer
+                        order_id:
+                          type: string
+                        invoice_id:
+                          type: string
+                        currency:
+                          type: string
+                        processor:
+                          type: string
+                        customer:
+                          type: object
+                          properties:
+                            name:
+                              type: string
+                            email:
+                              type: string
+                        reference:
+                          type: string
+                  meta:
+                    type: object
+                    properties:
+                      total:
+                        type: integer
+                      results:
+                        type: integer
+              examples:
+                Search_transactions:
+                  value:
+                    transactions:
+                    - event_id: '446660'
+                      base_product: '1'
+                      date: '2020-11-15'
+                      time: '2020-11-15 17:01:43'
+                      timestamp: 1605459703
+                      transaction_type: rebill
+                      item_type: product
+                      item_id: 1
+                      amount: 10000
+                      order_id: '7700'
+                      invoice_id: '1467'
+                      currency: USD
+                      processor: paypal
+                      customer:
+                        name: Demo Customer
+                        email: demo@thrivecart.com
+                      reference: product-222-138
+                    - event_id: '446642'
+                      base_product: '2'
+                      date: '2020-11-15'
+                      time: '2020-11-15 16:22:52'
+                      timestamp: 1605457372
+                      transaction_type: rebill
+                      item_type: product
+                      item_id: 2
+                      amount: 3300
+                      order_id: '18584'
+                      invoice_id: '2563'
+                      currency: USD
+                      processor: paypal
+                      customer:
+                        name: Other Demo Customer
+                        email: demo-2@thrivecart.com
+                    meta:
+                      total: 8358
+                      results: 25
+          headers:
+            X-ThriveCart-Account-Name:
+              description: X-ThriveCart-Account-Name
+              schema:
+                type: string
+              example: myaccount
+            X-ThriveCart-Account-URL:
+              description: X-ThriveCart-Account-URL
+              schema:
+                type: string
+              example: https://myaccount.thrivecart.com/
+        '401':
+          description: Unauthorized - the API key or access token is missing, invalid or expired.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                auth_missing:
+                  value:
+                    error: auth.missing
+                invalid_token:
+                  value:
+                    error: invalid_token
+                    error_description: The access token provided is invalid
+        '429':
+          description: Too Many Requests - the account has exceeded 60 requests per minute.
+      security:
+      - bearerAuth: []
+      - oauth2: []
+components:
+  schemas:
+    Error:
+      type: object
+      description: ThriveCart error envelope. Not RFC 9457 problem+json.
+      properties:
+        error:
+          type: string
+          description: Machine-readable error key.
+        error_description:
+          type: string
+          description: Human-readable description, when present.
+      required:
+      - error
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: 'Account-scoped API key created under Settings > API & webhooks > API tokens, or an OAuth access token, sent as `Authorization: Bearer <token>`.'
+    oauth2:
+      type: oauth2
+      description: OAuth 2.0 authorization code grant for applications acting on behalf of another ThriveCart account. ThriveCart does not publish a scope reference; access is granted account-wide on consent.
+      flows:
+        authorizationCode:
+          authorizationUrl: https://thrivecart.com/authorization/new
+          tokenUrl: https://thrivecart.com/authorization/token
+          scopes: {}
+externalDocs:
+  description: ThriveCart Developers
+  url: https://developers.thrivecart.com/documentation/

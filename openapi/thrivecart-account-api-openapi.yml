@@ -1,0 +1,115 @@
+openapi: 3.2.0
+info:
+  title: ThriveCart Account API
+  version: '1'
+  description: 'The ThriveCart API lets you read and manage the products, bumps, upsells, downsells, transactions, customers, subscriptions, affiliates and Learn students in a ThriveCart account, and to create targeted event subscriptions (webhooks).
+
+
+    This OpenAPI document is DERIVED by API Evangelist from ThriveCart''s own published Postman collection (https://apidocs.thrivecart.com/). Every path, method, parameter, request field, description and example response body is carried over from that first-party source. ThriveCart does not publish an OpenAPI definition of its own.'
+  termsOfService: https://thrivecart.com/legal/thrivecart/
+  contact:
+    name: ThriveCart Developer Support
+    url: https://developers.thrivecart.com/
+    email: support@thrivecart.com
+servers:
+- url: https://thrivecart.com/api/external
+  description: Production
+security:
+- bearerAuth: []
+- oauth2: []
+tags:
+- name: Account
+paths:
+  /ping:
+    get:
+      operationId: ping
+      summary: Ping
+      description: Get information about the account that your API key or access token grants access to. No parameters are required for this endpoint. It's also useful to check the validity of your token.
+      tags:
+      - Account
+      responses:
+        '401':
+          description: Invalid/expired credentials
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  error_description:
+                    type: string
+              examples:
+                Invalid_expired_credentials:
+                  value:
+                    error: invalid_token
+                    error_description: The access token provided is invalid
+        '200':
+          description: Ping
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  account_name:
+                    type: string
+                  account_id:
+                    type: string
+                  account_version:
+                    type: string
+                  account_url:
+                    type: string
+                  user_id:
+                    type: string
+                  user_username:
+                    type: string
+                  user_name:
+                    type: string
+                  custom_domain_enabled:
+                    type: boolean
+                  custom_domain: {}
+              examples:
+                Ping:
+                  value:
+                    account_name: myaccount
+                    account_id: '1'
+                    account_version: pro
+                    account_url: https://myaccount.thrivecart.com/
+                    user_id: '1'
+                    user_username: marc@thrivecart.com
+                    user_name: Marc Fowler
+                    custom_domain_enabled: false
+                    custom_domain: null
+          headers:
+            X-ThriveCart-Account-Name:
+              description: X-ThriveCart-Account-Name
+              schema:
+                type: string
+              example: myaccount
+            X-ThriveCart-Account-URL:
+              description: X-ThriveCart-Account-URL
+              schema:
+                type: string
+              example: https://myaccount.thrivecart.com/
+        '429':
+          description: Too Many Requests - the account has exceeded 60 requests per minute.
+      security:
+      - bearerAuth: []
+      - oauth2: []
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: 'Account-scoped API key created under Settings > API & webhooks > API tokens, or an OAuth access token, sent as `Authorization: Bearer <token>`.'
+    oauth2:
+      type: oauth2
+      description: OAuth 2.0 authorization code grant for applications acting on behalf of another ThriveCart account. ThriveCart does not publish a scope reference; access is granted account-wide on consent.
+      flows:
+        authorizationCode:
+          authorizationUrl: https://thrivecart.com/authorization/new
+          tokenUrl: https://thrivecart.com/authorization/token
+          scopes: {}
+externalDocs:
+  description: ThriveCart Developers
+  url: https://developers.thrivecart.com/documentation/

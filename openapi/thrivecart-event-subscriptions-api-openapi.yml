@@ -1,0 +1,242 @@
+openapi: 3.2.0
+info:
+  title: ThriveCart Event subscriptions API
+  version: '1'
+  description: 'The ThriveCart API lets you read and manage the products, bumps, upsells, downsells, transactions, customers, subscriptions, affiliates and Learn students in a ThriveCart account, and to create targeted event subscriptions (webhooks).
+
+
+    This OpenAPI document is DERIVED by API Evangelist from ThriveCart''s own published Postman collection (https://apidocs.thrivecart.com/). Every path, method, parameter, request field, description and example response body is carried over from that first-party source. ThriveCart does not publish an OpenAPI definition of its own.'
+  termsOfService: https://thrivecart.com/legal/thrivecart/
+  contact:
+    name: ThriveCart Developer Support
+    url: https://developers.thrivecart.com/
+    email: support@thrivecart.com
+servers:
+- url: https://thrivecart.com/api/external
+  description: Production
+security:
+- bearerAuth: []
+- oauth2: []
+tags:
+- name: Event subscriptions
+paths:
+  /subscribe:
+    post:
+      operationId: createEventSubscription
+      summary: Create event subscription
+      description: 'Subscribe an endpoint to receive custom webhook notifications. Accepts JSON containing event, target_url and trigger_fields.
+
+
+        Target URL
+
+        You must have registered the beginning of your target URL with your app. For example, to receive events at https://mysite.com/webhook, you must register at least https://mysite.com within your app''s URL settings or you will receive an error.
+
+
+        Important: Unsubscribing is done by URL. As such, as highly recommend creating a unique URL for each subscription you create!
+
+
+        Potential event values
+
+
+        * (receives all events)
+
+        order_payment_product (notified when a product is purchased)
+
+        order_payment_bump (notified when a bump offer is purchased)
+
+        order_payment_upsell (notified when an upsell is purchased)
+
+        order_payment_downsell (notified when a downsell is purchased)
+
+        order_payment_declined_product (notified when a purchase is declined)
+
+        cart_abandoned (notified when a cart is abandoned)
+
+        order_refund (notified when a refund is issused)
+
+        order_rebill (notified on successful recurring payment)
+
+        order_rebill_failed (notified when a recurring payment fails)
+
+        order_rebill_cancelled (notified on subscription cancellation)
+
+        order_rebill_completed (notified once all payments in a split pay have been completed)
+
+        subscription_paused (notified when a subscription is paused)
+
+        subscription_resumed (notified when a subscription is resumed)
+
+        affiliate_created (notified when a new affiliate is created)
+
+        affiliate_approved (notified when an affiliate is approved for a product)
+
+        affiliate_rejected (notified when an affiliate is rejected from a product)
+
+        affiliate_commission_earned (notified when an affiliate earns commission)
+
+        affiliate_commission_payout (notified when an affiliate is paid some commission)
+
+        affiliate_commission_refund (notified when an affiliate has commission clawed back)
+
+
+        See the detailed documentation on our developer site to see examples and learn how to filter using trigger fields.'
+      tags:
+      - Event subscriptions
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                event:
+                  type: string
+                target_url:
+                  type: string
+                trigger_fields:
+                  type: object
+                  properties:
+                    mode_int:
+                      type: integer
+            example:
+              event: '*'
+              target_url: https://webhook.site/7f5edced-00f7-43fb-833d-38e8cbdc6251
+              trigger_fields:
+                mode_int: 2
+      responses:
+        '201':
+          description: Create event subscription
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  subscription_id:
+                    type: integer
+              examples:
+                Create_event_subscription:
+                  value:
+                    subscription_id: 253485285
+          headers:
+            X-ThriveCart-Account-Name:
+              description: X-ThriveCart-Account-Name
+              schema:
+                type: string
+              example: myaccount
+            X-ThriveCart-Account-URL:
+              description: X-ThriveCart-Account-URL
+              schema:
+                type: string
+              example: https://myaccount.thrivecart.com/
+        '401':
+          description: Unauthorized - the API key or access token is missing, invalid or expired.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                auth_missing:
+                  value:
+                    error: auth.missing
+                invalid_token:
+                  value:
+                    error: invalid_token
+                    error_description: The access token provided is invalid
+        '429':
+          description: Too Many Requests - the account has exceeded 60 requests per minute.
+      security:
+      - bearerAuth: []
+      - oauth2: []
+  /unsubscribe:
+    post:
+      operationId: unsubscribeFromAnEvent
+      summary: Unsubscribe from an event
+      description: 'Unsubscribe an endpoint and no longer receive notifications to it.
+
+
+        Important: As noted when creating an event subscription, we highly recommend using random and unique URLs for each subscription so that they are easily removable.'
+      tags:
+      - Event subscriptions
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                url:
+                  type: string
+                  description: Your endpoint URL to remove
+              required:
+              - url
+      responses:
+        '200':
+          description: Unsubscribe from an event
+          content:
+            application/json:
+              schema:
+                type: array
+                items: {}
+              examples:
+                Unsubscribe_from_an_event:
+                  value: []
+          headers:
+            X-ThriveCart-Account-Name:
+              description: X-ThriveCart-Account-Name
+              schema:
+                type: string
+              example: myaccount
+            X-ThriveCart-Account-URL:
+              description: X-ThriveCart-Account-URL
+              schema:
+                type: string
+              example: https://myaccount.thrivecart.com/
+        '401':
+          description: Unauthorized - the API key or access token is missing, invalid or expired.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                auth_missing:
+                  value:
+                    error: auth.missing
+                invalid_token:
+                  value:
+                    error: invalid_token
+                    error_description: The access token provided is invalid
+        '429':
+          description: Too Many Requests - the account has exceeded 60 requests per minute.
+      security:
+      - bearerAuth: []
+      - oauth2: []
+components:
+  schemas:
+    Error:
+      type: object
+      description: ThriveCart error envelope. Not RFC 9457 problem+json.
+      properties:
+        error:
+          type: string
+          description: Machine-readable error key.
+        error_description:
+          type: string
+          description: Human-readable description, when present.
+      required:
+      - error
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: 'Account-scoped API key created under Settings > API & webhooks > API tokens, or an OAuth access token, sent as `Authorization: Bearer <token>`.'
+    oauth2:
+      type: oauth2
+      description: OAuth 2.0 authorization code grant for applications acting on behalf of another ThriveCart account. ThriveCart does not publish a scope reference; access is granted account-wide on consent.
+      flows:
+        authorizationCode:
+          authorizationUrl: https://thrivecart.com/authorization/new
+          tokenUrl: https://thrivecart.com/authorization/token
+          scopes: {}
+externalDocs:
+  description: ThriveCart Developers
+  url: https://developers.thrivecart.com/documentation/
