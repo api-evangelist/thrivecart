@@ -239,6 +239,8 @@ apis:
   humanURL: https://developers.thrivecart.com/documentation/
   baseURL: https://thrivecart.com/api/external
   tags:
+  - Event Subscriptions
+  tags_raw:
   - Event subscriptions
   properties:
   - type: OpenAPI
@@ -311,6 +313,8 @@ apis:
   humanURL: https://developers.thrivecart.com/documentation/
   baseURL: https://thrivecart.com/api/external
   tags:
+  - Product
+  tags_raw:
   - Products
   properties:
   - type: OpenAPI
@@ -347,6 +351,8 @@ apis:
   humanURL: https://developers.thrivecart.com/documentation/
   baseURL: https://thrivecart.com/api/external
   tags:
+  - Subscription
+  tags_raw:
   - Subscriptions
   properties:
   - type: OpenAPI
@@ -383,6 +389,8 @@ apis:
   humanURL: https://developers.thrivecart.com/documentation/
   baseURL: https://thrivecart.com/api/external
   tags:
+  - Transaction
+  tags_raw:
   - Transactions
   properties:
   - type: OpenAPI

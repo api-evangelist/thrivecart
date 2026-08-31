@@ -2,6 +2,20 @@
   "repo": "thrivecart",
   "feeds": [
     {
+      "source": "https://support.thrivecart.com/feed/",
+      "feed_url": "https://support.thrivecart.com/feed/",
+      "title": "",
+      "saved": 0,
+      "method": "feed"
+    },
+    {
+      "source": "https://thrivecart.com/blog/feed/",
+      "feed_url": "https://thrivecart.com/blog/feed/",
+      "title": "",
+      "saved": 0,
+      "method": "feed"
+    },
+    {
       "source": "https://support.thrivecart.com/",
       "feed_url": "https://support.thrivecart.com/feed/",
       "title": "",
@@ -12,10 +26,10 @@
       "source": "https://thrivecart.com/blog/",
       "feed_url": "https://thrivecart.com/blog/feed/",
       "title": "",
-      "saved": 3,
+      "saved": 0,
       "method": "discovered"
     }
   ],
-  "post_count": 3,
-  "fetched": "2026-08-22T20:20:02Z"
+  "post_count": 12,
+  "fetched": "2026-08-30T22:33:40Z"
 }
