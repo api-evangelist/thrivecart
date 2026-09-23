@@ -1,0 +1,40 @@
+{
+  "provider": "thrivecart",
+  "sources": [
+    "_original/thrivecart-api-openapi.yml"
+  ],
+  "outputs": [
+    "thrivecart-account-api-openapi.yml",
+    "thrivecart-affiliates-api-openapi.yml",
+    "thrivecart-bumps-api-openapi.yml",
+    "thrivecart-customers-api-openapi.yml",
+    "thrivecart-downsells-api-openapi.yml",
+    "thrivecart-event-subscriptions-api-openapi.yml",
+    "thrivecart-learn-api-openapi.yml",
+    "thrivecart-products-api-openapi.yml",
+    "thrivecart-subscriptions-api-openapi.yml",
+    "thrivecart-transactions-api-openapi.yml",
+    "thrivecart-upsells-api-openapi.yml"
+  ],
+  "archived": [],
+  "errors": [],
+  "warnings": [],
+  "notes": [
+    "sourced from openapi/_original/ (1 archived document(s)); previously refined output at the top level was skipped rather than re-split",
+    "thrivecart-api-openapi.yml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
+    "apis.yml register: already-registered"
+  ],
+  "skipped": [
+    "thrivecart-account-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "thrivecart-affiliates-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "thrivecart-bumps-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "thrivecart-customers-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "thrivecart-downsells-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "thrivecart-event-subscriptions-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "thrivecart-learn-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "thrivecart-products-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "thrivecart-subscriptions-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "thrivecart-transactions-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "thrivecart-upsells-api-openapi.yml: previously refined output, superseded by openapi/_original/"
+  ]
+}

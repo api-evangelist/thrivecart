@@ -2,10 +2,7 @@ openapi: 3.2.0
 info:
   title: ThriveCart Event subscriptions API
   version: '1'
-  description: 'The ThriveCart API lets you read and manage the products, bumps, upsells, downsells, transactions, customers, subscriptions, affiliates and Learn students in a ThriveCart account, and to create targeted event subscriptions (webhooks).
-
-
-    This OpenAPI document is DERIVED by API Evangelist from ThriveCart''s own published Postman collection (https://apidocs.thrivecart.com/). Every path, method, parameter, request field, description and example response body is carried over from that first-party source. ThriveCart does not publish an OpenAPI definition of its own.'
+  description: The ThriveCart API lets you read and manage the products, bumps, upsells, downsells, transactions, customers, subscriptions, affiliates and Learn students in a ThriveCart account, and to create targeted event subscriptions (webhooks).
   termsOfService: https://thrivecart.com/legal/thrivecart/
   contact:
     name: ThriveCart Developer Support
@@ -18,7 +15,7 @@ security:
 - bearerAuth: []
 - oauth2: []
 tags:
-- name: Event subscriptions
+- name: Event Subscriptions
 paths:
   /subscribe:
     post:
@@ -81,7 +78,7 @@ paths:
 
         See the detailed documentation on our developer site to see examples and learn how to filter using trigger fields.'
       tags:
-      - Event subscriptions
+      - Event Subscriptions
       requestBody:
         required: true
         content:
@@ -156,7 +153,7 @@ paths:
 
         Important: As noted when creating an event subscription, we highly recommend using random and unique URLs for each subscription so that they are easily removable.'
       tags:
-      - Event subscriptions
+      - Event Subscriptions
       requestBody:
         required: true
         content:

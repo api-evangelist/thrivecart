@@ -2,10 +2,7 @@ openapi: 3.2.0
 info:
   title: ThriveCart Downsells API
   version: '1'
-  description: 'The ThriveCart API lets you read and manage the products, bumps, upsells, downsells, transactions, customers, subscriptions, affiliates and Learn students in a ThriveCart account, and to create targeted event subscriptions (webhooks).
-
-
-    This OpenAPI document is DERIVED by API Evangelist from ThriveCart''s own published Postman collection (https://apidocs.thrivecart.com/). Every path, method, parameter, request field, description and example response body is carried over from that first-party source. ThriveCart does not publish an OpenAPI definition of its own.'
+  description: The ThriveCart API lets you read and manage the products, bumps, upsells, downsells, transactions, customers, subscriptions, affiliates and Learn students in a ThriveCart account, and to create targeted event subscriptions (webhooks).
   termsOfService: https://thrivecart.com/legal/thrivecart/
   contact:
     name: ThriveCart Developer Support
