@@ -479,6 +479,8 @@ maintainers:
 - FN: APIs.json
   email: info@apis.io
 common:
+- type: Pricing
+  url: https://thrivecart.com/products/proplus/
 - type: CapabilityMap
   url: capabilities/thrivecart-capability-edges.yml
   name: ThriveCart Business Capability Map
