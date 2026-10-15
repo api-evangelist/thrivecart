@@ -1,9 +1,103 @@
-generated: '2026-08-12'
-method: derived
-source: openapi/thrivecart-api-openapi.yml
+generated: '2026-10-14'
+method: none
+source: openapi/thrivecart-account-api-openapi.yml, openapi/thrivecart-affiliates-api-openapi.yml,
+  openapi/thrivecart-bumps-api-openapi.yml, openapi/thrivecart-customers-api-openapi.yml, openapi/thrivecart-downsells-api-openapi.yml,
+  openapi/thrivecart-event-subscriptions-api-openapi.yml, openapi/thrivecart-learn-api-openapi.yml,
+  openapi/thrivecart-products-api-openapi.yml, openapi/thrivecart-subscriptions-api-openapi.yml,
+  openapi/thrivecart-transactions-api-openapi.yml, openapi/thrivecart-upsells-api-openapi.yml
 schemes:
 - name: oauth2
-  source: openapi/thrivecart-api-openapi.yml
+  source: openapi/thrivecart-account-api-openapi.yml
+  flows:
+  - flow: authorizationCode
+    authorizationUrl: https://thrivecart.com/authorization/new
+    tokenUrl: https://thrivecart.com/authorization/token
+  description: OAuth 2.0 authorization code grant for applications acting on behalf of another
+    ThriveCart account. ThriveCart does not publish a scope reference; access is granted account-wide
+    on consent.
+- name: oauth2
+  source: openapi/thrivecart-affiliates-api-openapi.yml
+  flows:
+  - flow: authorizationCode
+    authorizationUrl: https://thrivecart.com/authorization/new
+    tokenUrl: https://thrivecart.com/authorization/token
+  description: OAuth 2.0 authorization code grant for applications acting on behalf of another
+    ThriveCart account. ThriveCart does not publish a scope reference; access is granted account-wide
+    on consent.
+- name: oauth2
+  source: openapi/thrivecart-bumps-api-openapi.yml
+  flows:
+  - flow: authorizationCode
+    authorizationUrl: https://thrivecart.com/authorization/new
+    tokenUrl: https://thrivecart.com/authorization/token
+  description: OAuth 2.0 authorization code grant for applications acting on behalf of another
+    ThriveCart account. ThriveCart does not publish a scope reference; access is granted account-wide
+    on consent.
+- name: oauth2
+  source: openapi/thrivecart-customers-api-openapi.yml
+  flows:
+  - flow: authorizationCode
+    authorizationUrl: https://thrivecart.com/authorization/new
+    tokenUrl: https://thrivecart.com/authorization/token
+  description: OAuth 2.0 authorization code grant for applications acting on behalf of another
+    ThriveCart account. ThriveCart does not publish a scope reference; access is granted account-wide
+    on consent.
+- name: oauth2
+  source: openapi/thrivecart-downsells-api-openapi.yml
+  flows:
+  - flow: authorizationCode
+    authorizationUrl: https://thrivecart.com/authorization/new
+    tokenUrl: https://thrivecart.com/authorization/token
+  description: OAuth 2.0 authorization code grant for applications acting on behalf of another
+    ThriveCart account. ThriveCart does not publish a scope reference; access is granted account-wide
+    on consent.
+- name: oauth2
+  source: openapi/thrivecart-event-subscriptions-api-openapi.yml
+  flows:
+  - flow: authorizationCode
+    authorizationUrl: https://thrivecart.com/authorization/new
+    tokenUrl: https://thrivecart.com/authorization/token
+  description: OAuth 2.0 authorization code grant for applications acting on behalf of another
+    ThriveCart account. ThriveCart does not publish a scope reference; access is granted account-wide
+    on consent.
+- name: oauth2
+  source: openapi/thrivecart-learn-api-openapi.yml
+  flows:
+  - flow: authorizationCode
+    authorizationUrl: https://thrivecart.com/authorization/new
+    tokenUrl: https://thrivecart.com/authorization/token
+  description: OAuth 2.0 authorization code grant for applications acting on behalf of another
+    ThriveCart account. ThriveCart does not publish a scope reference; access is granted account-wide
+    on consent.
+- name: oauth2
+  source: openapi/thrivecart-products-api-openapi.yml
+  flows:
+  - flow: authorizationCode
+    authorizationUrl: https://thrivecart.com/authorization/new
+    tokenUrl: https://thrivecart.com/authorization/token
+  description: OAuth 2.0 authorization code grant for applications acting on behalf of another
+    ThriveCart account. ThriveCart does not publish a scope reference; access is granted account-wide
+    on consent.
+- name: oauth2
+  source: openapi/thrivecart-subscriptions-api-openapi.yml
+  flows:
+  - flow: authorizationCode
+    authorizationUrl: https://thrivecart.com/authorization/new
+    tokenUrl: https://thrivecart.com/authorization/token
+  description: OAuth 2.0 authorization code grant for applications acting on behalf of another
+    ThriveCart account. ThriveCart does not publish a scope reference; access is granted account-wide
+    on consent.
+- name: oauth2
+  source: openapi/thrivecart-transactions-api-openapi.yml
+  flows:
+  - flow: authorizationCode
+    authorizationUrl: https://thrivecart.com/authorization/new
+    tokenUrl: https://thrivecart.com/authorization/token
+  description: OAuth 2.0 authorization code grant for applications acting on behalf of another
+    ThriveCart account. ThriveCart does not publish a scope reference; access is granted account-wide
+    on consent.
+- name: oauth2
+  source: openapi/thrivecart-upsells-api-openapi.yml
   flows:
   - flow: authorizationCode
     authorizationUrl: https://thrivecart.com/authorization/new
@@ -12,3 +106,5 @@ schemes:
     ThriveCart account. ThriveCart does not publish a scope reference; access is granted account-wide
     on consent.
 scopes: []
+note: The OAuth2 security scheme(s) in the OpenAPI declare no scopes, and no security requirement
+  references one.
