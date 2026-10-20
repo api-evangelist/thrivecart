@@ -14,6 +14,7 @@
   evidence: https://zapier.com/apps/flodesk/integrations/thrivecart/969806/create-or-update-flodesk-subscribers-with-new-thrivecart-purchases
   template: https://zapier.com/apps/flodesk/integrations/thrivecart/969806/create-or-update-flodesk-subscribers-with-new-thrivecart-purchases
   source: template
+  relationship: ipaas-bridge
   status: pending-partner-spec
   arazzo: null
 - slug: thrivecart-add-or-update-brevo-fka-sendinblue-contacts-for-new-thrivecart-product-purchase
@@ -28,6 +29,7 @@
   evidence: https://zapier.com/apps/brevo/integrations/thrivecart/1525878/add-or-update-brevo-fka-sendinblue-contacts-for-new-thrivecart-product-purchases
   template: https://zapier.com/apps/brevo/integrations/thrivecart/1525878/add-or-update-brevo-fka-sendinblue-contacts-for-new-thrivecart-product-purchases
   source: template
+  relationship: ipaas-bridge
   status: pending-generation
   arazzo: null
 - slug: thrivecart-grant-access-to-kajabi-offers-for-new-thrivecart-product-purchases
@@ -42,6 +44,7 @@
   evidence: https://zapier.com/apps/kajabi/integrations/thrivecart/962626/grant-access-to-kajabi-offers-for-new-thrivecart-product-purchases
   template: https://zapier.com/apps/kajabi/integrations/thrivecart/962626/grant-access-to-kajabi-offers-for-new-thrivecart-product-purchases
   source: template
+  relationship: ipaas-bridge
   status: pending-generation
   arazzo: null
 - slug: thrivecart-send-mighty-network-invitations-with-new-thrivecart-purchases
@@ -56,6 +59,7 @@
   evidence: https://zapier.com/apps/mightynetworks/integrations/thrivecart/254349/send-mighty-network-invitations-with-new-thrivecart-purchases
   template: https://zapier.com/apps/mightynetworks/integrations/thrivecart/254349/send-mighty-network-invitations-with-new-thrivecart-purchases
   source: template
+  relationship: ipaas-bridge
   status: pending-generation
   arazzo: null
 - slug: thrivecart-invite-new-members-to-circle-when-products-are-purchased-in-thrivecart
@@ -70,6 +74,7 @@
   evidence: https://zapier.com/apps/circle/integrations/thrivecart/1214921/invite-new-members-to-circle-when-products-are-purchased-in-thrivecart
   template: https://zapier.com/apps/circle/integrations/thrivecart/1214921/invite-new-members-to-circle-when-products-are-purchased-in-thrivecart
   source: template
+  relationship: ipaas-bridge
   status: pending-generation
   arazzo: null
 - slug: thrivecart-create-google-sheets-rows-for-new-product-purchases-in-thrivecart
@@ -84,6 +89,7 @@
   evidence: https://zapier.com/apps/google-sheets/integrations/thrivecart/969882/create-google-sheets-rows-for-new-product-purchases-in-thrivecart
   template: https://zapier.com/apps/google-sheets/integrations/thrivecart/969882/create-google-sheets-rows-for-new-product-purchases-in-thrivecart
   source: template
+  relationship: ipaas-bridge
   status: pending-generation
   arazzo: null
 - slug: thrivecart-create-transactional-emails-in-brevo-for-new-product-purchases-in-thrivecart
@@ -98,6 +104,7 @@
   evidence: https://zapier.com/apps/brevo/integrations/thrivecart/1221229/create-transactional-emails-in-brevo-for-new-product-purchases-in-thrivecart
   template: https://zapier.com/apps/brevo/integrations/thrivecart/1221229/create-transactional-emails-in-brevo-for-new-product-purchases-in-thrivecart
   source: template
+  relationship: ipaas-bridge
   status: pending-generation
   arazzo: null
 - slug: thrivecart-recover-abandoned-thrivecart-carts-with-flodesk-subscribers
@@ -111,6 +118,7 @@
   evidence: https://zapier.com/apps/flodesk/integrations/thrivecart/1210575/recover-abandoned-thrivecart-carts-with-flodesk-subscribers
   template: https://zapier.com/apps/flodesk/integrations/thrivecart/1210575/recover-abandoned-thrivecart-carts-with-flodesk-subscribers
   source: template
+  relationship: ipaas-bridge
   status: pending-partner-spec
   arazzo: null
 - slug: thrivecart-enroll-thinkific-users-with-new-thrivecart-product-purchases
@@ -125,6 +133,7 @@
   evidence: https://zapier.com/apps/thinkific/integrations/thrivecart/975129/enroll-thinkific-users-with-new-thrivecart-product-purchases
   template: https://zapier.com/apps/thinkific/integrations/thrivecart/975129/enroll-thinkific-users-with-new-thrivecart-product-purchases
   source: template
+  relationship: ipaas-bridge
   status: pending-generation
   arazzo: null
 - slug: thrivecart-remove-mighty-networks-members-when-thrivecart-recurring-payments-are-cancelled
@@ -139,274 +148,7 @@
   evidence: https://zapier.com/apps/mightynetworks/integrations/thrivecart/1225937/remove-mighty-networks-members-when-thrivecart-recurring-payments-are-cancelled
   template: https://zapier.com/apps/mightynetworks/integrations/thrivecart/1225937/remove-mighty-networks-members-when-thrivecart-recurring-payments-are-cancelled
   source: template
-  status: pending-generation
-  arazzo: null
-- slug: thrivecart-airtable
-  label: Airtable
-  partner: airtable
-  partner_name: Airtable
-  category: Databases
-  type: marketplace
-  marketplace: zapier
-  channel: ipaas-usage
-  evidence: https://zapier.com/apps/thrivecart/integrations/airtable
-  source: edge
-  status: pending-generation
-  arazzo: null
-- slug: thrivecart-leadconnector
-  label: LeadConnector
-  partner_name: LeadConnector
-  category: Marketing Automation
-  type: marketplace
-  marketplace: zapier
-  channel: ipaas-usage
-  evidence: https://zapier.com/apps/thrivecart/integrations/leadconnector
-  source: edge
-  status: pending-partner-spec
-  arazzo: null
-- slug: thrivecart-mailerlite
-  label: MailerLite
-  partner: mailerlite
-  partner_name: MailerLite
-  category: Marketing Automation
-  type: marketplace
-  marketplace: zapier
-  channel: ipaas-usage
-  evidence: https://zapier.com/apps/thrivecart/integrations/mailerlite
-  source: edge
-  status: pending-generation
-  arazzo: null
-- slug: thrivecart-gmail
-  label: Gmail
-  partner: gmail
-  partner_name: Gmail
-  category: Email
-  type: marketplace
-  marketplace: zapier
-  channel: ipaas-usage
-  evidence: https://zapier.com/apps/thrivecart/integrations/gmail
-  source: edge
-  status: pending-partner-spec
-  arazzo: null
-- slug: thrivecart-skool
-  label: Skool
-  partner: skool
-  partner_name: Skool
-  category: Education
-  type: marketplace
-  marketplace: zapier
-  channel: ipaas-usage
-  evidence: https://zapier.com/apps/thrivecart/integrations/skool
-  source: edge
-  status: pending-partner-spec
-  arazzo: null
-- slug: thrivecart-xperiencify
-  label: Xperiencify
-  partner_name: Xperiencify
-  category: Online Courses
-  type: marketplace
-  marketplace: zapier
-  channel: ipaas-usage
-  evidence: https://zapier.com/apps/thrivecart/integrations/xperiencify
-  source: edge
-  status: pending-partner-spec
-  arazzo: null
-- slug: thrivecart-hubspot
-  label: HubSpot
-  partner: hubspot
-  partner_name: HubSpot
-  category: Marketing Automation
-  type: marketplace
-  marketplace: zapier
-  channel: ipaas-usage
-  evidence: https://zapier.com/apps/thrivecart/integrations/hubspot
-  source: edge
-  status: pending-generation
-  arazzo: null
-- slug: thrivecart-kartra
-  label: Kartra
-  partner: kartra
-  partner_name: Kartra
-  category: Marketing Automation
-  type: marketplace
-  marketplace: zapier
-  channel: ipaas-usage
-  evidence: https://zapier.com/apps/thrivecart/integrations/kartra
-  source: edge
-  status: pending-partner-spec
-  arazzo: null
-- slug: thrivecart-clickup
-  label: ClickUp
-  partner: clickup
-  partner_name: ClickUp
-  category: Project Management
-  type: marketplace
-  marketplace: zapier
-  channel: ipaas-usage
-  evidence: https://zapier.com/apps/thrivecart/integrations/clickup
-  source: edge
-  status: pending-generation
-  arazzo: null
-- slug: thrivecart-podia
-  label: Podia
-  partner: podia
-  partner_name: Podia
-  category: Online Courses
-  type: marketplace
-  marketplace: zapier
-  channel: ipaas-usage
-  evidence: https://zapier.com/apps/thrivecart/integrations/podia
-  source: edge
-  status: pending-partner-spec
-  arazzo: null
-- slug: thrivecart-memberspot
-  label: Memberspot
-  partner_name: Memberspot
-  category: Online Courses
-  type: marketplace
-  marketplace: zapier
-  channel: ipaas-usage
-  evidence: https://zapier.com/apps/thrivecart/integrations/memberspot
-  source: edge
-  status: pending-partner-spec
-  arazzo: null
-- slug: thrivecart-membervault
-  label: MemberVault
-  partner_name: MemberVault
-  category: Online Courses
-  type: marketplace
-  marketplace: zapier
-  channel: ipaas-usage
-  evidence: https://zapier.com/apps/thrivecart/integrations/membervault
-  source: edge
-  status: pending-partner-spec
-  arazzo: null
-- slug: thrivecart-systeme-io
-  label: systeme.io
-  partner_name: systeme.io
-  category: Marketing
-  type: marketplace
-  marketplace: zapier
-  channel: ipaas-usage
-  evidence: https://zapier.com/apps/thrivecart/integrations/systemeio
-  source: edge
-  status: pending-partner-spec
-  arazzo: null
-- slug: thrivecart-notion
-  label: Notion
-  partner: notion
-  partner_name: Notion
-  category: Task Management
-  type: marketplace
-  marketplace: zapier
-  channel: ipaas-usage
-  evidence: https://zapier.com/apps/thrivecart/integrations/notion
-  source: edge
-  status: pending-generation
-  arazzo: null
-- slug: thrivecart-mailchimp
-  label: Mailchimp
-  partner: mailchimp
-  partner_name: Mailchimp
-  category: Marketing Automation
-  type: marketplace
-  marketplace: zapier
-  channel: ipaas-usage
-  evidence: https://zapier.com/apps/thrivecart/integrations/mailchimp
-  source: edge
-  status: pending-generation
-  arazzo: null
-- slug: thrivecart-activecampaign
-  label: ActiveCampaign
-  partner: activecampaign
-  partner_name: ActiveCampaign
-  category: Marketing Automation
-  type: marketplace
-  marketplace: zapier
-  channel: ipaas-usage
-  evidence: https://zapier.com/apps/thrivecart/integrations/activecampaign
-  source: edge
-  status: pending-generation
-  arazzo: null
-- slug: thrivecart-klicktipp
-  label: KlickTipp
-  partner_name: KlickTipp
-  category: Marketing Automation
-  type: marketplace
-  marketplace: zapier
-  channel: ipaas-usage
-  evidence: https://zapier.com/apps/thrivecart/integrations/klicktipp
-  source: edge
-  status: pending-partner-spec
-  arazzo: null
-- slug: thrivecart-slack
-  label: Slack
-  partner: slack
-  partner_name: Slack
-  category: Team Chat
-  type: marketplace
-  marketplace: zapier
-  channel: ipaas-usage
-  evidence: https://zapier.com/apps/thrivecart/integrations/slack
-  source: edge
-  status: pending-generation
-  arazzo: null
-- slug: thrivecart-learndash
-  label: LearnDash
-  partner_name: LearnDash
-  category: Online Courses
-  type: marketplace
-  marketplace: zapier
-  channel: ipaas-usage
-  evidence: https://zapier.com/apps/thrivecart/integrations/learndash
-  source: edge
-  status: pending-partner-spec
-  arazzo: null
-- slug: thrivecart-zoom
-  label: Zoom
-  partner: zoom
-  partner_name: Zoom
-  category: Video Conferencing
-  type: marketplace
-  marketplace: zapier
-  channel: ipaas-usage
-  evidence: https://zapier.com/apps/thrivecart/integrations/zoom
-  source: edge
-  status: pending-generation
-  arazzo: null
-- slug: thrivecart-xero
-  label: Xero
-  partner: xero
-  partner_name: Xero
-  category: Accounting
-  type: marketplace
-  marketplace: zapier
-  channel: ipaas-usage
-  evidence: https://zapier.com/apps/thrivecart/integrations/xero
-  source: edge
-  status: pending-generation
-  arazzo: null
-- slug: thrivecart-dubsado
-  label: Dubsado
-  partner_name: Dubsado
-  category: CRM (Customer Relationship Management)
-  type: marketplace
-  marketplace: zapier
-  channel: ipaas-usage
-  evidence: https://zapier.com/apps/thrivecart/integrations/dubsado
-  source: edge
-  status: pending-partner-spec
-  arazzo: null
-- slug: thrivecart-kit
-  label: Kit
-  partner: convertkit
-  partner_name: Kit
-  category: Drip Emails
-  type: marketplace
-  marketplace: zapier
-  channel: ipaas-usage
-  evidence: https://zapier.com/apps/thrivecart/integrations/kit
-  source: edge
+  relationship: ipaas-bridge
   status: pending-generation
   arazzo: null
 - slug: thrivecart-zapier
@@ -433,4 +175,295 @@
     beta: false
     builder: unknown (not in the directory record)
   status: not-a-workflow
+  arazzo: null
+- slug: thrivecart-airtable
+  label: Airtable
+  partner: airtable
+  partner_name: Airtable
+  category: Databases
+  type: marketplace
+  marketplace: zapier
+  channel: ipaas-usage
+  evidence: https://zapier.com/apps/thrivecart/integrations/airtable
+  source: edge
+  relationship: ipaas-bridge
+  status: pending-generation
+  arazzo: null
+- slug: thrivecart-leadconnector
+  label: LeadConnector
+  partner_name: LeadConnector
+  category: Marketing Automation
+  type: marketplace
+  marketplace: zapier
+  channel: ipaas-usage
+  evidence: https://zapier.com/apps/thrivecart/integrations/leadconnector
+  source: edge
+  relationship: ipaas-bridge
+  status: pending-partner-spec
+  arazzo: null
+- slug: thrivecart-klaviyo
+  label: Klaviyo
+  partner: klaviyo
+  partner_name: Klaviyo
+  category: Marketing Automation
+  type: marketplace
+  marketplace: zapier
+  channel: ipaas-usage
+  evidence: https://zapier.com/apps/thrivecart/integrations/klaviyo
+  source: edge
+  relationship: ipaas-bridge
+  status: pending-generation
+  arazzo: null
+- slug: thrivecart-mailerlite
+  label: MailerLite
+  partner: mailerlite
+  partner_name: MailerLite
+  category: Marketing Automation
+  type: marketplace
+  marketplace: zapier
+  channel: ipaas-usage
+  evidence: https://zapier.com/apps/thrivecart/integrations/mailerlite
+  source: edge
+  relationship: ipaas-bridge
+  status: pending-generation
+  arazzo: null
+- slug: thrivecart-gmail
+  label: Gmail
+  partner: gmail
+  partner_name: Gmail
+  category: Email
+  type: marketplace
+  marketplace: zapier
+  channel: ipaas-usage
+  evidence: https://zapier.com/apps/thrivecart/integrations/gmail
+  source: edge
+  relationship: ipaas-bridge
+  status: pending-partner-spec
+  arazzo: null
+- slug: thrivecart-skool
+  label: Skool
+  partner: skool
+  partner_name: Skool
+  category: Education
+  type: marketplace
+  marketplace: zapier
+  channel: ipaas-usage
+  evidence: https://zapier.com/apps/thrivecart/integrations/skool
+  source: edge
+  relationship: ipaas-bridge
+  status: pending-partner-spec
+  arazzo: null
+- slug: thrivecart-xperiencify
+  label: Xperiencify
+  partner_name: Xperiencify
+  category: Online Courses
+  type: marketplace
+  marketplace: zapier
+  channel: ipaas-usage
+  evidence: https://zapier.com/apps/thrivecart/integrations/xperiencify
+  source: edge
+  relationship: ipaas-bridge
+  status: pending-partner-spec
+  arazzo: null
+- slug: thrivecart-kartra
+  label: Kartra
+  partner: kartra
+  partner_name: Kartra
+  category: Marketing Automation
+  type: marketplace
+  marketplace: zapier
+  channel: ipaas-usage
+  evidence: https://zapier.com/apps/thrivecart/integrations/kartra
+  source: edge
+  relationship: ipaas-bridge
+  status: pending-partner-spec
+  arazzo: null
+- slug: thrivecart-hubspot
+  label: HubSpot
+  partner: hubspot
+  partner_name: HubSpot
+  category: Marketing Automation
+  type: marketplace
+  marketplace: zapier
+  channel: ipaas-usage
+  evidence: https://zapier.com/apps/thrivecart/integrations/hubspot
+  source: edge
+  relationship: ipaas-bridge
+  status: pending-generation
+  arazzo: null
+- slug: thrivecart-clickup
+  label: ClickUp
+  partner: clickup
+  partner_name: ClickUp
+  category: Project Management
+  type: marketplace
+  marketplace: zapier
+  channel: ipaas-usage
+  evidence: https://zapier.com/apps/thrivecart/integrations/clickup
+  source: edge
+  relationship: ipaas-bridge
+  status: pending-generation
+  arazzo: null
+- slug: thrivecart-podia
+  label: Podia
+  partner: podia
+  partner_name: Podia
+  category: Online Courses
+  type: marketplace
+  marketplace: zapier
+  channel: ipaas-usage
+  evidence: https://zapier.com/apps/thrivecart/integrations/podia
+  source: edge
+  relationship: ipaas-bridge
+  status: pending-partner-spec
+  arazzo: null
+- slug: thrivecart-memberspot
+  label: Memberspot
+  partner_name: Memberspot
+  category: Online Courses
+  type: marketplace
+  marketplace: zapier
+  channel: ipaas-usage
+  evidence: https://zapier.com/apps/thrivecart/integrations/memberspot
+  source: edge
+  relationship: ipaas-bridge
+  status: pending-partner-spec
+  arazzo: null
+- slug: thrivecart-membervault
+  label: MemberVault
+  partner_name: MemberVault
+  category: Online Courses
+  type: marketplace
+  marketplace: zapier
+  channel: ipaas-usage
+  evidence: https://zapier.com/apps/thrivecart/integrations/membervault
+  source: edge
+  relationship: ipaas-bridge
+  status: pending-partner-spec
+  arazzo: null
+- slug: thrivecart-systeme-io
+  label: systeme.io
+  partner_name: systeme.io
+  category: Marketing
+  type: marketplace
+  marketplace: zapier
+  channel: ipaas-usage
+  evidence: https://zapier.com/apps/thrivecart/integrations/systemeio
+  source: edge
+  relationship: ipaas-bridge
+  status: pending-partner-spec
+  arazzo: null
+- slug: thrivecart-notion
+  label: Notion
+  partner: notion
+  partner_name: Notion
+  category: Task Management
+  type: marketplace
+  marketplace: zapier
+  channel: ipaas-usage
+  evidence: https://zapier.com/apps/thrivecart/integrations/notion
+  source: edge
+  relationship: ipaas-bridge
+  status: pending-generation
+  arazzo: null
+- slug: thrivecart-mailchimp
+  label: Mailchimp
+  partner: mailchimp
+  partner_name: Mailchimp
+  category: Marketing Automation
+  type: marketplace
+  marketplace: zapier
+  channel: ipaas-usage
+  evidence: https://zapier.com/apps/thrivecart/integrations/mailchimp
+  source: edge
+  relationship: ipaas-bridge
+  status: pending-generation
+  arazzo: null
+- slug: thrivecart-activecampaign
+  label: ActiveCampaign
+  partner: activecampaign
+  partner_name: ActiveCampaign
+  category: Marketing Automation
+  type: marketplace
+  marketplace: zapier
+  channel: ipaas-usage
+  evidence: https://zapier.com/apps/thrivecart/integrations/activecampaign
+  source: edge
+  relationship: ipaas-bridge
+  status: pending-generation
+  arazzo: null
+- slug: thrivecart-klicktipp
+  label: KlickTipp
+  partner_name: KlickTipp
+  category: Marketing Automation
+  type: marketplace
+  marketplace: zapier
+  channel: ipaas-usage
+  evidence: https://zapier.com/apps/thrivecart/integrations/klicktipp
+  source: edge
+  relationship: ipaas-bridge
+  status: pending-partner-spec
+  arazzo: null
+- slug: thrivecart-slack
+  label: Slack
+  partner: slack
+  partner_name: Slack
+  category: Team Chat
+  type: marketplace
+  marketplace: zapier
+  channel: ipaas-usage
+  evidence: https://zapier.com/apps/thrivecart/integrations/slack
+  source: edge
+  relationship: ipaas-bridge
+  status: pending-generation
+  arazzo: null
+- slug: thrivecart-learndash
+  label: LearnDash
+  partner_name: LearnDash
+  category: Online Courses
+  type: marketplace
+  marketplace: zapier
+  channel: ipaas-usage
+  evidence: https://zapier.com/apps/thrivecart/integrations/learndash
+  source: edge
+  relationship: ipaas-bridge
+  status: pending-partner-spec
+  arazzo: null
+- slug: thrivecart-zoom
+  label: Zoom
+  partner: zoom
+  partner_name: Zoom
+  category: Video Conferencing
+  type: marketplace
+  marketplace: zapier
+  channel: ipaas-usage
+  evidence: https://zapier.com/apps/thrivecart/integrations/zoom
+  source: edge
+  relationship: ipaas-bridge
+  status: pending-generation
+  arazzo: null
+- slug: thrivecart-xero
+  label: Xero
+  partner: xero
+  partner_name: Xero
+  category: Accounting
+  type: marketplace
+  marketplace: zapier
+  channel: ipaas-usage
+  evidence: https://zapier.com/apps/thrivecart/integrations/xero
+  source: edge
+  relationship: ipaas-bridge
+  status: pending-generation
+  arazzo: null
+- slug: thrivecart-dubsado
+  label: Dubsado
+  partner_name: Dubsado
+  category: CRM (Customer Relationship Management)
+  type: marketplace
+  marketplace: zapier
+  channel: ipaas-usage
+  evidence: https://zapier.com/apps/thrivecart/integrations/dubsado
+  source: edge
+  relationship: ipaas-bridge
+  status: pending-partner-spec
   arazzo: null
