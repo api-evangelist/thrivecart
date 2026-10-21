@@ -467,3 +467,56 @@
   relationship: ipaas-bridge
   status: pending-partner-spec
   arazzo: null
+- slug: thrivecart-stripe-partner-ecosystem
+  label: Stripe Partner Ecosystem
+  partner: stripe
+  partner_name: Stripe Partner Ecosystem
+  category: Stripe ecosystem partner
+  type: register
+  channel: standard-directory
+  evidence: https://stripe.partners/directory/thrivecart
+  source: edge
+  relationship: standard-participant
+  contract_reference:
+    register: Stripe Partner Ecosystem directory (stripe.com/partners/directory -> stripe.partners, PartnerPage
+      SSR __NUXT_DATA__)
+    standard: Stripe Partner Ecosystem
+    spec_file: null
+    role: stripe-verified-partner
+    registered_name: ThriveCart
+    register_id: thrivecart
+    partner_tier:
+    - Premier SaaS Platform Partner
+    matched_domain: thrivecart.com
+    matched_by: domain
+    identity_source: the directory's own website field for the partner (no lookup)
+    signal_note: 'certified_products = ONE entry per verified product type (Premier Apps / SaaS Platform / Payments
+      Partner: Stripe verified the product integration; no dates printed, lapsed null = unknown); Premier Services
+      Partner is a services tier (partner_tier only); Certified Professional Developers certify PEOPLE (context);
+      callouts / products never counted'
+    context:
+      callouts:
+      - CRM
+      stripe_products:
+      - Payments
+      - Connect
+      - Invoicing
+      - Billing
+      - Radar
+      - Tax
+      - Revenue Recognition
+      - Financial Connections
+      - Instant Payouts
+      - Link
+      - Radar for Fraud Teams
+      location: 6 Boulder Lane
+    detected_by: sweep-stripe-app-marketplace.py
+    detected: '2026-10-21'
+    certified_products:
+    - product: ThriveCart
+      product_type: SaaS platform with embedded Stripe (verified platform integration)
+      certifier: Stripe (Verified Partner program)
+      verification: Premier SaaS Platform Partner
+      lapsed: null
+  status: not-a-workflow
+  arazzo: null

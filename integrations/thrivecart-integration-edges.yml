@@ -9,6 +9,13 @@ checked:
 - https://n8n.io/integrations/thrivecart/
 - https://zapier.com/api/v4/apps/
 - https://zapier.com/apps/thrivecart/integrations
+- https://docs.stripe.com/stripe-apps
+- https://docs.stripe.com/stripe-apps/review-requirements
+- https://marketplace.stripe.com/
+- https://marketplace.stripe.com/appm/apps
+- https://stripe.com/partners/directory
+- https://stripe.com/partners/verified-partners
+- https://stripe.partners/sitemap.xml
 summary: null
 marketplace_apps:
 - marketplace: zapier
@@ -451,6 +458,58 @@ edges:
   direction: third-party
   category: CRM (Customer Relationship Management)
   partner_url: https://www.dubsado.com/
+- partner_name: Stripe Partner Ecosystem
+  partner: stripe
+  partner_match: register
+  type: register
+  direction: partner-built
+  channel: standard-directory
+  relationship: standard-participant
+  evidence: https://stripe.partners/directory/thrivecart
+  category: Stripe ecosystem partner
+  contract_reference:
+    register: Stripe Partner Ecosystem directory (stripe.com/partners/directory -> stripe.partners, PartnerPage
+      SSR __NUXT_DATA__)
+    standard: Stripe Partner Ecosystem
+    spec_file: null
+    role: stripe-verified-partner
+    registered_name: ThriveCart
+    register_id: thrivecart
+    partner_tier:
+    - Premier SaaS Platform Partner
+    matched_domain: thrivecart.com
+    matched_by: domain
+    identity_source: the directory's own website field for the partner (no lookup)
+    signal_note: 'certified_products = ONE entry per verified product type (Premier Apps / SaaS Platform / Payments
+      Partner: Stripe verified the product integration; no dates printed, lapsed null = unknown); Premier Services
+      Partner is a services tier (partner_tier only); Certified Professional Developers certify PEOPLE (context);
+      callouts / products never counted'
+    context:
+      callouts:
+      - CRM
+      stripe_products:
+      - Payments
+      - Connect
+      - Invoicing
+      - Billing
+      - Radar
+      - Tax
+      - Revenue Recognition
+      - Financial Connections
+      - Instant Payouts
+      - Link
+      - Radar for Fraud Teams
+      location: 6 Boulder Lane
+    detected_by: sweep-stripe-app-marketplace.py
+    detected: '2026-10-21'
+    certified_products:
+    - product: ThriveCart
+      product_type: SaaS platform with embedded Stripe (verified platform integration)
+      certifier: Stripe (Verified Partner program)
+      verification: Premier SaaS Platform Partner
+      lapsed: null
+  detected_by: sweep-stripe-app-marketplace.py
+  first_seen: '2026-10-21'
 templates:
 - title: Create or update Flodesk subscribers with new ThriveCart purchases
   url: https://zapier.com/apps/flodesk/integrations/thrivecart/969806/create-or-update-flodesk-subscribers-with-new-thrivecart-purchases
