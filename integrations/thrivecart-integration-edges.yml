@@ -16,6 +16,9 @@ checked:
 - https://stripe.com/partners/directory
 - https://stripe.com/partners/verified-partners
 - https://stripe.partners/sitemap.xml
+- https://hex.pm/api
+- https://packagist.org/packages
+- https://pub.dev/api
 summary: null
 marketplace_apps:
 - marketplace: zapier
@@ -510,6 +513,36 @@ edges:
       lapsed: null
   detected_by: sweep-stripe-app-marketplace.py
   first_seen: '2026-10-21'
+- partner_name: Packagist
+  partner: packagist
+  partner_match: register
+  type: register
+  direction: provider-built
+  category: official SDK (PHP)
+  evidence: https://packagist.org/packages/thrivecart/php-api
+  channel: package-registry
+  relationship: distribution-channel
+  contract_reference:
+    register: Packagist (public registry JSON)
+    spec_file: null
+    language: PHP
+    packages:
+    - name: thrivecart/php-api
+      version: 1.0.11
+      released: '2022-01-19'
+      released_field: time
+      lapsed: true
+      page: https://packagist.org/packages/thrivecart/php-api
+      repo_leg: github-org:thrivecart
+      publisher_leg: org:thrivecart
+      matched_by: github-org
+    current: false
+    signal_note: 'an official package on the registry: distribution, not an integration; lapsed = no release in
+      24 months'
+    detected_by: sweep-php-dart-elixir-package-registries.py
+    detected: '2026-10-22'
+  detected_by: sweep-php-dart-elixir-package-registries.py
+  first_seen: '2026-10-22'
 templates:
 - title: Create or update Flodesk subscribers with new ThriveCart purchases
   url: https://zapier.com/apps/flodesk/integrations/thrivecart/969806/create-or-update-flodesk-subscribers-with-new-thrivecart-purchases
